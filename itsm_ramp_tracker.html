@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ITSM Ramp Tracker — 200 Hours · 4 Tracks · 30·60·90 Day Milestones</title>
+<style>
+  :root {
+    --navy:   #032D60;
+    --blue:   #0176D3;
+    --sky:    #1B96FF;
+    --teal:   #06A59A;
+    --purple: #7526E3;
+    --green:  #2E844A;
+    --amber:  #FE9339;
+    --red:    #C23934;
+    --grey0:  #F3F3F3;
+    --grey1:  #E8EDF2;
+    --grey2:  #AEAEAE;
+    --dark:   #181818;
+    --white:  #FFFFFF;
+
+    --t1: var(--teal);
+    --t2: var(--purple);
+    --t3: var(--blue);
+    --t4: var(--green);
+    --t1-bg: #F0FFFE;
+    --t2-bg: #F8F0FF;
+    --t3-bg: #EBF5FB;
+    --t4-bg: #EDF7F0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Salesforce Sans', Arial, sans-serif; background: #F0F4F8; color: var(--dark); line-height: 1.5; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--navy); color: white; padding: 12px 32px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 14px; }
+  .topbar-title { font-size: 14px; font-weight: 800; }
+  .topbar-sub { font-size: 12px; color: rgba(255,255,255,0.6); }
+  .topbar-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .topbar-btn {
+    font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 6px;
+    text-decoration: none; border: 1.5px solid rgba(255,255,255,0.3); color: white;
+    transition: background .15s; white-space: nowrap;
+  }
+  .topbar-btn:hover { background: rgba(255,255,255,0.12); }
+  .topbar-btn.primary { background: var(--blue); border-color: var(--blue); }
+  .topbar-btn.primary:hover { background: #005FB2; }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    background: white; border-bottom: 2px solid var(--grey1);
+    padding: 16px 32px; display: flex; gap: 32px; align-items: center; flex-wrap: wrap;
+  }
+  .stat-item { display: flex; flex-direction: column; gap: 2px; }
+  .stat-num { font-size: 24px; font-weight: 900; color: var(--navy); line-height: 1; }
+  .stat-label { font-size: 11px; color: var(--grey2); font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
+  .stat-divider { width: 1px; height: 40px; background: var(--grey1); }
+
+  /* ── TRACK SUMMARY BAR ── */
+  .track-summary {
+    background: white; border-bottom: 2px solid var(--grey1);
+    padding: 14px 32px; display: flex; gap: 0; overflow-x: auto;
+  }
+  .track-summary-item {
+    flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px;
+    padding: 0 20px; border-right: 1px solid var(--grey1);
+  }
+  .track-summary-item:first-child { padding-left: 0; }
+  .track-summary-item:last-child { border-right: none; }
+  .track-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .track-summary-text { flex: 1; }
+  .track-summary-name { font-size: 12px; font-weight: 800; color: var(--navy); }
+  .track-summary-hrs { font-size: 11px; color: var(--grey2); }
+  .progress-bar-wrap { flex: 1; }
+  .progress-bar { height: 6px; background: var(--grey1); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; width: 0%; transition: width .4s; }
+
+  /* ── MAIN LAYOUT ── */
+  .main { max-width: 1280px; margin: 0 auto; padding: 32px 24px 80px; }
+
+  /* ── MILESTONE SECTION ── */
+  .milestone-section { margin-bottom: 48px; }
+  .milestone-header {
+    display: flex; align-items: center; gap: 16px; padding: 16px 24px;
+    border-radius: 12px 12px 0 0; color: white; position: relative; overflow: hidden;
+  }
+  .milestone-header::after {
+    content: ''; position: absolute; right: -40px; top: -40px;
+    width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.07);
+    pointer-events: none;
+  }
+  .ms-day { font-size: 48px; font-weight: 900; line-height: 1; opacity: .9; }
+  .ms-header-text { flex: 1; }
+  .ms-header-text h2 { font-size: 20px; font-weight: 800; }
+  .ms-header-text p { font-size: 13px; opacity: .8; margin-top: 2px; }
+  .ms-header-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .ms-pill { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 8px; background: rgba(255,255,255,0.2); }
+  .ms-total-hrs { text-align: right; }
+  .ms-total-hrs .big { font-size: 28px; font-weight: 900; line-height: 1; }
+  .ms-total-hrs .label { font-size: 10px; opacity: .7; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
+
+  /* ── TRACK GRID ── */
+  .track-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1.5px solid var(--grey1); border-top: none;
+    border-radius: 0 0 12px 12px; overflow: hidden; background: white;
+  }
+  @media(max-width: 960px) { .track-grid { grid-template-columns: repeat(2,1fr); } }
+
+  .track-col {
+    padding: 20px 18px; border-right: 1.5px solid var(--grey1);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .track-col:last-child { border-right: none; }
+
+  .track-col-header { display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 2px solid; }
+  .track-col-header .track-icon { font-size: 18px; }
+  .track-col-header .track-name { font-size: 13px; font-weight: 800; color: var(--navy); line-height: 1.2; flex: 1; }
+  .track-hrs-badge { font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 8px; white-space: nowrap; }
+
+  /* ── STATUS BADGE ── */
+  .status-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 10px; }
+  .status-ns  { background: var(--grey1); color: var(--grey2); }
+  .status-wip { background: #FFF3E0; color: #E65100; }
+  .status-done{ background: #E8F5E9; color: #1B5E20; }
+
+  /* ── DELIVERABLES LIST ── */
+  .deliverables-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--grey2); margin-bottom: 6px; }
+  .deliverable-item { margin-bottom: 10px; }
+  .deliverable-name { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 4px; display: flex; align-items: flex-start; gap: 6px; }
+  .deliverable-name .d-icon { font-size: 13px; flex-shrink: 0; }
+  .deliverable-desc { font-size: 11px; color: #666; line-height: 1.5; margin-bottom: 5px; }
+  .asset-link-slot {
+    display: flex; align-items: center; gap: 6px;
+    border: 1.5px dashed var(--grey2); border-radius: 6px;
+    padding: 5px 10px; font-size: 11px; color: var(--grey2); font-weight: 600;
+    text-decoration: none; transition: all .15s; background: var(--grey0);
+  }
+  .asset-link-slot:hover { border-color: var(--blue); color: var(--blue); background: #EBF5FB; }
+  .asset-link-slot.filled {
+    border-style: solid; border-color: var(--green); color: var(--green); background: #EDF7F0; font-weight: 700;
+  }
+  .asset-link-slot.filled:hover { background: #D4EDDA; }
+
+  /* ── CERT BADGE ── */
+  .cert-target { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 8px; display: inline-block; margin-top: 4px; }
+  .cert-purple { background: #F3E5F5; color: #6A1B9A; }
+  .cert-blue   { background: #E3F2FD; color: #0D47A1; }
+
+  /* ── DRIVE FOLDER CARD ── */
+  .drive-card {
+    background: white; border: 1.5px solid var(--grey1); border-radius: 12px;
+    padding: 20px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .drive-icon { font-size: 40px; flex-shrink: 0; }
+  .drive-text { flex: 1; }
+  .drive-text h3 { font-size: 16px; font-weight: 800; color: var(--navy); }
+  .drive-text p { font-size: 13px; color: #555; margin-top: 3px; }
+  .drive-folders { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .drive-folder-chip {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700;
+    padding: 4px 12px; border-radius: 8px; border: 1.5px solid var(--grey1); color: #444;
+    text-decoration: none; transition: all .15s;
+  }
+  .drive-folder-chip:hover { border-color: var(--blue); color: var(--blue); background: #EBF5FB; }
+  .drive-btn {
+    display: inline-flex; align-items: center; gap: 6px; background: var(--blue); color: white;
+    padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700;
+    transition: background .15s; white-space: nowrap;
+  }
+  .drive-btn:hover { background: #005FB2; }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    background: #EBF5FB; border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0;
+    padding: 12px 16px; font-size: 13px; color: #0B3D8F; margin-bottom: 20px; line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  footer { background: var(--navy); color: rgba(255,255,255,0.6); text-align: center; padding: 24px; font-size: 12px; }
+  footer strong { color: white; }
+  footer a { color: var(--sky); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- ── TOPBAR ── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div>
+      <div class="topbar-title">ITSM Ramp Tracker</div>
+      <div class="topbar-sub">200 hrs · 4 Learning Tracks · 30·60·90 Day Milestones</div>
+    </div>
+  </div>
+  <div class="topbar-links">
+    <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="topbar-btn primary">📁 Delivery Drive Folder ↗</a>
+    <a href="itsm_hr_learning_journey.html" class="topbar-btn">📚 Learning Journey ↗</a>
+    <a href="https://docs.google.com/presentation/d/1ZBOot6E3sQP4MyCauoy9VpTAznbgyuDTdBIJb0YL3hQ/edit" target="_blank" class="topbar-btn">📊 Business Case Deck ↗</a>
+  </div>
+</div>
+
+<!-- ── STATS STRIP ── -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-num" style="color:var(--blue);">200</div>
+    <div class="stat-label">Total Target Hours</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num">4</div>
+    <div class="stat-label">Learning Tracks</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num">3</div>
+    <div class="stat-label">Day Milestones</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num" style="color:var(--amber);">0</div>
+    <div class="stat-label">Hrs Logged</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num" style="color:var(--amber);">0%</div>
+    <div class="stat-label">Overall Progress</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <div class="stat-num" style="color:var(--grey2);">0 / 12</div>
+    <div class="stat-label">Deliverables Complete</div>
+  </div>
+</div>
+
+<!-- ── TRACK SUMMARY BAR ── -->
+<div class="track-summary">
+  <div class="track-summary-item">
+    <div class="track-dot" style="background:var(--teal);"></div>
+    <div class="track-summary-text">
+      <div class="track-summary-name">Industry Fundamentals</div>
+      <div class="track-summary-hrs">0 / 60 hrs · Primary Consultant</div>
+    </div>
+    <div class="progress-bar-wrap" style="width:80px;">
+      <div class="progress-bar"><div class="progress-fill" style="background:var(--teal);width:0%;"></div></div>
+    </div>
+  </div>
+  <div class="track-summary-item">
+    <div class="track-dot" style="background:var(--purple);"></div>
+    <div class="track-summary-text">
+      <div class="track-summary-name">Enterprise ITSM Arch</div>
+      <div class="track-summary-hrs">0 / 40 hrs · SAs</div>
+    </div>
+    <div class="progress-bar-wrap" style="width:80px;">
+      <div class="progress-bar"><div class="progress-fill" style="background:var(--purple);width:0%;"></div></div>
+    </div>
+  </div>
+  <div class="track-summary-item">
+    <div class="track-dot" style="background:var(--blue);"></div>
+    <div class="track-summary-text">
+      <div class="track-summary-name">Salesforce eServices Tools</div>
+      <div class="track-summary-hrs">0 / 60 hrs · SAs · Dev/TA</div>
+    </div>
+    <div class="progress-bar-wrap" style="width:80px;">
+      <div class="progress-bar"><div class="progress-fill" style="background:var(--blue);width:0%;"></div></div>
+    </div>
+  </div>
+  <div class="track-summary-item">
+    <div class="track-dot" style="background:var(--green);"></div>
+    <div class="track-summary-text">
+      <div class="track-summary-name">Salesforce Integration Plans</div>
+      <div class="track-summary-hrs">0 / 40 hrs · Dev/TA · PM</div>
+    </div>
+    <div class="progress-bar-wrap" style="width:80px;">
+      <div class="progress-bar"><div class="progress-fill" style="background:var(--green);width:0%;"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- Drive folder card -->
+  <div class="drive-card">
+    <div class="drive-icon">📁</div>
+    <div class="drive-text">
+      <h3>Delivery Assets Drive Folder</h3>
+      <p>All ramp artifacts land here. Create subfolders per milestone as the team produces deliverables — then drop the links into the asset slots below.</p>
+      <div class="drive-folders">
+        <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="drive-folder-chip">📁 Root Folder ↗</a>
+        <span class="drive-folder-chip" style="border-style:dashed;">📁 Day 30 — Foundation <span style="color:var(--grey2);font-weight:400;">(create)</span></span>
+        <span class="drive-folder-chip" style="border-style:dashed;">📁 Day 60 — Prototyping <span style="color:var(--grey2);font-weight:400;">(create)</span></span>
+        <span class="drive-folder-chip" style="border-style:dashed;">📁 Day 90 — Market Entry <span style="color:var(--grey2);font-weight:400;">(create)</span></span>
+      </div>
+    </div>
+    <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="drive-btn">Open Drive ↗</a>
+  </div>
+
+  <div class="info-box">
+    💡 <strong>How to use this tracker:</strong> As the team completes each deliverable, drop the asset link into the slot below. Replace the dashed "Pending" chip with the live Drive or Google Doc link. Update the status badge and hours logged at the top as milestones complete.
+  </div>
+
+  <!-- ════════════════════ DAY 30 ════════════════════ -->
+  <div class="milestone-section">
+    <div class="milestone-header" style="background: linear-gradient(135deg, var(--blue) 0%, #0B5CAB 100%);">
+      <div class="ms-day">30</div>
+      <div class="ms-header-text">
+        <h2>Foundation &amp; Enablement</h2>
+        <p>Primary Consultant full-time across all topics · Weeks 1–4</p>
+        <div class="ms-header-meta">
+          <span class="ms-pill">🧑‍💼 Primary Consultant</span>
+          <span class="ms-pill">GTM: Landscape + AE network</span>
+          <span class="ms-pill">Delivery: 5-week intensive training</span>
+        </div>
+      </div>
+      <div class="ms-total-hrs">
+        <div class="big">55</div>
+        <div class="label">Target Hrs</div>
+      </div>
+    </div>
+
+    <div class="track-grid">
+
+      <!-- Track 1: Industry Fundamentals -->
+      <div class="track-col" style="border-top: 4px solid var(--teal);">
+        <div class="track-col-header" style="border-color:var(--teal);">
+          <div class="track-icon">🏭</div>
+          <div class="track-name">Industry Fundamentals</div>
+          <div class="track-hrs-badge" style="background:#E0F5F4;color:var(--teal);">25 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">📊</span>Enterprise ITSM Ecosystem Map</div>
+          <div class="deliverable-desc">Visual map of how a typical enterprise ITSM ecosystem is structured — tools, teams, and process flows across IT and HR.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🔄</span>Incident Workflow Diagram</div>
+          <div class="deliverable-desc">End-to-end incident lifecycle — intake, triage, assignment, escalation, resolution, and closure. Covers P1–P4 severity handling.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">📋</span>Change Management Workflow</div>
+          <div class="deliverable-desc">Standard, Normal, and Emergency change request flows. Includes CAB review gates and approval routing.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Track 2: Enterprise ITSM Architectures -->
+      <div class="track-col" style="border-top: 4px solid var(--purple);">
+        <div class="track-col-header" style="border-color:var(--purple);">
+          <div class="track-icon">🏗️</div>
+          <div class="track-name">Enterprise ITSM Architectures</div>
+          <div class="track-hrs-badge" style="background:#F3E5F5;color:var(--purple);">10 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">📑</span>Platform Comparison: SN vs JIRA vs Freshservice</div>
+          <div class="deliverable-desc">Side-by-side capability comparison of ServiceNow, JIRA Service Management, and Freshservice. Key differentiators, pricing model, and Salesforce co-exist patterns for each.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🗺️</span>Customer Ecosystem Assessment Template</div>
+          <div class="deliverable-desc">Discovery template for mapping a customer's existing ITSM stack — tools in use, integrations, data flows, and migration/co-exist readiness.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Track 3: Salesforce eServices Tools -->
+      <div class="track-col" style="border-top: 4px solid var(--blue);">
+        <div class="track-col-header" style="border-color:var(--blue);">
+          <div class="track-icon">⚙️</div>
+          <div class="track-name">Salesforce eServices Tools</div>
+          <div class="track-hrs-badge" style="background:#EBF5FB;color:var(--blue);">15 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🖥️</span>ITSM + Service Cloud Baseline Config Notes</div>
+          <div class="deliverable-desc">Documented baseline setup steps for Agentforce IT Service on an SDO — brix sequencing, permission sets, and object config verified against demo org.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">✅</span>Tool Installation Checklist</div>
+          <div class="deliverable-desc">Step-by-step checklist for ITSM, Service Cloud, and HR Service tool install and config verification. Role: SC/Dev, ~2 hrs to execute.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Track 4: Salesforce Integration Plans -->
+      <div class="track-col" style="border-top: 4px solid var(--green);">
+        <div class="track-col-header" style="border-color:var(--green);">
+          <div class="track-icon">🔗</div>
+          <div class="track-name">Salesforce Integration Plans</div>
+          <div class="track-hrs-badge" style="background:#EDF7F0;color:var(--green);">5 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🔌</span>Integration Landscape Map</div>
+          <div class="deliverable-desc">Overview of the 5 GTM co-exist motions and how Salesforce layers into an existing ITSM stack without rip-and-replace. Covers Rip-and-Replace, Departmental, Co-Exist (AI + 3rd-party), and Slack Bot patterns.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /Day 30 -->
+
+
+  <!-- ════════════════════ DAY 60 ════════════════════ -->
+  <div class="milestone-section">
+    <div class="milestone-header" style="background: linear-gradient(135deg, #0B5CAB 0%, #0E6EBF 100%);">
+      <div class="ms-day">60</div>
+      <div class="ms-header-text">
+        <h2>Prototyping &amp; Packaged Offerings</h2>
+        <p>SAs ramp comprehensive eServe topics · Primary Consultant becomes trainer · Weeks 5–8</p>
+        <div class="ms-header-meta">
+          <span class="ms-pill">🏗️ Solution Architects ×2</span>
+          <span class="ms-pill">GTM: Standardize catalogs · Launch POC SOWs</span>
+          <span class="ms-pill">Delivery: Reference arch · Data Cloud labs</span>
+        </div>
+      </div>
+      <div class="ms-total-hrs">
+        <div class="big">85</div>
+        <div class="label">Target Hrs</div>
+      </div>
+    </div>
+
+    <div class="track-grid">
+
+      <!-- Track 1 -->
+      <div class="track-col" style="border-top: 4px solid var(--teal);">
+        <div class="track-col-header" style="border-color:var(--teal);">
+          <div class="track-icon">🏭</div>
+          <div class="track-name">Industry Fundamentals</div>
+          <div class="track-hrs-badge" style="background:#E0F5F4;color:var(--teal);">20 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">📋</span>Service Catalog Template</div>
+          <div class="deliverable-desc">Customer-ready service catalog template covering IT and HR service categories, fulfillment SLAs, and request types. Built for the Salesforce eServices platform.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🗣️</span>Customer Operational Language Guide</div>
+          <div class="deliverable-desc">Reference guide: ITSM and HR domain vocabulary, how customers talk about their pain, and translation to Salesforce solution framing. Used in discovery calls.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🤖</span>AI Agent Integration Pattern Guide</div>
+          <div class="deliverable-desc">How to integrate AI agents into existing ITSM environments safely. Covers orchestration design, guardrails, and enterprise-grade workflow patterns.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Track 2 -->
+      <div class="track-col" style="border-top: 4px solid var(--purple);">
+        <div class="track-col-header" style="border-color:var(--purple);">
+          <div class="track-icon">🏗️</div>
+          <div class="track-name">Enterprise ITSM Architectures</div>
+          <div class="track-hrs-badge" style="background:#F3E5F5;color:var(--purple);">20 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🧪</span>Incident Routing Lab Exercise</div>
+          <div class="deliverable-desc">Hands-on lab: create and route incidents across IT and HR queues, configure assignment rules, validate SLA start/stop triggers. Estimated 4 hrs.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">⏱️</span>SLA Escalation Configuration Lab</div>
+          <div class="deliverable-desc">Hands-on lab: configure SLA entitlements, milestone actions, escalation rules, and warning/violation notifications. Includes business hours setup.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🗄️</span>CMDB CI Relationship Lab</div>
+          <div class="deliverable-desc">Hands-on lab: create Configuration Items, define CI relationships (hosts/depends-on/connects-to), and trigger incidents from simulated monitoring alerts.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Track 3 -->
+      <div class="track-col" style="border-top: 4px solid var(--blue);">
+        <div class="track-col-header" style="border-color:var(--blue);">
+          <div class="track-icon">⚙️</div>
+          <div class="track-name">Salesforce eServices Tools</div>
+          <div class="track-hrs-badge" style="background:#EBF5FB;color:var(--blue);">25 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🗂️</span>Knowledgebase + Agents Config Lab</div>
+          <div class="deliverable-desc">Build Knowledge articles, configure Einstein Article Recommendations, set up the Agentforce IT Agent with topics and actions. Includes case classification training steps.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">💬</span>Slack Integration Setup Lab</div>
+          <div class="deliverable-desc">Configure Slack Swarm, Incident Broadcast, and HR Agent Slack channel intake. Covers Slack-first ITSM end-to-end flow validation in demo org.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🎬</span>Full Demo Environment — IT + HR</div>
+          <div class="deliverable-desc">Working demo org covering IT Service + HR Service combined flow. Validated against the standard demo script with Agentforce agent active and Slack IDO paired.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Track 4 -->
+      <div class="track-col" style="border-top: 4px solid var(--green);">
+        <div class="track-col-header" style="border-color:var(--green);">
+          <div class="track-icon">🔗</div>
+          <div class="track-name">Salesforce Integration Plans</div>
+          <div class="track-hrs-badge" style="background:#EDF7F0;color:var(--green);">20 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🧩</span>Co-Exist POC Design — Motion 3 / 4</div>
+          <div class="deliverable-desc">Architecture design for Motion 3 (3rd-party AI agents + SF IT Service Desk) and Motion 4 (SF AI Agents + 3rd-party ITSM). Includes data flow diagram and API boundary definition.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🔀</span>AI Orchestration Layer Pattern</div>
+          <div class="deliverable-desc">Reusable pattern for layering Agentforce on top of existing customer workflows without rip-and-replace. Covers MuleSoft/API gateway integration and agent handoff design.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /Day 60 -->
+
+
+  <!-- ════════════════════ DAY 90 ════════════════════ -->
+  <div class="milestone-section">
+    <div class="milestone-header" style="background: linear-gradient(135deg, var(--teal) 0%, #059B91 100%);">
+      <div class="ms-day">90</div>
+      <div class="ms-header-text">
+        <h2>Market Entry</h2>
+        <p>Dev/TA + PM ramp · SAs create accelerators · Weeks 9–12</p>
+        <div class="ms-header-meta">
+          <span class="ms-pill">⚙️ Dev / TA</span>
+          <span class="ms-pill">📋 Project Manager</span>
+          <span class="ms-pill">GTM: AE cadence · Roadshow offerings</span>
+          <span class="ms-pill">Delivery: Create agents / re-use assets</span>
+        </div>
+      </div>
+      <div class="ms-total-hrs">
+        <div class="big">60</div>
+        <div class="label">Target Hrs</div>
+      </div>
+    </div>
+
+    <div class="track-grid">
+
+      <!-- Track 1 -->
+      <div class="track-col" style="border-top: 4px solid var(--teal);">
+        <div class="track-col-header" style="border-color:var(--teal);">
+          <div class="track-icon">🏭</div>
+          <div class="track-name">Industry Fundamentals</div>
+          <div class="track-hrs-badge" style="background:#E0F5F4;color:var(--teal);">15 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🗺️</span>CMDB Map — Reference Architecture</div>
+          <div class="deliverable-desc">Reference CMDB map showing CI types, relationship topology, and service impact mapping for a mid-market enterprise. Used in discovery and scoping conversations.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🏆</span>GTM Discovery Question Bank</div>
+          <div class="deliverable-desc">30+ discovery questions mapped to ITSM pain areas: triage volume, SLA coverage, AI readiness, existing tooling, compliance requirements. Ready for AE co-sell motions.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Track 2 -->
+      <div class="track-col" style="border-top: 4px solid var(--purple);">
+        <div class="track-col-header" style="border-color:var(--purple);">
+          <div class="track-icon">🏗️</div>
+          <div class="track-name">Enterprise ITSM Architectures</div>
+          <div class="track-hrs-badge" style="background:#F3E5F5;color:var(--purple);">10 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">📘</span>Knowledge Workflow Lab</div>
+          <div class="deliverable-desc">End-to-end knowledge management workflow — article creation, review, publish, and feedback loop. Includes Einstein Search Answers and Knowledge component configuration.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🎓</span>ITIL Fundamentals Certification</div>
+          <div class="deliverable-desc">Target certification for the ITSM Architectures track. Validates understanding of ITIL 4 practices — incident, problem, change, service request, and knowledge management.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — upload cert evidence ↗
+          </a>
+          <span class="cert-target cert-purple">★ ITIL Fundamentals Cert Target</span>
+        </div>
+      </div>
+
+      <!-- Track 3 -->
+      <div class="track-col" style="border-top: 4px solid var(--blue);">
+        <div class="track-col-header" style="border-color:var(--blue);">
+          <div class="track-icon">⚙️</div>
+          <div class="track-name">Salesforce eServices Tools</div>
+          <div class="track-hrs-badge" style="background:#EBF5FB;color:var(--blue);">20 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">☁️</span>Data Cloud Integration Demo</div>
+          <div class="deliverable-desc">Working demo showing Data Cloud connected to ITSM — employee profile enrichment, case deflection powered by unified data, and AI prediction on case type.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🏎️</span>Reusable Accelerator — Baseline ITSM Config</div>
+          <div class="deliverable-desc">Packaged, repeatable baseline configuration for Agentforce IT Service — deployable via brix or metadata. Cuts first-engagement setup time by ~40%.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Track 4 -->
+      <div class="track-col" style="border-top: 4px solid var(--green);">
+        <div class="track-col-header" style="border-color:var(--green);">
+          <div class="track-icon">🔗</div>
+          <div class="track-name">Salesforce Integration Plans</div>
+          <div class="track-hrs-badge" style="background:#EDF7F0;color:var(--green);">15 hrs</div>
+        </div>
+        <div><span class="status-badge status-ns">⬜ Not Started</span></div>
+
+        <div class="deliverables-label">Deliverables</div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">📖</span>Integration Playbook</div>
+          <div class="deliverable-desc">Reusable playbook for each of the 5 GTM motions — what to configure, what integrations to set up, and which Salesforce products to include. Customer-ready format.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — drop asset link here ↗
+          </a>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-name"><span class="d-icon">🎓</span>Salesforce Product Certifications</div>
+          <div class="deliverable-desc">Target certifications for the Integration track: Service Cloud Consultant + Agentforce Specialist. Validates end-to-end platform and integration readiness.</div>
+          <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" class="asset-link-slot">
+            📎 Pending — upload cert evidence ↗
+          </a>
+          <span class="cert-target cert-blue">★ SF Product Certifications Target</span>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /Day 90 -->
+
+</div><!-- /main -->
+
+<footer>
+  <strong>ITSM Ramp Tracker</strong> · Salesforce ProServ · Agent-Driven Ramp Plan · June 2026<br />
+  <a href="itsm_hr_learning_journey.html">← Back to Learning Journey</a> &nbsp;·&nbsp;
+  <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank">Delivery Assets Drive Folder ↗</a>
+</footer>
+
+</body>
+</html>
