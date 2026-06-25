@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agentforce IT Service & HR Service — Learning Journey</title>
+<style>
+  :root {
+    --navy:   #032D60;
+    --blue:   #0176D3;
+    --sky:    #1B96FF;
+    --teal:   #06A59A;
+    --purple: #7526E3;
+    --green:  #2E844A;
+    --amber:  #FE9339;
+    --red:    #C23934;
+    --grey0:  #F3F3F3;
+    --grey1:  #E8EDF2;
+    --grey2:  #AEAEAE;
+    --dark:   #181818;
+    --white:  #FFFFFF;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Salesforce Sans', Arial, sans-serif; background: #F8F9FB; color: var(--dark); line-height: 1.5; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0B3D91 60%, #1A4BA1 100%);
+    color: var(--white); padding: 56px 48px 64px; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: rgba(27,150,255,0.12); pointer-events: none;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: -60px; left: 30%;
+    width: 260px; height: 260px; border-radius: 50%;
+    background: rgba(6,165,154,0.10); pointer-events: none;
+  }
+  .hero-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 12px; }
+  .hero h1 { font-size: 40px; font-weight: 800; line-height: 1.15; max-width: 720px; }
+  .hero h1 span { color: var(--sky); }
+  .hero-sub { margin-top: 16px; font-size: 16px; color: rgba(255,255,255,0.75); max-width: 600px; }
+  .hero-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+  .hero-tag {
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 600; color: var(--white);
+  }
+  .hero-meta { margin-top: 32px; display: flex; gap: 32px; font-size: 13px; color: rgba(255,255,255,0.6); }
+  .hero-meta strong { color: var(--white); font-weight: 700; }
+
+  /* ── PHASE NAV ── */
+  .phase-nav { background: var(--white); border-bottom: 2px solid var(--grey1); position: sticky; top: 0; z-index: 100; }
+  .phase-nav-inner { max-width: 1140px; margin: 0 auto; display: flex; overflow-x: auto; padding: 0 24px; gap: 0; }
+  .phase-nav a {
+    display: flex; align-items: center; gap: 8px; padding: 16px 20px;
+    text-decoration: none; color: var(--grey2); font-size: 13px; font-weight: 600;
+    border-bottom: 3px solid transparent; white-space: nowrap; transition: all .2s;
+  }
+  .phase-nav a:hover { color: var(--blue); border-color: var(--sky); }
+  .phase-nav a .nav-num {
+    width: 22px; height: 22px; border-radius: 50%; background: var(--grey1);
+    display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;
+  }
+  .phase-nav a.active { color: var(--navy); border-color: var(--navy); }
+  .phase-nav a.active .nav-num { background: var(--navy); color: var(--white); }
+
+  /* ── LAYOUT ── */
+  .main { max-width: 1140px; margin: 0 auto; padding: 48px 24px 80px; }
+  .section-gap { margin-top: 64px; }
+
+  /* ── PHASE HEADER ── */
+  .phase-header { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 32px; }
+  .phase-num {
+    width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 22px; font-weight: 900; flex-shrink: 0;
+    color: var(--white);
+  }
+  .phase-header-text h2 { font-size: 26px; font-weight: 800; color: var(--navy); }
+  .phase-header-text p { font-size: 14px; color: #555; margin-top: 4px; max-width: 680px; }
+  .phase-meta { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+  .phase-pill {
+    font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px;
+    border: 1.5px solid; text-transform: uppercase; letter-spacing: .5px;
+  }
+
+  /* ── CARD GRID ── */
+  .card-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .card-grid.cols-2 { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
+  .card-grid.cols-1 { grid-template-columns: 1fr; }
+
+  /* ── RESOURCE CARD ── */
+  .card {
+    background: var(--white); border-radius: 12px; border: 1.5px solid var(--grey1);
+    padding: 22px 22px 18px; display: flex; flex-direction: column; gap: 12px;
+    transition: box-shadow .2s, border-color .2s; position: relative; overflow: hidden;
+  }
+  .card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.10); border-color: var(--sky); }
+  .card-accent {
+    position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 12px 12px 0 0;
+  }
+  .card-type-row { display: flex; align-items: center; justify-content: space-between; }
+  .card-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: .4px;
+  }
+  .card-role { font-size: 11px; color: var(--grey2); font-weight: 600; }
+  .card h3 { font-size: 15px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+  .card p { font-size: 13px; color: #555; line-height: 1.55; flex: 1; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+  .card-time { font-size: 11px; color: var(--grey2); font-weight: 600; }
+  .card-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 700; color: var(--blue); text-decoration: none;
+    padding: 6px 14px; border-radius: 8px; border: 1.5px solid var(--blue);
+    transition: background .15s, color .15s;
+  }
+  .card-link:hover { background: var(--blue); color: var(--white); }
+  .card-link.disabled { color: var(--grey2); border-color: var(--grey2); pointer-events: none; }
+
+  /* ── BADGE COLORS ── */
+  .badge-trail   { background: #EBF5FB; color: #0176D3; }
+  .badge-video   { background: #FFF3E0; color: #E65100; }
+  .badge-doc     { background: #F3E5F5; color: #6A1B9A; }
+  .badge-slides  { background: #E8F5E9; color: #1B5E20; }
+  .badge-demo    { background: #FFF8E1; color: #F57F17; }
+  .badge-cert    { background: #FCE4EC; color: #880E4F; }
+  .badge-slack   { background: #E8EAF6; color: #303F9F; }
+  .badge-arch    { background: #E0F2F1; color: #004D40; }
+  .badge-brix    { background: #FBE9E7; color: #BF360C; }
+
+  /* ── ACCENT COLORS ── */
+  .accent-blue   { background: var(--blue); }
+  .accent-teal   { background: var(--teal); }
+  .accent-purple { background: var(--purple); }
+  .accent-green  { background: var(--green); }
+  .accent-amber  { background: var(--amber); }
+  .accent-navy   { background: var(--navy); }
+  .accent-red    { background: var(--red); }
+
+  /* ── PILL COLORS ── */
+  .pill-blue   { color: var(--blue);   border-color: var(--blue); }
+  .pill-teal   { color: var(--teal);   border-color: var(--teal); }
+  .pill-purple { color: var(--purple); border-color: var(--purple); }
+  .pill-amber  { color: var(--amber);  border-color: var(--amber); }
+  .pill-green  { color: var(--green);  border-color: var(--green); }
+
+  /* ── SPLIT CARD (IT vs HR) ── */
+  .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media(max-width: 700px) { .split-grid { grid-template-columns: 1fr; } }
+  .split-col-header {
+    display: flex; align-items: center; gap: 10px; padding: 12px 18px;
+    border-radius: 8px; margin-bottom: 14px; font-size: 14px; font-weight: 800; color: var(--white);
+  }
+
+  /* ── PREREQ CARD ── */
+  .prereq-banner {
+    background: linear-gradient(90deg, #FCE4EC 0%, #F3E5F5 100%);
+    border: 2px solid #CE93D8; border-radius: 12px; padding: 24px 28px;
+    display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  }
+  .prereq-icon { font-size: 42px; }
+  .prereq-text h3 { font-size: 17px; font-weight: 800; color: #4A148C; }
+  .prereq-text p { font-size: 13px; color: #6A1B9A; margin-top: 4px; }
+  .prereq-link {
+    margin-left: auto; display: inline-flex; align-items: center; gap: 6px;
+    background: #7B1FA2; color: var(--white); padding: 10px 20px; border-radius: 8px;
+    text-decoration: none; font-size: 13px; font-weight: 700; white-space: nowrap;
+    transition: background .15s;
+  }
+  .prereq-link:hover { background: #4A148C; }
+
+  /* ── PROGRESS STRIP ── */
+  .journey-strip {
+    background: var(--white); border: 1.5px solid var(--grey1); border-radius: 14px;
+    padding: 24px 28px; margin-bottom: 48px;
+  }
+  .journey-strip h3 { font-size: 13px; font-weight: 700; color: var(--grey2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 18px; }
+  .journey-steps { display: flex; align-items: center; gap: 0; overflow-x: auto; padding-bottom: 4px; }
+  .journey-step { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; min-width: 90px; position: relative; }
+  .journey-step:not(:last-child)::after {
+    content: ''; position: absolute; top: 18px; left: 60%; width: 80%; height: 2px;
+    background: var(--grey1); z-index: 0;
+  }
+  .journey-dot {
+    width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 14px; font-weight: 900; z-index: 1;
+    border: 2px solid var(--grey1); background: var(--white); color: var(--grey2);
+  }
+  .journey-step.done .journey-dot { background: var(--green); border-color: var(--green); color: var(--white); }
+  .journey-step.active .journey-dot { background: var(--navy); border-color: var(--navy); color: var(--white); box-shadow: 0 0 0 4px rgba(1,118,211,0.15); }
+  .journey-step-label { font-size: 11px; font-weight: 600; color: var(--grey2); text-align: center; max-width: 80px; }
+  .journey-step.active .journey-step-label { color: var(--navy); font-weight: 800; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 2px solid var(--grey1); margin: 48px 0; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--grey2); margin-bottom: 18px; display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--grey1); }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    background: #EBF5FB; border-left: 4px solid var(--blue); border-radius: 0 8px 8px 0;
+    padding: 14px 18px; font-size: 13px; color: #0B3D8F; margin-bottom: 24px; line-height: 1.6;
+  }
+  .warn-box {
+    background: #FFF8E1; border-left: 4px solid var(--amber); border-radius: 0 8px 8px 0;
+    padding: 14px 18px; font-size: 13px; color: #795200; margin-bottom: 24px; line-height: 1.6;
+  }
+
+  /* ── MILESTONE TIMELINE ── */
+  .milestone-timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1.5px solid var(--grey1); border-radius: 14px; overflow: hidden; margin-bottom: 36px; }
+  .milestone-col { padding: 20px 18px; border-right: 1.5px solid var(--grey1); }
+  .milestone-col:last-child { border-right: none; }
+  .milestone-col.active-col { background: #EBF5FB; }
+  .milestone-day { font-size: 36px; font-weight: 900; line-height: 1; }
+  .milestone-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; margin-bottom: 14px; }
+  .milestone-row-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--grey2); margin-bottom: 6px; margin-top: 12px; }
+  .milestone-bullets { list-style: none; padding: 0; }
+  .milestone-bullets li { font-size: 12px; color: #444; padding: 2px 0; display: flex; gap: 6px; align-items: flex-start; }
+  .milestone-bullets li::before { content: '•'; color: var(--blue); font-weight: 900; flex-shrink: 0; }
+  .milestone-week { font-size: 10px; color: var(--grey2); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+
+  /* ── LEARNING TRACKS ── */
+  .track-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  @media(max-width: 900px) { .track-grid { grid-template-columns: repeat(2,1fr); } .milestone-timeline { grid-template-columns: repeat(2,1fr); } }
+  .track-card { border-radius: 12px; border: 2px solid; padding: 20px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .track-card.track-industry { border-color: var(--teal); background: #F0FFFE; }
+  .track-card.track-arch { border-color: var(--purple); background: #F8F0FF; }
+  .track-card.track-tools { border-color: var(--blue); background: #EBF5FB; }
+  .track-card.track-integration { border-color: var(--green); background: #EDF7F0; }
+  .track-icon { font-size: 28px; }
+  .track-title { font-size: 15px; font-weight: 800; color: var(--navy); line-height: 1.25; }
+  .track-hours { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 10px; text-transform: uppercase; letter-spacing: .4px; }
+  .track-hours.th-teal { background: var(--teal); color: white; }
+  .track-hours.th-purple { background: var(--purple); color: white; }
+  .track-hours.th-blue { background: var(--blue); color: white; }
+  .track-hours.th-green { background: var(--green); color: white; }
+  .track-card ul { padding-left: 16px; font-size: 12px; color: #444; line-height: 1.6; margin: 0; }
+  .track-card li { margin-bottom: 2px; }
+  .track-cert { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 8px; display: inline-block; margin-top: 4px; }
+  .cert-purple { background: #F3E5F5; color: #6A1B9A; }
+  .cert-blue { background: #E3F2FD; color: #0D47A1; }
+  .track-demo { font-size: 11px; color: #666; font-style: italic; margin-top: 4px; }
+
+  /* ── CERT PATH ── */
+  .cert-path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media(max-width: 760px) { .cert-path-grid { grid-template-columns: 1fr; } }
+  .cert-path-col { border-radius: 14px; border: 2px solid; padding: 0; overflow: hidden; }
+  .cert-path-col.path-sc  { border-color: var(--purple); }
+  .cert-path-col.path-tc  { border-color: var(--teal); }
+  .cert-path-header {
+    padding: 18px 22px; color: var(--white); display: flex; align-items: center; gap: 14px;
+  }
+  .cert-path-header.bg-sc  { background: var(--purple); }
+  .cert-path-header.bg-tc  { background: var(--teal); }
+  .cert-path-header-icon { font-size: 30px; }
+  .cert-path-header-text h3 { font-size: 16px; font-weight: 800; line-height: 1.2; }
+  .cert-path-header-text p  { font-size: 12px; opacity: 0.85; margin-top: 3px; }
+  .cert-path-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .cert-tier-label {
+    font-size: 10px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
+    margin-bottom: 2px; display: flex; align-items: center; gap: 8px;
+  }
+  .cert-tier-label::after { content: ''; flex: 1; height: 1px; background: var(--grey1); }
+  .cert-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: var(--white); border: 1.5px solid var(--grey1); border-radius: 10px;
+    padding: 12px 14px; transition: box-shadow .15s;
+  }
+  .cert-item:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.07); }
+  .cert-item-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .cert-item-body { flex: 1; }
+  .cert-item-name { font-size: 13px; font-weight: 800; color: var(--navy); line-height: 1.3; }
+  .cert-item-why  { font-size: 12px; color: #555; margin-top: 3px; line-height: 1.5; }
+  .cert-item-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+  .cert-tag {
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 8px;
+    text-transform: uppercase; letter-spacing: .4px;
+  }
+  .ct-req    { background: #FCE4EC; color: #880E4F; }
+  .ct-core   { background: #E8EAF6; color: #283593; }
+  .ct-adv    { background: #E8F5E9; color: #1B5E20; }
+  .ct-opt    { background: #FFF8E1; color: #795200; }
+  .ct-shared { background: #E0F2F1; color: #004D40; }
+  .cert-link-sm {
+    font-size: 11px; font-weight: 700; color: var(--blue); text-decoration: none;
+    white-space: nowrap; flex-shrink: 0; margin-top: 3px;
+    padding: 4px 10px; border: 1.5px solid var(--blue); border-radius: 7px;
+    transition: background .15s, color .15s; display: inline-block;
+  }
+  .cert-link-sm:hover { background: var(--blue); color: var(--white); }
+  .cert-link-sm.cert-link-page {
+    color: var(--navy); border-color: var(--navy);
+  }
+  .cert-link-sm.cert-link-page:hover { background: var(--navy); color: var(--white); }
+  .cert-links-stack { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; }
+  .cert-path-legend { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+  .cert-path-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: #555; }
+
+  /* ── PHASE-TRACK MINI TAGS ── */
+  .phase-tracks { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .phase-track-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 10px; border: 1.5px solid; }
+  .ptt-teal { color: var(--teal); border-color: var(--teal); }
+  .ptt-purple { color: var(--purple); border-color: var(--purple); }
+  .ptt-blue { color: var(--blue); border-color: var(--blue); }
+  .ptt-green { color: var(--green); border-color: var(--green); }
+  .day-milestone-banner { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-radius: 10px; margin-bottom: 24px; border: 1.5px solid; }
+  .day-num-big { font-size: 32px; font-weight: 900; line-height: 1; }
+  .day-banner-text { font-size: 13px; color: #444; }
+  .day-banner-text strong { display: block; font-size: 14px; color: var(--navy); margin-bottom: 2px; }
+
+  /* ── ROLE RAMP ── */
+  .role-ramp { border: 1.5px solid var(--grey1); border-radius: 12px; overflow: hidden; margin-bottom: 28px; }
+  .role-ramp-header { background: var(--navy); color: white; padding: 10px 18px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+  .role-ramp-row { display: flex; align-items: center; gap: 0; border-top: 1px solid var(--grey1); }
+  .role-name { width: 160px; flex-shrink: 0; padding: 10px 14px; font-size: 12px; font-weight: 700; color: var(--navy); border-right: 1px solid var(--grey1); }
+  .role-desc { flex: 1; padding: 10px 14px; font-size: 12px; color: #555; line-height: 1.5; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy); color: rgba(255,255,255,0.6); text-align: center;
+    padding: 28px; font-size: 12px;
+  }
+  footer strong { color: var(--white); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<div class="hero">
+  <div class="hero-eyebrow">Salesforce ProServ · Enablement Program</div>
+  <h1>Agentforce <span>IT Service</span> &<br><span>HR Service</span> Learning Journey</h1>
+  <p class="hero-sub">Your guided path from first principles to hands-on delivery readiness across ITSM and Employee Service Cloud.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">🏔️ Foundational</span>
+    <span class="hero-tag">⚙️ Architecture</span>
+    <span class="hero-tag">🎬 Watch &amp; Learn</span>
+    <span class="hero-tag">🛠️ Hands-On</span>
+    <span class="hero-tag">🚀 Advanced</span>
+  </div>
+  <div class="hero-meta">
+    <span><strong>30 · 60 · 90</strong> · Day Milestones</span>
+    <span><strong>4 Learning Tracks</strong> · ~200 hrs total</span>
+    <span><strong>2 Cert Paths:</strong> SC/BA · TC/TA</span>
+    <span><strong>Audience:</strong> SC · Architect · Developer · PM</span>
+    <span><strong>Updated:</strong> June 2026</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ PHASE NAV ═══════════════════════════════ -->
+<nav class="phase-nav">
+  <div class="phase-nav-inner">
+    <a href="#ramp"><span class="nav-num">📅</span> 30·60·90 Plan</a>
+    <a href="#tracks"><span class="nav-num">📚</span> Learning Tracks</a>
+    <a href="#certpaths"><span class="nav-num">🏅</span> Cert Paths</a>
+    <a href="#prereq"><span class="nav-num">0</span> Prerequisites</a>
+    <a href="#phase1"><span class="nav-num">1</span> Get Started</a>
+    <a href="#phase2"><span class="nav-num">2</span> Watch &amp; Learn</a>
+    <a href="#phase3"><span class="nav-num">3</span> Architecture</a>
+    <a href="#phase4"><span class="nav-num">4</span> Hands-On</a>
+    <a href="#phase5"><span class="nav-num">5</span> Go Deeper</a>
+    <a href="#resources"><span class="nav-num">★</span> All Resources</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
+<div class="main">
+
+  <!-- TRACKER CROSSLINK -->
+  <div style="background:linear-gradient(90deg,#E8F5E9 0%,#EBF5FB 100%);border:1.5px solid var(--grey1);border-radius:12px;padding:16px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:28px;">
+    <div style="font-size:28px;">📋</div>
+    <div style="flex:1;">
+      <div style="font-size:14px;font-weight:800;color:var(--navy);">Track your progress — Ramp Tracker</div>
+      <div style="font-size:12px;color:#555;margin-top:2px;">12 deliverable slots across 4 tracks and 3 milestones. Drop asset links as your team produces artifacts from the ramp plan.</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <a href="itsm_ramp_tracker.html" style="display:inline-flex;align-items:center;gap:6px;background:var(--green);color:white;padding:9px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;">Open Tracker ↗</a>
+      <a href="https://drive.google.com/drive/folders/1QK9V3-_6RYEChSAACSIgEeSa-LzbUs2C" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:white;color:var(--blue);border:1.5px solid var(--blue);padding:9px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;">📁 Delivery Folder ↗</a>
+    </div>
+  </div>
+
+  <!-- JOURNEY OVERVIEW STRIP -->
+  <div class="journey-strip">
+    <h3>Your Learning Journey at a Glance — Agent-Driven Ramp Plan</h3>
+    <div class="journey-steps">
+      <div class="journey-step">
+        <div class="journey-dot" style="background:var(--grey1);color:var(--dark);border-color:var(--grey1);font-size:10px;font-weight:800;">PRE</div>
+        <div class="journey-step-label">Prerequisites</div>
+      </div>
+      <div class="journey-step active">
+        <div class="journey-dot" style="background:var(--blue);border-color:var(--blue);color:white;font-size:10px;font-weight:800;">30</div>
+        <div class="journey-step-label">Foundation &amp; Enablement</div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-dot" style="background:#1B96FF;border-color:#1B96FF;color:white;font-size:10px;font-weight:800;">60</div>
+        <div class="journey-step-label">Prototyping &amp; Offerings</div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-dot" style="background:var(--teal);border-color:var(--teal);color:white;font-size:10px;font-weight:800;">90</div>
+        <div class="journey-step-label">Market Entry</div>
+      </div>
+      <div class="journey-step">
+        <div class="journey-dot" style="background:var(--navy);border-color:var(--navy);color:white;font-size:10px;font-weight:800;">120</div>
+        <div class="journey-step-label">Global Scale</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 30/60/90 RAMP PLAN ═══ -->
+  <section id="ramp">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--blue);">📅</div>
+      <div class="phase-header-text">
+        <h2>The Agent-Driven Ramp Plan</h2>
+        <p>120-day transition from lean "Tiger Team" to global delivery scale. Two parallel tracks — GTM motions and Delivery readiness — progress in lockstep across four phases.</p>
+        <div class="phase-meta">
+          <span class="phase-pill pill-blue">All Roles</span>
+          <span class="phase-pill pill-teal">GTM + Delivery</span>
+          <span class="phase-pill pill-amber">~200 hrs total</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="milestone-timeline">
+      <!-- DAY 30 -->
+      <div class="milestone-col">
+        <div class="milestone-day" style="color:var(--blue);">30</div>
+        <div class="milestone-label" style="color:var(--blue);">Foundation &amp; Enablement</div>
+        <div class="milestone-week">Weeks 1–4</div>
+        <div class="milestone-row-label">GTM</div>
+        <ul class="milestone-bullets">
+          <li>GTM landscape assessment</li>
+          <li>Rapid upskill on use cases</li>
+          <li>Join AE discovery calls</li>
+        </ul>
+        <div class="milestone-row-label">Delivery</div>
+        <ul class="milestone-bullets">
+          <li>5-week intensive training</li>
+          <li>Tiger Team 2 SAs onboarding</li>
+          <li>Tooling &amp; environment setup</li>
+        </ul>
+        <div class="milestone-row-label">Ramp Role</div>
+        <ul class="milestone-bullets">
+          <li>Primary Consultant: full-time all topics</li>
+        </ul>
+      </div>
+      <!-- DAY 60 -->
+      <div class="milestone-col active-col">
+        <div class="milestone-day" style="color:#0B5CAB;">60</div>
+        <div class="milestone-label" style="color:#0B5CAB;">Prototyping &amp; Packaged Offerings</div>
+        <div class="milestone-week">Weeks 5–8</div>
+        <div class="milestone-row-label">GTM</div>
+        <ul class="milestone-bullets">
+          <li>Standardize solution catalogs</li>
+          <li>Collaborate with AEs and APs</li>
+          <li>Launch initial POC SOWs</li>
+        </ul>
+        <div class="milestone-row-label">Delivery</div>
+        <ul class="milestone-bullets">
+          <li>Reference architecture dev</li>
+          <li>MuleSoft &amp; Data Cloud labs</li>
+          <li>Foundation build-out</li>
+        </ul>
+        <div class="milestone-row-label">Ramp Role</div>
+        <ul class="milestone-bullets">
+          <li>SAs: comprehensive eServe topics</li>
+          <li>Primary Consultant becomes trainer</li>
+          <li>Sign first POC / limited-use SOW</li>
+        </ul>
+      </div>
+      <!-- DAY 90 -->
+      <div class="milestone-col">
+        <div class="milestone-day" style="color:var(--teal);">90</div>
+        <div class="milestone-label" style="color:var(--teal);">Market Entry</div>
+        <div class="milestone-week">Weeks 9–12</div>
+        <div class="milestone-row-label">GTM</div>
+        <ul class="milestone-bullets">
+          <li>Cadence with all 8 AE leads</li>
+          <li>Roadmap feedback loop</li>
+          <li>Slack co-selling motions</li>
+        </ul>
+        <div class="milestone-row-label">Delivery</div>
+        <ul class="milestone-bullets">
+          <li>Onboard PM, TA, SA</li>
+          <li>Governance &amp; PM rigor</li>
+          <li>Create agents / re-use assets</li>
+        </ul>
+        <div class="milestone-row-label">Ramp Role</div>
+        <ul class="milestone-bullets">
+          <li>Dev/TA: technology ramp</li>
+          <li>PM: industry &amp; ecosystem</li>
+          <li>Roadshow offerings</li>
+        </ul>
+      </div>
+      <!-- DAY 120 -->
+      <div class="milestone-col" style="background:var(--navy);">
+        <div class="milestone-day" style="color:white;">120+</div>
+        <div class="milestone-label" style="color:rgba(255,255,255,0.7);">Global Scale</div>
+        <div class="milestone-week" style="color:rgba(255,255,255,0.5);">Weeks 13–16+</div>
+        <div class="milestone-row-label" style="color:rgba(255,255,255,0.5);">GTM</div>
+        <ul class="milestone-bullets">
+          <li style="color:rgba(255,255,255,0.85);">Regional ProServ GTM leads</li>
+          <li style="color:rgba(255,255,255,0.85);">Standardized sales motions</li>
+          <li style="color:rgba(255,255,255,0.85);">Ongoing GTM optimization</li>
+        </ul>
+        <div class="milestone-row-label" style="color:rgba(255,255,255,0.5);">Delivery</div>
+        <ul class="milestone-bullets">
+          <li style="color:rgba(255,255,255,0.85);">Global delivery model</li>
+          <li style="color:rgba(255,255,255,0.85);">Establish feedback loop</li>
+          <li style="color:rgba(255,255,255,0.85);">Ops excellence hub</li>
+        </ul>
+        <div class="milestone-row-label" style="color:rgba(255,255,255,0.5);">Ramp Role</div>
+        <ul class="milestone-bullets">
+          <li style="color:rgba(255,255,255,0.85);">Primary Consultant as team lead</li>
+          <li style="color:rgba(255,255,255,0.85);">SAs create accelerators</li>
+          <li style="color:rgba(255,255,255,0.85);">Scale &amp; optimize GTM</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-box">
+      🎯 <strong>Ramp Goals:</strong> Win eServices deals using credibility and strategic vision · Provide ITSM Agentic orchestration for ServiceNow, Jira, and Freshworks · Implement comprehensive eServices covering ITSM, Agents, Service Cloud, portals, CMDB, Data Cloud, and Slack/Teams integrations.
+    </div>
+
+    <!-- Role ramp detail -->
+    <div class="section-label" style="margin-top:28px;">Role-by-Role Ramp Sequence</div>
+    <div class="role-ramp">
+      <div class="role-ramp-header">Who ramps when — parallel workstreams</div>
+      <div class="role-ramp-row">
+        <div class="role-name">🧑‍💼 Primary Consultant</div>
+        <div class="role-desc"><strong>Days 1–30 (full-time, all topics):</strong> Dive deep and codify learning to onboard the next resources. 5-weeks full-time. → <strong>Day 60+:</strong> Becomes trainer, manages team ramp process. → <strong>Day 90+:</strong> Team lead.</div>
+      </div>
+      <div class="role-ramp-row">
+        <div class="role-name">🏗️ Solution Architects ×2</div>
+        <div class="role-desc"><strong>Days 30–90 (20 hrs/week, comprehensive eServe topics):</strong> Technology + Industry Context. Maintains ability to partially staff other projects. → <strong>Day 90+:</strong> Create accelerators.</div>
+      </div>
+      <div class="role-ramp-row">
+        <div class="role-name">⚙️ Developer / TA</div>
+        <div class="role-desc"><strong>Days 60–90 (20 hrs/week, technology only):</strong> Salesforce tools and integration planning. → <strong>Day 90+:</strong> Create reuse assets.</div>
+      </div>
+      <div class="role-ramp-row">
+        <div class="role-name">📋 Project Manager</div>
+        <div class="role-desc"><strong>Days 60–90 (20 hrs/week, industry &amp; ecosystem):</strong> Focusing on industry fundamentals and ITSM architecture. → <strong>Day 90+:</strong> Refine offerings and delivery.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══ LEARNING TRACKS ═══ -->
+  <section id="tracks">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--purple);">📚</div>
+      <div class="phase-header-text">
+        <h2>Team Ramp Plan — ~200 Hours: 4 Learning Resources</h2>
+        <p>Every resource in this learning journey maps to one or more of these four learning resources. Use these to sequence your ramp and focus role-specific depth.</p>
+        <div class="phase-meta">
+          <span class="phase-pill pill-teal">Industry Fundamentals · 60 hrs</span>
+          <span class="phase-pill pill-purple">Enterprise ITSM Architectures · 40 hrs</span>
+          <span class="phase-pill pill-blue">eServices Tools · 60 hrs</span>
+          <span class="phase-pill pill-green">Integration Plans · 40 hrs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="track-grid">
+      <!-- Track 1 -->
+      <div class="track-card track-industry">
+        <div class="track-icon">🏭</div>
+        <div><span class="track-hours th-teal">60 Hours</span></div>
+        <div class="track-title">Industry Fundamentals</div>
+        <p style="font-size:12px;color:#555;margin:0;">Enable the team to:</p>
+        <ul>
+          <li>Understand enterprise ITSM ecosystems</li>
+          <li>Speak customer operational language</li>
+          <li>Integrate AI agents into existing environments</li>
+          <li>Design safe, enterprise-grade AI workflow orchestration</li>
+        </ul>
+        <div class="track-demo">Demonstrated by producing incident workflow diagrams, change management workflows, service catalogs, and CMDB map</div>
+        <div style="margin-top:auto;padding-top:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div class="phase-track-tag ptt-teal">Days 1–30 · Primary Consultant</div>
+          <a href="itsm_track_1_industry.html" style="font-size:11px;font-weight:700;color:var(--teal);text-decoration:none;border:1.5px solid var(--teal);padding:4px 10px;border-radius:7px;">Open Learning Resource →</a>
+        </div>
+      </div>
+      <!-- Track 2 -->
+      <div class="track-card track-arch">
+        <div class="track-icon">🏗️</div>
+        <div><span class="track-hours th-purple">40 Hours</span></div>
+        <div class="track-title">Enterprise ITSM Architectures</div>
+        <p style="font-size:12px;color:#555;margin:0;">Enable the team to:</p>
+        <ul>
+          <li>Understand how real-life enterprise ecosystems are implemented</li>
+          <li>Focus on ServiceNow, JIRA Service Management, and Freshservice</li>
+        </ul>
+        <div class="track-demo">Demonstrated by hands-on exercises: create and route incidents, configure SLA escalation, create CMDB CI relationships, trigger incidents from monitoring alerts, build knowledge workflows</div>
+        <div class="track-cert cert-purple">★ ITIL Fundamentals Certification</div>
+        <div style="margin-top:auto;padding-top:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div class="phase-track-tag ptt-purple">Days 30–60 · SAs</div>
+          <a href="itsm_track_2_arch.html" style="font-size:11px;font-weight:700;color:var(--purple);text-decoration:none;border:1.5px solid var(--purple);padding:4px 10px;border-radius:7px;">Open Learning Resource →</a>
+        </div>
+      </div>
+      <!-- Track 3 -->
+      <div class="track-card track-tools">
+        <div class="track-icon">⚙️</div>
+        <div><span class="track-hours th-blue">60 Hours</span></div>
+        <div class="track-title">Salesforce eServices Tools</div>
+        <p style="font-size:12px;color:#555;margin:0;">Enable the team to install and configure all eServices tools including:</p>
+        <ul>
+          <li>ITSM · Service Cloud · CMDB</li>
+          <li>Knowledgebase · Agents</li>
+          <li>Slack and Teams integrations</li>
+          <li>Data Cloud</li>
+        </ul>
+        <div class="track-demo">Demonstrated by hands-on exercises in demo environments</div>
+        <div style="margin-top:auto;padding-top:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div class="phase-track-tag ptt-blue">Days 30–90 · SAs · Dev/TA</div>
+          <a href="itsm_track_3_tools.html" style="font-size:11px;font-weight:700;color:var(--blue);text-decoration:none;border:1.5px solid var(--blue);padding:4px 10px;border-radius:7px;">Open Learning Resource →</a>
+        </div>
+      </div>
+      <!-- Track 4 -->
+      <div class="track-card track-integration">
+        <div class="track-icon">🔗</div>
+        <div><span class="track-hours th-green">40 Hours</span></div>
+        <div class="track-title">Salesforce Integration Plans</div>
+        <p style="font-size:12px;color:#555;margin:0;">Enable the team to:</p>
+        <ul>
+          <li>Layer Agents on top of existing customer workflows and products</li>
+          <li>Create an AI orchestration layer without needing to "rip and replace" a customer's existing tech stack</li>
+        </ul>
+        <div class="track-demo">Demonstrated by hands-on exercises in demo environments</div>
+        <div class="track-cert cert-blue">★ Salesforce Product Certifications</div>
+        <div style="margin-top:auto;padding-top:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <div class="phase-track-tag ptt-green">Days 60–90 · Dev/TA · PM</div>
+          <a href="itsm_track_4_integration.html" style="font-size:11px;font-weight:700;color:var(--green);text-decoration:none;border:1.5px solid var(--green);padding:4px 10px;border-radius:7px;">Open Learning Resource →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══ CERTIFICATION PATHS ═══ -->
+  <section id="certpaths">
+    <div class="phase-header">
+      <div class="phase-num" style="background:linear-gradient(135deg,var(--purple),var(--teal));">🏅</div>
+      <div class="phase-header-text">
+        <h2>Certification Paths by Role</h2>
+        <p>Two structured tracks matched to ITSM delivery needs. Solution Consultants and Architects focus on platform breadth and solutioning credentials; Technical Consultants and Architects focus on configuration, integration, and developer-depth certifications.</p>
+        <div class="phase-meta">
+          <span class="phase-pill pill-purple">SC · Business Architect Path</span>
+          <span class="phase-pill pill-teal">TC · Technical Architect Path</span>
+          <span class="phase-pill pill-amber">All: Agentforce Specialist recommended</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="cert-path-legend">
+      <div class="cert-path-legend-item"><span class="cert-tag ct-req">Recommended</span> Strongly recommended for ITSM delivery</div>
+      <div class="cert-path-legend-item"><span class="cert-tag ct-core">Core</span> Primary cert for this role</div>
+      <div class="cert-path-legend-item"><span class="cert-tag ct-adv">Advanced</span> Next-level credential</div>
+      <div class="cert-path-legend-item"><span class="cert-tag ct-shared">Shared</span> Applies to both paths</div>
+      <div class="cert-path-legend-item"><span class="cert-tag ct-opt">Optional</span> Situational / bonus</div>
+    </div>
+
+    <div class="cert-path-grid">
+
+      <!-- ── PATH A: SC & BUSINESS ARCHITECT ── -->
+      <div class="cert-path-col path-sc">
+        <div class="cert-path-header bg-sc">
+          <div class="cert-path-header-icon">🧑‍💼</div>
+          <div class="cert-path-header-text">
+            <h3>Solution Consultant &amp; Business Architect</h3>
+            <p>Discovery, solutioning, platform breadth, and cross-cloud delivery design</p>
+          </div>
+        </div>
+        <div class="cert-path-body">
+
+          <div class="cert-tier-label" style="color:var(--red);">Foundation (start here)</div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">☁️</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Service Cloud Consultant</div>
+              <div class="cert-item-why">Entry gate for ITSM delivery — validates Case model, entitlements, OmniChannel, Knowledge, and SLA design that underpin both IT Service and HR Service.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-req">Recommended</span>
+                <span class="cert-tag ct-shared">Shared</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/users/strailhead/trailmixes/prepare-for-your-salesforce-service-cloud-consultant-credential" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-service-consultant---Service-Con-201" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">🤖</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Agentforce Specialist</div>
+              <div class="cert-item-why">Required for scoping Agentforce IT Agent and HR Employee Agent — covers Topics, Actions, Atlas Reasoning Engine, and Trust Layer. Critical for ITSM deflection design.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-req">Recommended</span>
+                <span class="cert-tag ct-shared">Shared</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/en/content/learn/trails/design-and-implement-ai-agents-with-agentforce" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-agentforce-specialist---AI-201" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-tier-label" style="color:var(--purple);">Core — SC / BA Depth</div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">🔐</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Sharing &amp; Visibility Architect</div>
+              <div class="cert-item-why">Essential for ITSM: Case OWD must be Private for HR/ER; criteria-based sharing for People Partner cases; IT incident sharing at scale. Mandatory design gate knowledge.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-core">Core</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/users/00550000006yDdKAAU/trailmixes/architect-sharing-and-visibility" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-sharing-visibility---Plat-Arch-205" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">🌐</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Experience Cloud Architect</div>
+              <div class="cert-item-why">Both IT Service and HR Service require employee portal design (Experience Cloud). Covers license types, self-registration, authentication flows, and community Knowledge integration.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-core">Core</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/credentials/experiencecloudconsultant" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-exp-cld-consultant---EX-Con-101" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">🔀</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">B2B Solution Architect</div>
+              <div class="cert-item-why">Cross-cloud solutioning credential for SCs who will design multi-product ITSM engagements spanning Service Cloud, Slack, Data Cloud, and Agentforce.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-core">Core</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/content/learn/trails/study-for-the-b2b-solution-architect-exam" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-b2b-solution-architect---Arch-301" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-tier-label" style="color:var(--green);">Advanced</div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">📊</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Data Cloud Consultant (Data 360)</div>
+              <div class="cert-item-why">Relevant when ITSM engagements include unified employee data profiles, CMDB enrichment via Data Cloud, or proactive AI incident detection using real-time data streams.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-opt">Optional</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/en/content/learn/trails/prepare-for-your-salesforce-data-360-consultant-exam" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-data-cloud---Data-Con-101" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">🆔</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Identity &amp; Access Management Architect</div>
+              <div class="cert-item-why">For SCs/BAs scoping enterprise ITSM with SSO, Okta/Azure AD, MFA — especially relevant for employee portal auth and IT fulfiller workspace setup.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-adv">Advanced</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/users/00550000006yDdKAAU/trailmixes/architect-identity-and-access-management" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-identity-access---Plat-Arch-203" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── PATH B: TC & TECHNICAL ARCHITECT ── -->
+      <div class="cert-path-col path-tc">
+        <div class="cert-path-header bg-tc">
+          <div class="cert-path-header-icon">⚙️</div>
+          <div class="cert-path-header-text">
+            <h3>Technical Consultant &amp; Technical Architect</h3>
+            <p>Configuration, integration, deployment, and technical depth for ITSM builds</p>
+          </div>
+        </div>
+        <div class="cert-path-body">
+
+          <div class="cert-tier-label" style="color:var(--red);">Foundation (start here)</div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">☁️</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Service Cloud Consultant</div>
+              <div class="cert-item-why">Entry gate — same as SC path. Validates the underlying platform that ITSM and HR Service are built on before going into technical depth.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-req">Recommended</span>
+                <span class="cert-tag ct-shared">Shared</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/users/strailhead/trailmixes/prepare-for-your-salesforce-service-cloud-consultant-credential" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-service-consultant---Service-Con-201" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">🤖</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Agentforce Specialist</div>
+              <div class="cert-item-why">Required for TCs building custom agent topics, Apex agent actions, Prompt Builder templates, and testing via Agentforce Testing Center for IT/HR agents.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-req">Recommended</span>
+                <span class="cert-tag ct-shared">Shared</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/en/content/learn/trails/design-and-implement-ai-agents-with-agentforce" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-agentforce-specialist---AI-201" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-tier-label" style="color:var(--teal);">Core — TC / TA Depth</div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">🔗</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Integration Architect</div>
+              <div class="cert-item-why">Critical for ITSM: Workday integration for HR Service, ServiceNow/Jira migration/co-existence patterns, CMDB discovery connectors, and Slack/Teams API integration via Platform Events and Change Data Capture.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-core">Core</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/users/00550000006yDdKAAU/trailmixes/architect-integration-architecture" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-integration-arch---Plat-Arch-204" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">🗄️</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Data Architect</div>
+              <div class="cert-item-why">ITSM engagements involve large-volume Case and CMDB data. LDV strategies, indexing, Bulk API for migration from ServiceNow/Jira, and MDM patterns for employee/asset records.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-core">Core</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/users/00550000006yDdKAAU/trailmixes/architect-data-architecture-and-management" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-data-architect---Plat-Arch-201" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">🚀</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Development Lifecycle &amp; Deployment Architect</div>
+              <div class="cert-item-why">ITSM builds require CI/CD pipelines (Copado/Gearset), Salesforce DX, sandbox strategy for parallel HR + IT org deployments, and release management governance.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-core">Core</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/users/00550000006yDdKAAU/trailmixes/architect-dev-lifecycle-and-deployment" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-dev-lifecycle---Plat-Arch-202" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-tier-label" style="color:var(--green);">Advanced</div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">📊</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Data Cloud Consultant (Data 360)</div>
+              <div class="cert-item-why">Recommended when building proactive AI incident detection, unified employee profiles across HR + IT orgs, or real-time CMDB enrichment using Data Cloud data streams and calculated insights.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-adv">Advanced</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/en/content/learn/trails/prepare-for-your-salesforce-data-360-consultant-exam" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-data-cloud---Data-Con-101" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">🔌</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">MuleSoft Integration Architect I</div>
+              <div class="cert-item-why">For TCs building the AI orchestration layer on top of ServiceNow, Jira, Freshservice, or Workday without rip-and-replace. API-led connectivity for ITSM co-existence patterns.</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-adv">Advanced</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/en/content/learn/trails/great-integrations-mulesoft" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-mule-int-arch---Mule-Arch-202" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+          <div class="cert-item">
+            <div class="cert-item-icon">🧩</div>
+            <div class="cert-item-body">
+              <div class="cert-item-name">Informatica Data Integration (IDMC)</div>
+              <div class="cert-item-why">Situational — for ITSM engagements that include large-scale data migration from legacy ITSM tools, CMDB bulk ingestion, or Informatica MDM alignment with Salesforce employee records (Q3 2026 roadmap).</div>
+              <div class="cert-item-meta">
+                <span class="cert-tag ct-opt">Optional</span>
+              </div>
+            </div>
+            <div class="cert-links-stack">
+              <a href="https://trailhead.salesforce.com/content/learn/trails/get-to-know-informatica-intelligent-data-management-cloud-idmc" target="_blank" class="cert-link-sm">Prep Trail ↗</a>
+              <a href="https://trailheadacademy.salesforce.com/certificate/exam-informatica-data-integration---INFO-201" target="_blank" class="cert-link-sm cert-link-page">Cert Page ↗</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /cert-path-grid -->
+
+    <div class="info-box" style="margin-top:24px;">
+      🎯 <strong>Cert sequence tip:</strong> Both paths share the same two foundation certs — Service Cloud Consultant + Agentforce Specialist. Complete these first before branching. SC/BA roles should target Sharing &amp; Visibility Architect next (Case OWD Private is the #1 ITSM design gate). TC/TA roles should prioritize Integration Architect next given the Workday, ServiceNow co-existence, and Slack/Teams integration patterns central to ITSM delivery.
+    </div>
+
+    <!-- Cert comparison table -->
+    <div class="section-label" style="margin-top:28px;">Certification Quick Reference</div>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:var(--navy);color:white;">
+            <th style="padding:10px 14px;text-align:left;font-weight:800;">Certification</th>
+            <th style="padding:10px 14px;text-align:center;">SC / BA</th>
+            <th style="padding:10px 14px;text-align:center;">TC / TA</th>
+            <th style="padding:10px 14px;text-align:left;">ITSM Relevance</th>
+            <th style="padding:10px 14px;text-align:left;">Exam</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#F8F9FB;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">Service Cloud Consultant</td>
+            <td style="padding:9px 14px;text-align:center;">⭐ Recommended</td>
+            <td style="padding:9px 14px;text-align:center;">⭐ Recommended</td>
+            <td style="padding:9px 14px;color:#555;">Case model, entitlements, OmniChannel, Knowledge</td>
+            <td style="padding:9px 14px;color:#555;">Proctored · Free attempt</td>
+          </tr>
+          <tr style="background:white;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">Agentforce Specialist</td>
+            <td style="padding:9px 14px;text-align:center;">⭐ Recommended</td>
+            <td style="padding:9px 14px;text-align:center;">⭐ Recommended</td>
+            <td style="padding:9px 14px;color:#555;">IT Agent + HR Agent, Atlas Reasoning, Trust Layer</td>
+            <td style="padding:9px 14px;color:#555;">Proctored · Free attempt</td>
+          </tr>
+          <tr style="background:#F8F9FB;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">Sharing &amp; Visibility Architect</td>
+            <td style="padding:9px 14px;text-align:center;color:var(--purple);">⭐ Core</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">—</td>
+            <td style="padding:9px 14px;color:#555;">Case OWD Private, ER sharing, IT scale</td>
+            <td style="padding:9px 14px;color:#555;">Proctored · Free attempt</td>
+          </tr>
+          <tr style="background:white;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">Experience Cloud Architect</td>
+            <td style="padding:9px 14px;text-align:center;color:var(--purple);">⭐ Core</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">—</td>
+            <td style="padding:9px 14px;color:#555;">Employee portal (IT + HR), auth flows, licenses</td>
+            <td style="padding:9px 14px;color:#555;">Proctored · Free attempt</td>
+          </tr>
+          <tr style="background:#F8F9FB;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">B2B Solution Architect</td>
+            <td style="padding:9px 14px;text-align:center;color:var(--purple);">⭐ Core</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">—</td>
+            <td style="padding:9px 14px;color:#555;">Cross-cloud ITSM design (SC + Slack + DC + AF)</td>
+            <td style="padding:9px 14px;color:#555;">Proctored · Free attempt</td>
+          </tr>
+          <tr style="background:white;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">Integration Architect</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">—</td>
+            <td style="padding:9px 14px;text-align:center;color:var(--teal);">⭐ Core</td>
+            <td style="padding:9px 14px;color:#555;">Workday, ServiceNow/Jira co-exist, Slack APIs</td>
+            <td style="padding:9px 14px;color:#555;">Proctored · Free attempt</td>
+          </tr>
+          <tr style="background:#F8F9FB;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">Data Architect</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">—</td>
+            <td style="padding:9px 14px;text-align:center;color:var(--teal);">⭐ Core</td>
+            <td style="padding:9px 14px;color:#555;">LDV Case/CMDB, ServiceNow migration, Bulk API</td>
+            <td style="padding:9px 14px;color:#555;">Proctored · Free attempt</td>
+          </tr>
+          <tr style="background:white;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">Dev Lifecycle &amp; Deployment Architect</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">—</td>
+            <td style="padding:9px 14px;text-align:center;color:var(--teal);">⭐ Core</td>
+            <td style="padding:9px 14px;color:#555;">CI/CD, HR + IT dual-org deployments, DX</td>
+            <td style="padding:9px 14px;color:#555;">Proctored · Free attempt</td>
+          </tr>
+          <tr style="background:#F8F9FB;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">IAM Architect</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">Advanced</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">—</td>
+            <td style="padding:9px 14px;color:#555;">SSO, Okta/Azure AD, employee portal auth</td>
+            <td style="padding:9px 14px;color:#555;">Proctored · Free attempt</td>
+          </tr>
+          <tr style="background:white;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">MuleSoft Integration Architect I</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">—</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">Advanced</td>
+            <td style="padding:9px 14px;color:#555;">ITSM co-existence / Agentforce orchestration layer</td>
+            <td style="padding:9px 14px;color:#555;">Proctored · Free attempt</td>
+          </tr>
+          <tr style="background:#F8F9FB;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">Data Cloud Consultant</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">Optional</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">Advanced</td>
+            <td style="padding:9px 14px;color:#555;">Proactive AI detection, unified employee profiles</td>
+            <td style="padding:9px 14px;color:#555;">Proctored · Free attempt</td>
+          </tr>
+          <tr style="background:white;border-bottom:1px solid var(--grey1);">
+            <td style="padding:9px 14px;font-weight:700;color:var(--navy);">Informatica Data Integration</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">—</td>
+            <td style="padding:9px 14px;text-align:center;color:#888;">Optional</td>
+            <td style="padding:9px 14px;color:#555;">Legacy ITSM tool migration, CMDB bulk ingestion</td>
+            <td style="padding:9px 14px;color:#555;">Non-proctored · Free (2/yr)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══ PHASE 0 · PREREQUISITES ═══ -->
+  <section id="prereq">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--red);">0</div>
+      <div class="phase-header-text">
+        <h2>Before You Begin — Prerequisites</h2>
+        <p>Validate your foundation before diving into ITSM and HR Service delivery. The Service Cloud Consultant certification is the minimum entry point for this learning journey.</p>
+        <div class="phase-meta">
+          <span class="phase-pill pill-purple">Recommended</span>
+          <span class="phase-pill pill-teal">All Roles</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prereq-banner">
+      <div class="prereq-icon">🏅</div>
+      <div class="prereq-text">
+        <h3>Service Cloud Consultant Certification</h3>
+        <p>Recommended foundation. Validates understanding of Service Cloud data model, case management, entitlements, Knowledge, and Omni-Channel — all of which underpin both ITSM and HR Service.</p>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;">
+        <a href="https://trailhead.salesforce.com/users/strailhead/trailmixes/prepare-for-your-salesforce-service-cloud-consultant-credential" target="_blank" class="prereq-link">Prep Trail ↗</a>
+        <a href="https://trailheadacademy.salesforce.com/certificate/exam-service-consultant---Service-Con-201" target="_blank" class="prereq-link" style="background:#4A148C;">Cert Page ↗</a>
+      </div>
+    </div>
+
+    <div style="margin-top: 16px;">
+      <div class="prereq-banner" style="background:linear-gradient(90deg,#E8EAF6 0%,#EDE7F6 100%);border-color:#9575CD;">
+        <div class="prereq-icon">🤖</div>
+        <div class="prereq-text" style="flex:1;">
+          <h3 style="color:#311B92;">Agentforce Specialist Certification</h3>
+          <p style="color:#4527A0;">Recommended for all roles. Covers Agentforce agent types, Topics &amp; Actions, Atlas Reasoning Engine, Einstein Trust Layer, and testing workflows — the foundation for scoping and building the IT Service and HR Employee Agents.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;">
+          <a href="https://trailhead.salesforce.com/en/content/learn/trails/design-and-implement-ai-agents-with-agentforce" target="_blank" class="prereq-link" style="background:#5E35B1;">Prep Trail ↗</a>
+          <a href="https://trailheadacademy.salesforce.com/certificate/exam-agentforce-specialist---AI-201" target="_blank" class="prereq-link" style="background:#311B92;">Cert Page ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <div class="info-box">
+        💡 <strong>Already certified on both?</strong> Jump straight to Phase 1. Aim to complete both Service Cloud Consultant and Agentforce Specialist before Day 30 — they are the shared foundation for both cert paths in this program.
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══ PHASE 1 · GET STARTED ═══ -->
+  <section id="phase1">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--blue);">1</div>
+      <div class="phase-header-text">
+        <h2>Get Started</h2>
+        <p>Orientation modules, Trailhead trails, and the partner enablement journey to build your foundational understanding of both domains.</p>
+        <div class="phase-meta">
+          <span class="phase-pill pill-blue">Foundational</span>
+          <span class="phase-pill pill-teal">All Roles</span>
+          <span class="phase-pill pill-amber">~4–6 hrs</span>
+        </div>
+        <div class="phase-tracks">
+          <span style="font-size:11px;color:var(--grey2);font-weight:700;">Learning tracks:</span>
+          <span class="phase-track-tag ptt-teal">🏭 Industry Fundamentals</span>
+          <span class="phase-track-tag ptt-blue">⚙️ eServices Tools</span>
+          <span style="font-size:11px;color:var(--grey2);font-weight:700;margin-left:4px;">Milestone:</span>
+          <span class="phase-track-tag" style="color:var(--blue);border-color:var(--blue);">Day 30 · Foundation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Trailhead</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-accent accent-blue"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-trail">🏔️ Trail</span>
+          <span class="card-role">All Roles</span>
+        </div>
+        <h3>Get Started with Agentforce IT Service</h3>
+        <p>The primary Trailhead trail for Agentforce IT Service. Covers the end-to-end platform — Incident, Problem, Change, Knowledge, and AI capabilities. Start here before any other resource.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ ~3 hrs</span>
+          <a href="https://trailhead.salesforce.com/content/learn/trails/agentforce-it-service-2" target="_blank" class="card-link">Open Trail ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent accent-blue"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-trail">🏔️ Module</span>
+          <span class="card-role">All Roles</span>
+        </div>
+        <h3>AI for Agentforce IT Service</h3>
+        <p>Focused module on Einstein and Agentforce capabilities in IT Service — article recommendations, case classification, Agentforce IT Agent topics and actions, and deflection patterns.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ ~1 hr</span>
+          <a href="https://trailhead.salesforce.com/content/learn/modules/ai-for-agentforce-it-service" target="_blank" class="card-link">Open Module ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:28px;">Partner Enablement</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-accent accent-purple"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-doc">📘 Partner Portal</span>
+          <span class="card-role">SC · Architect · Dev</span>
+        </div>
+        <h3>Enablement Journey — Partner Portal</h3>
+        <p>The official ProServ partner enablement journey document. Covers structured learning paths, product readiness, and delivery guidance for both IT Service and HR Service across partner roles.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ Reference</span>
+          <a href="https://docs.google.com/document/d/1W7vSPDAmrYS6pEOJe7QUvmvHDw_IUd8U-qvfQu5x8YU/edit?tab=t.s6ppyc7cs7uo" target="_blank" class="card-link">Open Doc ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══ PHASE 2 · WATCH & LEARN ═══ -->
+  <section id="phase2">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--amber);">2</div>
+      <div class="phase-header-text">
+        <h2>Watch &amp; Learn</h2>
+        <p>Demo recordings and product walk-throughs. Watch before your first hands-on session to understand the end-user experience and the demo flow.</p>
+        <div class="phase-meta">
+          <span class="phase-pill pill-blue">Foundational</span>
+          <span class="phase-pill pill-teal">All Roles</span>
+          <span class="phase-pill pill-amber">~2–3 hrs</span>
+        </div>
+        <div class="phase-tracks">
+          <span style="font-size:11px;color:var(--grey2);font-weight:700;">Learning tracks:</span>
+          <span class="phase-track-tag ptt-teal">🏭 Industry Fundamentals</span>
+          <span class="phase-track-tag ptt-purple">🏗️ Enterprise ITSM Arch</span>
+          <span style="font-size:11px;color:var(--grey2);font-weight:700;margin-left:4px;">Milestone:</span>
+          <span class="phase-track-tag" style="color:var(--blue);border-color:var(--blue);">Day 30–60 · Foundation → Prototyping</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠️ <strong>Zoom recording requires passcode.</strong> Passcode: <code style="background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:4px;font-family:monospace;">$yM0csnP1Q</code> — save this before clicking the link.
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-accent accent-amber"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-video">🎬 Recording</span>
+          <span class="card-role">All Roles</span>
+        </div>
+        <h3>IT Service &amp; HR Service — Demo Recording</h3>
+        <p>Full recorded demo covering Agentforce IT Service and HR Service capabilities. Includes Slack Swarm, Incident management, HR case handling, and Agentforce Agent in action. <strong>Passcode: $yM0csnP1Q</strong></p>
+        <div class="card-footer">
+          <span class="card-time">⏱ ~60 min</span>
+          <a href="https://salesforce.zoom.us/rec/share/lzcErgLMuIiz0rluoKfhQckvcR_5VPxZgqV4GLITG2j4gKT7TgusUUSD0wLSeDFw.f14rh19BaL6b7XUd" target="_blank" class="card-link">Watch ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent accent-blue"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-video">🎬 Video</span>
+          <span class="card-role">SC · Developer</span>
+        </div>
+        <h3>Google Video — IT Service Demo</h3>
+        <p>Product demo video for Agentforce IT Service. Covers the IT fulfiller and employee experience, Incident creation, Slack Swarm escalation, and AI resolution flows.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ Demo walkthrough</span>
+          <a href="https://prod-uswest-c.online.tableau.com/#/site/salesforce/views/DemoHubDashboard/ConcensusDemoHub/d92dd708-e3c8-4853-b31f-7d05d41c700e/AgentforceITService?:iid=1" target="_blank" class="card-link">Watch ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent accent-teal"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-video">🎬 Video</span>
+          <span class="card-role">SC · Developer</span>
+        </div>
+        <h3>Google Video — HR Service Demo</h3>
+        <p>Product demo video for Agentforce HR Service (Employee Cloud). Covers the HR Agent, employee self-service portal, case routing, privacy model, and Workday integration patterns.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ Demo walkthrough</span>
+          <a href="https://drive.google.com/file/d/1LthNi-zM9ul700GdnPXwrpG6C0Q3WkOx/view?usp=sharing" target="_blank" class="card-link">Watch ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent accent-navy"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-slides">📊 Slides</span>
+          <span class="card-role">SC · Architect</span>
+        </div>
+        <h3>FY27 Agentforce IT Service — Product Deep Dive</h3>
+        <p>Latest product deep dive deck for FY27. Covers the full ITSM platform — ITIL process flows, AI capabilities, Slack Swarm architecture, SKU breakdown, and competitive positioning.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ ~45 min</span>
+          <a href="https://docs.google.com/presentation/d/11Zajz-hBCVEFnVt6VzMC-alXJzAFH3zXUf2dhIrw_8U/edit?slide=id.g3db2aa87f2f_0_2057" target="_blank" class="card-link">Open Slides ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent accent-blue"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-slides">📊 Slides</span>
+          <span class="card-role">SC · Architect</span>
+        </div>
+        <h3>Agentforce IT Service in Slack — Use Cases</h3>
+        <p>Slide deck covering Slack-first ITSM use cases — Incident Broadcast, Swarm configuration, Teams vs. Slack gap analysis, and employee intake channel patterns.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ ~30 min</span>
+          <a href="https://docs.google.com/presentation/d/1j_60donqTcUWZmAVmERAaWCQzBiRRKRr2X4psYKgQE4/edit?slide=id.g380c3bfebed_0_12307" target="_blank" class="card-link">Open Slides ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══ PHASE 3 · ARCHITECTURE ═══ -->
+  <section id="phase3">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--teal);">3</div>
+      <div class="phase-header-text">
+        <h2>Architecture &amp; Capabilities</h2>
+        <p>Data model documentation, platform architecture guides, and the Capability Blueprint deck. Essential before scoping, designing, or building a delivery.</p>
+        <div class="phase-meta">
+          <span class="phase-pill pill-teal">Intermediate</span>
+          <span class="phase-pill pill-blue">Architect · Developer</span>
+          <span class="phase-pill pill-amber">~3–4 hrs</span>
+        </div>
+        <div class="phase-tracks">
+          <span style="font-size:11px;color:var(--grey2);font-weight:700;">Learning tracks:</span>
+          <span class="phase-track-tag ptt-purple">🏗️ Enterprise ITSM Arch</span>
+          <span class="phase-track-tag ptt-blue">⚙️ eServices Tools</span>
+          <span style="font-size:11px;color:var(--grey2);font-weight:700;margin-left:4px;">Milestone:</span>
+          <span class="phase-track-tag" style="color:#0B5CAB;border-color:#0B5CAB;">Day 60 · Prototyping</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Reference Architecture</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-accent accent-teal"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-arch">🏗️ Architecture</span>
+          <span class="card-role">Architect · Dev</span>
+        </div>
+        <h3>Service Cloud Data Model Overview</h3>
+        <p>Official developer documentation for the Service Cloud object and data model. Covers Case, Entitlement, Knowledge, Asset, and the full object graph. Foundation for understanding how ITSM and HR Service extend the core model.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ Reference</span>
+          <a href="https://developer.salesforce.com/docs/platform/data-models/guide/service-cloud-overview.html" target="_blank" class="card-link">Open Docs ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent accent-teal"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-arch">🏗️ Setup Guide</span>
+          <span class="card-role">Architect · Dev</span>
+        </div>
+        <h3>HR Service (Employee Service) Setup Guide</h3>
+        <p>Official Salesforce Help article for Employee Service setup — permissions, case model extensions, HR Agent configuration, privacy and security model, and community portal setup. The canonical reference for HR Service architecture decisions.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ Reference</span>
+          <a href="https://help.salesforce.com/s/articleView?id=service.es_employee_service_setup.htm&type=5" target="_blank" class="card-link">Open Docs ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:28px;">Capability Blueprint</div>
+    <div class="info-box">
+      📋 The Capability Blueprint deck is the internal ProServ reference for delivery scoping. It covers all core and extended capabilities for both IT Service and HR Service, with role-by-role breakdowns and known validation flags.
+    </div>
+    <div class="card-grid cols-1">
+      <div class="card">
+        <div class="card-accent accent-navy"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-slides">📊 Blueprint Deck</span>
+          <span class="card-role">SC · Architect · Dev · QA</span>
+        </div>
+        <h3>Agentforce HR Service &amp; ITSM — Capability Blueprint [DRAFT]</h3>
+        <p>9-slide internal ProServ capability reference deck. Covers: HR Service Core, HR Extensions, ITSM Core, ITSM Platform/Gaps, and 4 role profile slides mapping all 13 IT Service roles + HR personas to specific capabilities. Includes validation flags (HAM not GA, single-org limitation, MS Teams gap, CMDB separate SKU, People Manager gap).</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ ~45 min</span>
+          <a href="https://docs.google.com/presentation/d/1J8iWADstLfj5MF6kHDdYIbipOrPudTKUqOq_s2hZW3E/edit?slide=id.slide_hr_core" target="_blank" class="card-link">Open Blueprint ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:28px;">Enablement Reference</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-accent accent-blue"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-slack">💬 Slack Canvas</span>
+          <span class="card-role">All Roles</span>
+        </div>
+        <h3>Services Enablement for ITSM</h3>
+        <p>Comprehensive internal Slack canvas — component overview, ITIL process flows, SKU analysis, Slack Swarm deep dive, competitive FAQs, and implementation readiness checklist. Primary internal reference for ITSM delivery.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ Reference</span>
+          <a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B8E3R2VM5" target="_blank" class="card-link">Open Canvas ↗</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-accent accent-teal"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-slack">💬 Slack Canvas</span>
+          <span class="card-role">All Roles</span>
+        </div>
+        <h3>HR Service — Product &amp; Resource Enablement</h3>
+        <p>Internal Slack canvas covering HR Service product material and enablement resources. Primary internal reference for HR Service (Employee Cloud) delivery readiness.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ Reference</span>
+          <a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F07HXF5BV4J" target="_blank" class="card-link">Open Canvas ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══ PHASE 4 · HANDS-ON ═══ -->
+  <section id="phase4">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--green);">4</div>
+      <div class="phase-header-text">
+        <h2>Get Hands-On — Demo Setup</h2>
+        <p>Demo org setup, Solution Central brix, configuration guides, and troubleshooting docs. Everything you need to get a working demo environment for IT Service and HR Service.</p>
+        <div class="phase-meta">
+          <span class="phase-pill pill-green">Hands-On</span>
+          <span class="phase-pill pill-blue">SC · Developer · QA</span>
+          <span class="phase-pill pill-amber">~3–5 hrs first-time setup</span>
+        </div>
+        <div class="phase-tracks">
+          <span style="font-size:11px;color:var(--grey2);font-weight:700;">Learning tracks:</span>
+          <span class="phase-track-tag ptt-blue">⚙️ eServices Tools</span>
+          <span class="phase-track-tag ptt-green">🔗 Integration Plans</span>
+          <span style="font-size:11px;color:var(--grey2);font-weight:700;margin-left:4px;">Milestone:</span>
+          <span class="phase-track-tag" style="color:var(--teal);border-color:var(--teal);">Day 60–90 · Readiness</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- IT vs HR split -->
+    <div class="split-grid">
+      <!-- IT SERVICE COLUMN -->
+      <div>
+        <div class="split-col-header" style="background:var(--blue);">
+          🖥️ IT Service Demo Setup
+        </div>
+
+        <div class="section-label">Demo Org Guides</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px;">
+          <div class="card">
+            <div class="card-accent accent-green"></div>
+            <div class="card-type-row">
+              <span class="card-badge badge-doc">📄 Guide</span>
+              <span class="card-role">SC · QA</span>
+            </div>
+            <h3>Employee Service Demo Quick Guide — SDO</h3>
+            <p>How to request credentials, activate the Agentforce IT Service agent, and navigate the provisioned demo org. Start here if you're accessing a demo org for the first time.</p>
+            <div class="card-footer">
+              <span class="card-time">⏱ ~15 min</span>
+              <a href="https://docs.google.com/document/d/12bubRokL8NIyXLb6N6rla9WJoCbzk3D0EktEvh_rtOw/edit?tab=t.0" target="_blank" class="card-link">Open Guide ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-accent accent-green"></div>
+            <div class="card-type-row">
+              <span class="card-badge badge-doc">📄 Config Notes</span>
+              <span class="card-role">SC · Dev</span>
+            </div>
+            <h3>SE — IT Service Demo Org Config Notes v2</h3>
+            <p>The standard configuration notes document used by the SE community. Covers org settings, agent activation, record type setup, and known configuration gotchas. Most up-to-date SE reference.</p>
+            <div class="card-footer">
+              <span class="card-time">⏱ Reference</span>
+              <a href="https://docs.google.com/document/d/1rYA8vBM4Ikh3g5B9799EV7w4bycqCDT4eUK0qTgbF6k/edit?tab=t.0" target="_blank" class="card-link">Open Doc ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-accent accent-green"></div>
+            <div class="card-type-row">
+              <span class="card-badge badge-doc">📄 Setup Guide</span>
+              <span class="card-role">Dev · QA</span>
+            </div>
+            <h3>IT Service Demo Setup from SDO v1</h3>
+            <p>Step-by-step setup guide for building the IT Service demo on top of an SDO (Simple Demo Org). Covers Q Branch tooling, brix sequencing, and validation steps. Follow this to build from scratch.</p>
+            <div class="card-footer">
+              <span class="card-time">⏱ ~2 hrs</span>
+              <a href="https://docs.google.com/document/d/1fISKt2_NbCxdlTnETPX3ahl7f3oKGVWfm4JwYmKvgSY/edit?tab=t.0" target="_blank" class="card-link">Open Doc ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-label">Solution Central — Brix</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px;">
+          <div class="card">
+            <div class="card-accent accent-blue"></div>
+            <div class="card-type-row">
+              <span class="card-badge badge-brix">🧱 Brix</span>
+              <span class="card-role">SC · Dev</span>
+            </div>
+            <h3>Agentforce IT Service — Base Demo</h3>
+            <p>Base demo configuration brix. Eliminates manual setup — provisions Incident, Problem, Change Request, Release, Knowledge, and Product2 objects plus page layouts, Lightning pages, and stage management definitions.</p>
+            <div class="card-footer">
+              <span class="card-time">⏱ ~30 min</span>
+              <a href="https://www.solutionswork.space/demos/store/detail/a4yKi000000seqPIAQ" target="_blank" class="card-link">Install Brix ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-accent accent-blue"></div>
+            <div class="card-type-row">
+              <span class="card-badge badge-brix">🧱 Brix</span>
+              <span class="card-role">SC · Dev</span>
+            </div>
+            <h3>Agentforce IT Service — License Configuration</h3>
+            <p>Creates personas Elijah Taylor (IT Fulfiller) and Rafael Silva (Employee). Provisions profiles, roles, user records, permission sets, and all key object configurations for end-to-end ITSM workflows.</p>
+            <div class="card-footer">
+              <span class="card-time">⏱ ~20 min</span>
+              <a href="https://www.solutionswork.space/demos/store/detail/a4yKi000000seFXIAY" target="_blank" class="card-link">Install Brix ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-accent accent-blue"></div>
+            <div class="card-type-row">
+              <span class="card-badge badge-brix">🧱 Brix</span>
+              <span class="card-role">Architect</span>
+            </div>
+            <h3>Automation — Orchestrate Large-Scale Incidents</h3>
+            <p>Packages the connection, provisioning, authentication, and automation steps for Major Incident orchestration. Demonstrates the end-to-end P1 escalation and Swarm flow without manual config.</p>
+            <div class="card-footer">
+              <span class="card-time">⏱ ~15 min</span>
+              <a href="https://www.solutionswork.space/demos/store/detail/a4y5b000000gwQHAAY" target="_blank" class="card-link">Install Brix ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HR SERVICE COLUMN -->
+      <div>
+        <div class="split-col-header" style="background:var(--teal);">
+          👥 HR Service Demo Setup
+        </div>
+
+        <div class="info-box" style="margin-bottom:18px;">
+          <strong>HR Service uses SDO + Brix</strong> (not a dedicated demo org like IT Service). Install the Employee Service brix on a standard SDO. For combined IT + HR demos, HR Service can be added to the IT Service demo org since both run in the employee org.
+        </div>
+
+        <div class="section-label">Solution Central — Brix</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px;">
+          <div class="card">
+            <div class="card-accent accent-teal"></div>
+            <div class="card-type-row">
+              <span class="card-badge badge-brix">🧱 Brix</span>
+              <span class="card-role">SC · Dev</span>
+            </div>
+            <h3>Employee Service (HR Service) Brix</h3>
+            <p>Sets up HR Service on an SDO — HR Community User profile, HR Service Agent User, permission sets, Employee Service Console App, Service Process record type, context definitions, Industries Context settings, and all required Case and Product2 field extensions.</p>
+            <div class="card-footer">
+              <span class="card-time">⏱ ~30 min</span>
+              <a href="https://www.solutionswork.space/demos/store/detail/a4yKi000000sZELIA2" target="_blank" class="card-link">Install Brix ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-label">Setup Options</div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card">
+            <div class="card-accent accent-teal"></div>
+            <div class="card-type-row">
+              <span class="card-badge badge-demo">🎯 Option 1</span>
+              <span class="card-role">Recommended</span>
+            </div>
+            <h3>SDO + HR Service Brix</h3>
+            <p>Most common and stable approach. Request a standard SDO, install the Employee Service brix on top. Full Q Branch tooling available. Best for standalone HR Service demos.</p>
+            <div class="card-footer">
+              <span class="card-time">⏱ ~45 min total</span>
+              <a href="https://docs.google.com/document/d/1fISKt2_NbCxdlTnETPX3ahl7f3oKGVWfm4JwYmKvgSY/edit?tab=t.0" target="_blank" class="card-link">SDO Setup Guide ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-accent accent-teal"></div>
+            <div class="card-type-row">
+              <span class="card-badge badge-demo">🎯 Option 2</span>
+              <span class="card-role">Combined IT + HR</span>
+            </div>
+            <h3>IT Service Demo Org + HR Topics &amp; Actions</h3>
+            <p>For demos covering both IT and HR together. HR Service shares the employee org with IT Service. Add HR Topics and Actions to the Employee Agent in the IT Service demo org — no separate org needed.</p>
+            <div class="card-footer">
+              <span class="card-time">⏱ ~1 hr config</span>
+              <a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B2FH7BWKB" target="_blank" class="card-link">Demo Org FAQ ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-accent accent-teal"></div>
+            <div class="card-type-row">
+              <span class="card-badge badge-demo">🎯 Option 3</span>
+              <span class="card-role">With Slack</span>
+            </div>
+            <h3>Slack IDO + SDO Pairing</h3>
+            <p>Request a Slack Demo Org (IDO) via Solutions Workspace to pair with your SDO. Required for demonstrating Agentforce HR Agent + Slack channel intake experience end-to-end.</p>
+            <div class="card-footer">
+              <span class="card-time">⏱ ~1–2 days to provision</span>
+              <a href="https://www.solutionswork.space" target="_blank" class="card-link">Solutions Workspace ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══ PHASE 5 · GO DEEPER ═══ -->
+  <section id="phase5">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--purple);">5</div>
+      <div class="phase-header-text">
+        <h2>Go Deeper — Advanced Topics</h2>
+        <p>Advanced capability reference, competitive differentiation, and optimization content for architects, developers, and delivery leads ready to go beyond the basics.</p>
+        <div class="phase-meta">
+          <span class="phase-pill pill-purple">Advanced</span>
+          <span class="phase-pill pill-blue">Architect · Developer · Delivery Lead</span>
+          <span class="phase-pill pill-amber">~4–6 hrs</span>
+        </div>
+        <div class="phase-tracks">
+          <span style="font-size:11px;color:var(--grey2);font-weight:700;">Learning tracks:</span>
+          <span class="phase-track-tag ptt-purple">🏗️ Enterprise ITSM Arch</span>
+          <span class="phase-track-tag ptt-green">🔗 Integration Plans</span>
+          <span class="phase-track-tag ptt-teal">🏭 Industry Fundamentals</span>
+          <span style="font-size:11px;color:var(--grey2);font-weight:700;margin-left:4px;">Milestone:</span>
+          <span class="phase-track-tag" style="color:var(--teal);border-color:var(--teal);">Day 90 · Market Entry</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Deep Dive Resources</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-accent accent-navy"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-slack">💬 Slack Canvas</span>
+          <span class="card-role">Architect · Dev</span>
+        </div>
+        <h3>Agentic IT Service Playbook</h3>
+        <p>Discovery questions, differentiators, competitive positioning, objection handling, and demo library. Critical for architects and SCs preparing for customer-facing engagements.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ Reference</span>
+          <a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F09N3JXU6LX" target="_blank" class="card-link">Open Canvas ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent accent-navy"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-slack">💬 Slack Canvas</span>
+          <span class="card-role">Dev · QA · Arch</span>
+        </div>
+        <h3>IT Service Implementation Readiness</h3>
+        <p>Trailhead links, NotebookLM resources, and implementation readiness checklist for IT Service. Covers technical prerequisites, org configuration order-of-operations, and known gotchas before go-live.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ Reference</span>
+          <a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B7H0PAFL2" target="_blank" class="card-link">Open Canvas ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent accent-blue"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-slides">📊 Slides</span>
+          <span class="card-role">All Roles</span>
+        </div>
+        <h3>IT Service in Slack — Use Cases Deep Dive</h3>
+        <p>Advanced Slack-first ITSM patterns — Swarm configuration, Incident Broadcast setup, Teams gap analysis, and employee intake channel design. Critical for any engagement with Slack as the primary ITSM interface.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ ~30 min</span>
+          <a href="https://docs.google.com/presentation/d/1j_60donqTcUWZmAVmERAaWCQzBiRRKRr2X4psYKgQE4/edit?slide=id.g380c3bfebed_0_12307" target="_blank" class="card-link">Open Slides ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:28px;">AI-Powered Learning</div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-accent accent-navy"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-arch">🤖 NotebookLM</span>
+          <span class="card-role">All Roles</span>
+        </div>
+        <h3>Agentforce IT Service — PJF NotebookLM</h3>
+        <p>Sales and GTM-focused notebook — pricing, competitive positioning, market strategy, and data architecture for Agentforce ITSM. Great for pre-engagement GTM prep.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ Interactive</span>
+          <a href="https://notebooklm.google.com/notebook/995161ca-4a96-4e21-9bd6-ae28e412a260" target="_blank" class="card-link">Open Notebook ↗</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-accent accent-blue"></div>
+        <div class="card-type-row">
+          <span class="card-badge badge-arch">🤖 NotebookLM</span>
+          <span class="card-role">All Roles</span>
+        </div>
+        <h3>IT Service NotebookLM</h3>
+        <p>AI-powered notebook for Agentforce IT Service. Loaded with ITSM source material — ask questions about ITIL processes, CMDB, Slack Swarm, and AI capabilities interactively.</p>
+        <div class="card-footer">
+          <span class="card-time">⏱ Interactive</span>
+          <a href="https://notebooklm.google.com/notebook/09f332f4-c910-4100-80d1-8e0cd042eaf2" target="_blank" class="card-link">Open Notebook ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:28px;">Current Functional Gaps</div>
+    <div class="warn-box">
+      ⚠️ <strong>Always validate these before scoping an engagement.</strong> These are known platform limitations and gaps as of June 2026.
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-accent accent-amber"></div>
+        <div class="card-type-row"><span class="card-badge badge-demo">⚠️ Flag</span><span class="card-role">Architect · SC</span></div>
+        <h3>HAM — Hardware Asset Management</h3>
+        <p><strong>NOT YET GA.</strong> Do not scope Hardware Asset Management in any current engagement. Flag as roadmap item only.</p>
+        <div class="card-footer"><span class="card-time">Status: Roadmap</span></div>
+      </div>
+      <div class="card">
+        <div class="card-accent accent-amber"></div>
+        <div class="card-type-row"><span class="card-badge badge-demo">⚠️ Flag</span><span class="card-role">Architect</span></div>
+        <h3>Single-Org HR + IT</h3>
+        <p><strong>Roadmap only.</strong> Today HR Service and IT Service require separate employee orgs. Single-org design is not available. Separate employee org required in all current engagements.</p>
+        <div class="card-footer"><span class="card-time">Status: Roadmap</span></div>
+      </div>
+      <div class="card">
+        <div class="card-accent accent-amber"></div>
+        <div class="card-type-row"><span class="card-badge badge-demo">⚠️ Flag</span><span class="card-role">Architect · SC</span></div>
+        <h3>Case OWD — Must Be Private</h3>
+        <p><strong>Mandatory design gate.</strong> Case OWD must be set to Private for ER and HR cases. Non-negotiable security requirement — affects the entire sharing model design.</p>
+        <div class="card-footer"><span class="card-time">Status: Mandatory</span></div>
+      </div>
+      <div class="card">
+        <div class="card-accent accent-amber"></div>
+        <div class="card-type-row"><span class="card-badge badge-demo">⚠️ Flag</span><span class="card-role">SC · Architect</span></div>
+        <h3>MS Teams — Known Gaps</h3>
+        <p>Teams lacks <strong>Incident Broadcast</strong> and full <strong>Swarm</strong> parity vs. Slack. Teams-only customers cannot get the full ITSM Slack experience. Raise early in discovery.</p>
+        <div class="card-footer"><span class="card-time">Status: Known Gap</span></div>
+      </div>
+      <div class="card">
+        <div class="card-accent accent-amber"></div>
+        <div class="card-type-row"><span class="card-badge badge-demo">⚠️ Flag</span><span class="card-role">SC · Architect</span></div>
+        <h3>CMDB — Separate SKU</h3>
+        <p>CMDB is <strong>not included</strong> in the base IT Service Desk SKU. Configuration Item relationship topology and service impact analysis require a separate CMDB license. Always clarify in scoping.</p>
+        <div class="card-footer"><span class="card-time">Status: Separate SKU</span></div>
+      </div>
+      <div class="card">
+        <div class="card-accent accent-amber"></div>
+        <div class="card-type-row"><span class="card-badge badge-demo">⚠️ Flag</span><span class="card-role">SC</span></div>
+        <h3>People Manager Workflow</h3>
+        <p><strong>Active product gap.</strong> No native People Manager visibility/approval workflow in HR Service today. Must be custom-built. Flag in discovery when customer requires manager-in-the-loop HR flows.</p>
+        <div class="card-footer"><span class="card-time">Status: Product Gap</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══ ALL RESOURCES ═══ -->
+  <section id="resources">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--navy);">★</div>
+      <div class="phase-header-text">
+        <h2>All Resources — Quick Reference Hub</h2>
+        <p>Every link in one place. Bookmark this section for day-to-day reference during delivery.</p>
+      </div>
+    </div>
+
+    <div class="section-label">Certification Paths</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-accent accent-purple"></div><div class="card-type-row"><span class="card-badge badge-cert">🏅 SC / BA Path</span></div><h3>SC &amp; Business Architect — Cert Path</h3><p>Service Cloud Consultant → Agentforce Specialist → Sharing &amp; Visibility → Experience Cloud → B2B SA → IAM (Adv)</p><div class="card-footer"><a href="#certpaths" class="card-link">View Path ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-teal"></div><div class="card-type-row"><span class="card-badge badge-cert">🏅 TC / TA Path</span></div><h3>TC &amp; Technical Architect — Cert Path</h3><p>Service Cloud Consultant → Agentforce Specialist → Integration Arch → Data Arch → Dev Lifecycle → MuleSoft (Adv)</p><div class="card-footer"><a href="#certpaths" class="card-link">View Path ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-blue"></div><div class="card-type-row"><span class="card-badge badge-trail">🏔️ Trail</span></div><h3>Get Started — Agentforce IT Service</h3><p>Primary Trailhead trail.</p><div class="card-footer"><a href="https://trailhead.salesforce.com/content/learn/trails/agentforce-it-service-2" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-blue"></div><div class="card-type-row"><span class="card-badge badge-trail">🏔️ Module</span></div><h3>AI for Agentforce IT Service</h3><p>AI capabilities module.</p><div class="card-footer"><a href="https://trailhead.salesforce.com/content/learn/modules/ai-for-agentforce-it-service" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-teal"></div><div class="card-type-row"><span class="card-badge badge-arch">🤖 NotebookLM</span></div><h3>HR Service NotebookLM</h3><p>Interactive AI study tool.</p><div class="card-footer"><a href="https://notebooklm.google.com/notebook/f62d1f01-83d3-4651-b6bf-249993322558" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-blue"></div><div class="card-type-row"><span class="card-badge badge-arch">🤖 NotebookLM</span></div><h3>IT Service NotebookLM</h3><p>Interactive AI study tool.</p><div class="card-footer"><a href="https://notebooklm.google.com/notebook/09f332f4-c910-4100-80d1-8e0cd042eaf2" target="_blank" class="card-link">Open ↗</a></div></div>
+    </div>
+
+    <div class="section-label" style="margin-top:24px;">Internal Decks &amp; Docs</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-accent accent-navy"></div><div class="card-type-row"><span class="card-badge badge-slides">📊 Blueprint</span></div><h3>Capability Blueprint Deck</h3><p>9-slide ProServ reference.</p><div class="card-footer"><a href="https://docs.google.com/presentation/d/1J8iWADstLfj5MF6kHDdYIbipOrPudTKUqOq_s2hZW3E/edit" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-navy"></div><div class="card-type-row"><span class="card-badge badge-slides">📊 Slides</span></div><h3>FY27 IT Service Product Deep Dive</h3><p>Latest product deck.</p><div class="card-footer"><a href="https://docs.google.com/presentation/d/11Zajz-hBCVEFnVt6VzMC-alXJzAFH3zXUf2dhIrw_8U/edit" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-blue"></div><div class="card-type-row"><span class="card-badge badge-slides">📊 Slides</span></div><h3>IT Service in Slack — Use Cases</h3><p>Slack-first ITSM patterns.</p><div class="card-footer"><a href="https://docs.google.com/presentation/d/1j_60donqTcUWZmAVmERAaWCQzBiRRKRr2X4psYKgQE4/edit" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-purple"></div><div class="card-type-row"><span class="card-badge badge-doc">📘 Partner Portal</span></div><h3>Partner Enablement Journey</h3><p>Official delivery readiness doc.</p><div class="card-footer"><a href="https://docs.google.com/document/d/1W7vSPDAmrYS6pEOJe7QUvmvHDw_IUd8U-qvfQu5x8YU/edit?tab=t.s6ppyc7cs7uo" target="_blank" class="card-link">Open ↗</a></div></div>
+    </div>
+
+    <div class="section-label" style="margin-top:24px;">Slack Canvases</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-accent accent-blue"></div><div class="card-type-row"><span class="card-badge badge-slack">💬 Canvas</span></div><h3>Services Enablement for ITSM</h3><p>Component overview, SKU analysis, FAQs.</p><div class="card-footer"><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B8E3R2VM5" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-blue"></div><div class="card-type-row"><span class="card-badge badge-slack">💬 Canvas</span></div><h3>Agentic IT Service Playbook</h3><p>Discovery, differentiators, objections.</p><div class="card-footer"><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F09N3JXU6LX" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-blue"></div><div class="card-type-row"><span class="card-badge badge-slack">💬 Canvas</span></div><h3>IT Service Implementation Readiness</h3><p>Trailhead links, readiness checklist.</p><div class="card-footer"><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B7H0PAFL2" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-green"></div><div class="card-type-row"><span class="card-badge badge-slack">💬 Canvas</span></div><h3>IT Service Demo Org FAQ</h3><p>Credentials, activation, first steps.</p><div class="card-footer"><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B2FH7BWKB" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-green"></div><div class="card-type-row"><span class="card-badge badge-slack">💬 Canvas</span></div><h3>ITSM Demo Troubleshooting Guide</h3><p>Known issues, workarounds, fixes.</p><div class="card-footer"><a href="https://salesforce.enterprise.slack.com/docs/T7KUQ9FLZ/F0AA0QQ36S1" target="_blank" class="card-link">Open ↗</a></div></div>
+    </div>
+
+    <div class="section-label" style="margin-top:24px;">Architecture &amp; Setup Docs</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-accent accent-teal"></div><div class="card-type-row"><span class="card-badge badge-arch">🏗️ Docs</span></div><h3>Service Cloud Data Model</h3><p>Developer reference for SC object graph.</p><div class="card-footer"><a href="https://developer.salesforce.com/docs/platform/data-models/guide/service-cloud-overview.html" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-teal"></div><div class="card-type-row"><span class="card-badge badge-arch">🏗️ Docs</span></div><h3>Employee Service Setup Guide</h3><p>Official HR Service setup reference.</p><div class="card-footer"><a href="https://help.salesforce.com/s/articleView?id=service.es_employee_service_setup.htm&type=5" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-green"></div><div class="card-type-row"><span class="card-badge badge-doc">📄 Guide</span></div><h3>SE IT Service Config Notes v2</h3><p>SE community standard config reference.</p><div class="card-footer"><a href="https://docs.google.com/document/d/1rYA8vBM4Ikh3g5B9799EV7w4bycqCDT4eUK0qTgbF6k/edit?tab=t.0" target="_blank" class="card-link">Open ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-green"></div><div class="card-type-row"><span class="card-badge badge-doc">📄 Guide</span></div><h3>IT Service Demo Setup from SDO v1</h3><p>Step-by-step SDO build guide.</p><div class="card-footer"><a href="https://docs.google.com/document/d/1fISKt2_NbCxdlTnETPX3ahl7f3oKGVWfm4JwYmKvgSY/edit?tab=t.0" target="_blank" class="card-link">Open ↗</a></div></div>
+    </div>
+
+    <div class="section-label" style="margin-top:24px;">Solution Central Brix</div>
+    <div class="card-grid">
+      <div class="card"><div class="card-accent accent-blue"></div><div class="card-type-row"><span class="card-badge badge-brix">🧱 IT Service</span></div><h3>IT Service — Base Demo Brix</h3><p>Full base config, eliminates manual setup.</p><div class="card-footer"><a href="https://www.solutionswork.space/demos/store/detail/a4yKi000000seqPIAQ" target="_blank" class="card-link">Install ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-blue"></div><div class="card-type-row"><span class="card-badge badge-brix">🧱 IT Service</span></div><h3>IT Service — License Config Brix</h3><p>Personas, profiles, permission sets.</p><div class="card-footer"><a href="https://www.solutionswork.space/demos/store/detail/a4yKi000000seFXIAY" target="_blank" class="card-link">Install ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-blue"></div><div class="card-type-row"><span class="card-badge badge-brix">🧱 IT Service</span></div><h3>Automation — Large-Scale Incident Brix</h3><p>Major Incident orchestration automation.</p><div class="card-footer"><a href="https://www.solutionswork.space/demos/store/detail/a4y5b000000gwQHAAY" target="_blank" class="card-link">Install ↗</a></div></div>
+      <div class="card"><div class="card-accent accent-teal"></div><div class="card-type-row"><span class="card-badge badge-brix">🧱 HR Service</span></div><h3>Employee Service Brix</h3><p>HR Service setup on SDO.</p><div class="card-footer"><a href="https://www.solutionswork.space/demos/store/detail/a4yKi000000sZELIA2" target="_blank" class="card-link">Install ↗</a></div></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer>
+  <strong>Agentforce IT Service &amp; HR Service — Learning Journey</strong><br />
+  Salesforce ProServ · Agent-Driven Ramp Plan · 30 · 60 · 90 Day Milestones · June 2026<br /><br />
+  2 Certification Paths: SC/BA (Service Cloud → Agentforce → Sharing &amp; Visibility → Experience Cloud → B2B SA) · TC/TA (Service Cloud → Agentforce → Integration → Data → Dev Lifecycle → MuleSoft)<br />
+  4 Learning Tracks: Industry Fundamentals · Enterprise ITSM Architectures · Salesforce eServices Tools · Salesforce Integration Plans<br />
+  Resources compiled from Trailhead, Salesforce Help, Solution Central, Slack Canvases, and internal ProServ enablement materials.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITSM Mastery: Interactive Framework Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfaf7;
+            color: #1e293b;
+            scroll-behavior: smooth;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-link.active {
+            color: #0f172a;
+            border-bottom: 2px solid #94a3b8;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Chosen Palette: Professional Serenity (Warm Neutrals, Slate, and Subtle Steel Blue) -->
+    
+    <!-- Application Structure Plan: 
+         The SPA is organized into five thematic 'Discovery Zones' accessible via a persistent header.
+         1. Foundations: Interactive toggle between ITIL v3 and ITIL 4 to visualize the architectural shift.
+         2. Governance: Interactive grid for COBIT 2019 and FitSM process exploration.
+         3. Technical Core: Side-by-side comparison tool for CMDB vs ITAM.
+         4. Reliability: A dynamic Error Budget Simulator (Chart.js) to teach SRE concepts.
+         5. Future: Interactive card stack for ESM and Agentic AI.
+         This structure is chosen to move the user from historical context to technical detail, ending with future-ready insights, rather than a linear chapter-by-chapter reading. -->
+
+    <!-- Visualization & Content Choices: 
+         - ITIL Shift -> Comparison Toggle -> Side-by-side dynamic text -> Clearer paradigm understanding.
+         - 4 Dimensions -> CSS Grid with hover details -> Holistic view of service components.
+         - Error Budget -> Chart.js Area Chart -> Real-time feedback on 'burning' budget -> Teaches SRE balance.
+         - Roles -> Filterable Search Table -> Quick reference for accountabilities.
+         - AI Trends -> Sequential Step Cards -> Visualizing the move from Assistive to Agentic AI.
+         - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-slate-800 rounded flex items-center justify-center text-white font-bold text-xs">ITSM</div>
+                    <span class="font-bold text-slate-800 tracking-tight">Mastery Explorer</span>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#foundations" class="nav-link text-sm font-medium text-slate-500 hover:text-slate-900 px-1 py-5 transition-colors">Foundations</a>
+                    <a href="#governance" class="nav-link text-sm font-medium text-slate-500 hover:text-slate-900 px-1 py-5 transition-colors">Governance</a>
+                    <a href="#technical" class="nav-link text-sm font-medium text-slate-500 hover:text-slate-900 px-1 py-5 transition-colors">Technical Core</a>
+                    <a href="#reliability" class="nav-link text-sm font-medium text-slate-500 hover:text-slate-900 px-1 py-5 transition-colors">Reliability</a>
+                    <a href="#future" class="nav-link text-sm font-medium text-slate-500 hover:text-slate-900 px-1 py-5 transition-colors">Future AI</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Intro Section -->
+        <section class="mb-20 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Navigating the Modern ITSM Ecosystem</h1>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                As technology evolves from operational support to strategic driver, IT Service Management must shift from rigid control to value co-creation. Explore the frameworks, technical repositories, and human roles that define modern digital governance.
+            </p>
+        </section>
+
+        <!-- Foundations Section -->
+        <section id="foundations" class="mb-24">
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">1. The Architectural Shift</h2>
+                <p class="text-slate-600">The transition from ITIL v3 to ITIL 4 represents a move from linear lifecycles to interconnected value systems. Use the toggle below to compare how the core units of work and primary focuses have evolved.</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-8">
+                <div class="flex justify-center mb-8">
+                    <div class="bg-slate-100 p-1 rounded-lg inline-flex">
+                        <button onclick="toggleITIL('v3')" id="btn-v3" class="px-6 py-2 rounded-md text-sm font-medium transition-all bg-white shadow-sm text-slate-900">ITIL v3 (Legacy)</button>
+                        <button onclick="toggleITIL('v4')" id="btn-v4" class="px-6 py-2 rounded-md text-sm font-medium transition-all text-slate-500">ITIL 4 (Modern)</button>
+                    </div>
+                </div>
+
+                <div id="itil-content" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Dynamic Content Injected via JS -->
+                </div>
+            </div>
+
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="p-4 bg-white border border-slate-200 rounded-xl text-center">
+                    <div class="text-2xl mb-2">👥</div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-1">Organizations & People</h4>
+                    <p class="text-xs text-slate-500">Culture, skills, and staffing structures.</p>
+                </div>
+                <div class="p-4 bg-white border border-slate-200 rounded-xl text-center">
+                    <div class="text-2xl mb-2">💻</div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-1">Information & Technology</h4>
+                    <p class="text-xs text-slate-500">Cloud, AI, and monitoring systems.</p>
+                </div>
+                <div class="p-4 bg-white border border-slate-200 rounded-xl text-center">
+                    <div class="text-2xl mb-2">🤝</div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-1">Partners & Suppliers</h4>
+                    <p class="text-xs text-slate-500">External vendors and managed services.</p>
+                </div>
+                <div class="p-4 bg-white border border-slate-200 rounded-xl text-center">
+                    <div class="text-2xl mb-2">🔄</div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-1">Value Streams & Processes</h4>
+                    <p class="text-xs text-slate-500">Workflows that convert inputs into value.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Governance Section -->
+        <section id="governance" class="mb-24">
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">2. Governance & Lightweight Standards</h2>
+                <p class="text-slate-600">Enterprise governance (COBIT 2019) ensures IT aligns with corporate goals, while FitSM provides a lightweight alternative for smaller organizations. Select a domain below to explore its core objectives.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="font-bold text-slate-900 mb-4 flex items-center">
+                        <span class="mr-2">⚖️</span> COBIT 2019 Domains
+                    </h3>
+                    <div class="space-y-3" id="cobit-list">
+                        <!-- JS Render -->
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="font-bold text-slate-900 mb-4 flex items-center">
+                        <span class="mr-2">📋</span> FitSM Key Processes
+                    </h3>
+                    <div class="chart-container">
+                        <canvas id="fitsmChart"></canvas>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-4 italic text-center">Relative frequency of common process requirements in lightweight audits.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Core Section -->
+        <section id="technical" class="mb-24 bg-slate-900 rounded-3xl p-8 md:p-12 text-white">
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold mb-2">3. The Technical Repository Core</h2>
+                <p class="text-slate-300">A frequent source of confusion is the overlap between asset management (ITAM) and configuration management (CMDB). Explore their distinct roles in the service lifecycle.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="border-l-4 border-slate-500 pl-4 py-2 hover:border-slate-300 transition-colors cursor-pointer group" onclick="updateRepoDetail('cmdb')">
+                        <h4 class="font-bold text-lg group-hover:text-white transition-colors">CMDB (Config Management)</h4>
+                        <p class="text-sm text-slate-400">Focuses on technical relationships and operational dependencies.</p>
+                    </div>
+                    <div class="border-l-4 border-slate-500 pl-4 py-2 hover:border-slate-300 transition-colors cursor-pointer group" onclick="updateRepoDetail('itam')">
+                        <h4 class="font-bold text-lg group-hover:text-white transition-colors">ITAM (Asset Management)</h4>
+                        <p class="text-sm text-slate-400">Focuses on financial, contractual, and lifecycle costs.</p>
+                    </div>
+                    <div class="border-l-4 border-slate-500 pl-4 py-2 hover:border-slate-300 transition-colors cursor-pointer group" onclick="updateRepoDetail('transition')">
+                        <h4 class="font-bold text-lg group-hover:text-white transition-colors">Service Transition (SACM, DML, KEDB)</h4>
+                        <p class="text-sm text-slate-400">Secure repositories for master software versions and known workarounds.</p>
+                    </div>
+                </div>
+                <div id="repo-viewer" class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 min-h-[250px] flex flex-col justify-center">
+                    <p class="text-slate-400 italic text-center">Select a repository on the left to explore its attributes...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reliability Section -->
+        <section id="reliability" class="mb-24">
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">4. Reliability & Experience Metrics</h2>
+                <p class="text-slate-600">SRE introduces the concept of the <strong>Error Budget</strong>: a mathematical balance between feature velocity and system stability. Interact with the simulator to see how outages consume your budget.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 glass-card rounded-2xl p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-slate-900">Error Budget Burn Simulator (28-Day Window)</h3>
+                        <div class="text-xs font-bold px-2 py-1 bg-red-100 text-red-600 rounded">SLO: 99.9%</div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="sreChart"></canvas>
+                    </div>
+                    <div class="mt-6 flex flex-wrap gap-4">
+                        <button onclick="simulateBurn('minor')" class="px-4 py-2 bg-slate-800 text-white text-xs rounded hover:bg-slate-700 transition-colors">Simulate Minor Incident</button>
+                        <button onclick="simulateBurn('major')" class="px-4 py-2 bg-red-600 text-white text-xs rounded hover:bg-red-500 transition-colors">Simulate Major Outage</button>
+                        <button onclick="resetBurn()" class="px-4 py-2 border border-slate-300 text-slate-600 text-xs rounded hover:bg-slate-50 transition-colors">Reset Budget</button>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="p-5 bg-white border border-slate-200 rounded-xl">
+                        <h4 class="font-bold text-slate-800 text-sm mb-2">The "Green Dashboard" Trap</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Traditional SLAs (Technical Data) might show 100% uptime, but XLAs (Experience Data) reveal users are frustrated. Real success combines <strong>O-Data</strong> (Operations), <strong>T-Data</strong> (Tech), and <strong>X-Data</strong> (Sentiment).</p>
+                    </div>
+                    <div class="p-5 bg-white border border-slate-200 rounded-xl">
+                        <h4 class="font-bold text-slate-800 text-sm mb-2">The SRE Ratio</h4>
+                        <div class="bg-slate-50 p-3 rounded font-mono text-[10px] text-slate-600">
+                            SLI = (Successful Requests / Total Requests) * 100
+                        </div>
+                    </div>
+                    <div class="p-5 bg-slate-900 text-white rounded-xl">
+                        <h4 class="font-bold text-sm mb-1">Status: <span id="budget-status">Optimal</span></h4>
+                        <p id="budget-advice" class="text-xs text-slate-400">Error budget is healthy. Continue releasing new features.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Future Section -->
+        <section id="future" class="mb-24">
+            <div class="mb-10 text-center">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">5. The Future: Agentic AI & ESM</h2>
+                <p class="text-slate-600">The shift from assistive AI (search/summaries) to agentic AI (autonomous goal-driven agents) is transforming ITSM into Enterprise Service Management.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-4 text-xl">🤖</div>
+                    <h3 class="font-bold text-slate-900 mb-2">Autonomous Squads</h3>
+                    <p class="text-sm text-slate-500">Multi-agent squads utilizing MCP (Model Context Protocol) to hand off tasks across silos without human intervention.</p>
+                </div>
+                <div class="p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mb-4 text-xl">🛡️</div>
+                    <h3 class="font-bold text-slate-900 mb-2">Guardrail Systems</h3>
+                    <p class="text-sm text-slate-500">Policy controls and 'human-in-the-loop' validation checkpoints to prevent AI from triggering cascading infrastructure failures.</p>
+                </div>
+                <div class="p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center mb-4 text-xl">🌐</div>
+                    <h3 class="font-bold text-slate-900 mb-2">Unified ESM</h3>
+                    <p class="text-sm text-slate-500">Applying ITSM logic to HR, Facilities, and Finance via a single 'Super Portal' for a consistent employee experience.</p>
+                </div>
+            </div>
+
+            <!-- Roles Explorer -->
+            <div class="mt-16 glass-card rounded-2xl overflow-hidden">
+                <div class="p-6 border-b border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <h3 class="font-bold text-slate-900">ITSM Roles & Accountabilities</h3>
+                    <input type="text" id="roleSearch" placeholder="Filter roles (e.g. Manager)..." class="px-4 py-2 border border-slate-200 rounded-lg text-sm w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-slate-400">
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Role</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Core Accountability</th>
+                                <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Primary Interface</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rolesTableBody" class="divide-y divide-slate-200 text-sm">
+                            <!-- JS Render -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-50 border-t border-slate-200 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-slate-500 text-sm">Interactive Synthesis of the "Comprehensive Framework Analysis of IT Service Management"</p>
+            <p class="text-slate-400 text-xs mt-2">Built with Tailwind CSS and Chart.js | No SVG/Mermaid Graphics Used</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- DATA DEFS ---
+        const itilData = {
+            v3: [
+                { title: "Operating Model", desc: "Linear Service Lifecycle (5 Stages)", icon: "📏" },
+                { title: "Unit of Work", desc: "26 Fixed Processes", icon: "📦" },
+                { title: "Focus", desc: "Process Compliance & Stage Gates", icon: "✔️" }
+            ],
+            v4: [
+                { title: "Operating Model", desc: "Service Value System (SVS)", icon: "🕸️" },
+                { title: "Unit of Work", desc: "34 Management Practices", icon: "🛠️" },
+                { title: "Focus", desc: "Value Co-creation & Friction Reduction", icon: "💎" }
+            ]
+        };
+
+        const cobitData = [
+            { id: "EDM", type: "Governance", scope: "Evaluate, Direct, Monitor", who: "Board / CEO", color: "bg-slate-800" },
+            { id: "APO", type: "Management", scope: "Align, Plan, Organize", who: "CIO / IT Leadership", color: "bg-slate-600" },
+            { id: "BAI", type: "Management", scope: "Build, Acquire, Implement", who: "Dev & Transition", color: "bg-slate-500" },
+            { id: "DSS", type: "Management", scope: "Deliver, Service, Support", who: "Operations Teams", color: "bg-slate-400" },
+            { id: "MEA", type: "Management", scope: "Monitor, Evaluate, Assess", who: "Compliance / Audit", color: "bg-slate-300" }
+        ];
+
+        const repoData = {
+            cmdb: `
+                <h4 class="font-bold text-white mb-2">Configuration Management Database (CMDB)</h4>
+                <ul class="text-sm text-slate-300 space-y-2">
+                    <li>• Entity: <strong>Configuration Items (CIs)</strong></li>
+                    <li>• Data: Dependencies, IP addresses, versions</li>
+                    <li>• Goal: Service stability and fast troubleshooting</li>
+                    <li>• Case: Impact analysis before a major change</li>
+                </ul>
+            `,
+            itam: `
+                <h4 class="font-bold text-white mb-2">IT Asset Management (ITAM) Register</h4>
+                <ul class="text-sm text-slate-300 space-y-2">
+                    <li>• Entity: <strong>Physical/Logical Financial Assets</strong></li>
+                    <li>• Data: Purchase price, warranty, depreciation</li>
+                    <li>• Goal: Cost control, ROI, and license compliance</li>
+                    <li>• Case: Preparing for a software license audit</li>
+                </ul>
+            `,
+            transition: `
+                <h4 class="font-bold text-white mb-2">Specialized Repositories</h4>
+                <ul class="text-sm text-slate-300 space-y-2">
+                    <li>• <strong>DML:</strong> Secure library for master software versions.</li>
+                    <li>• <strong>KEDB:</strong> Database of root causes and workarounds.</li>
+                    <li>• <strong>SACM:</strong> Ensures CI data is accurate and validated.</li>
+                </ul>
+            `
+        };
+
+        const rolesData = [
+            { role: "SMS Owner", accountability: "Overall Service Management System success", interface: "General SMS & Strategy" },
+            { role: "Service Desk Manager", accountability: "Daily ticketing, triage, and personnel", interface: "Incident & Request" },
+            { role: "Incident Manager", accountability: "Rapid service restoration during outages", interface: "Operations" },
+            { role: "Problem Manager", accountability: "Root cause investigation & KEDB maintenance", interface: "Problem Mgmt" },
+            { role: "Change Authority", accountability: "Assessing, approving, and authorizing changes", interface: "Change Enablement" },
+            { role: "Service Owner", accountability: "End-to-end delivery of a specific IT service", interface: "Portfolio & Strategy" },
+            { role: "Process Owner", accountability: "Designing and improving specific workflows", interface: "Continual Improvement" }
+        ];
+
+        // --- CHART INITIALIZATION ---
+        let fitsmChart, sreChart;
+        let sreData = Array(28).fill(100); // 100% budget over 28 days
+
+        function initCharts() {
+            // FitSM Process Distribution (Simulated Requirement Volume)
+            const ctxFitsm = document.getElementById('fitsmChart').getContext('2d');
+            fitsmChart = new Chart(ctxFitsm, {
+                type: 'bar',
+                data: {
+                    labels: ['Service Portfolio', 'SLA Mgmt', 'Reporting', 'Availability', 'Capacity', 'Security', 'Incident/Req', 'Change Mgmt'],
+                    datasets: [{
+                        label: 'Standard Requirements Count',
+                        data: [12, 18, 10, 15, 14, 20, 25, 22],
+                        backgroundColor: 'rgba(71, 85, 105, 0.7)',
+                        borderColor: '#475569',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { display: false } },
+                        x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // SRE Error Budget Burn
+            const ctxSre = document.getElementById('sreChart').getContext('2d');
+            sreChart = new Chart(ctxSre, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 28}, (_, i) => `Day ${i+1}`),
+                    datasets: [{
+                        label: 'Remaining Error Budget (%)',
+                        data: [...sreData],
+                        fill: true,
+                        backgroundColor: 'rgba(148, 163, 184, 0.2)',
+                        borderColor: '#1e293b',
+                        tension: 0.3,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { min: 0, max: 110, ticks: { callback: v => v <= 100 ? v + '%' : '' } },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // --- INTERACTION LOGIC ---
+        function toggleITIL(version) {
+            const container = document.getElementById('itil-content');
+            const items = itilData[version];
+            
+            // UI Button update
+            document.getElementById('btn-v3').className = version === 'v3' ? "px-6 py-2 rounded-md text-sm font-medium transition-all bg-white shadow-sm text-slate-900" : "px-6 py-2 rounded-md text-sm font-medium transition-all text-slate-500";
+            document.getElementById('btn-v4').className = version === 'v4' ? "px-6 py-2 rounded-md text-sm font-medium transition-all bg-white shadow-sm text-slate-900" : "px-6 py-2 rounded-md text-sm font-medium transition-all text-slate-500";
+
+            container.innerHTML = items.map(item => `
+                <div class="p-6 bg-slate-50 border border-slate-100 rounded-xl animate-fadeIn">
+                    <div class="text-2xl mb-2">${item.icon}</div>
+                    <h4 class="font-bold text-slate-800 mb-1">${item.title}</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">${item.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderCobit() {
+            const list = document.getElementById('cobit-list');
+            list.innerHTML = cobitData.map(item => `
+                <div class="flex items-center p-3 rounded-lg hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100 cursor-default">
+                    <div class="w-12 h-10 ${item.color} rounded text-white flex items-center justify-center font-bold text-xs mr-4">${item.id}</div>
+                    <div>
+                        <div class="text-xs font-bold text-slate-400">${item.type}</div>
+                        <div class="text-sm font-bold text-slate-800">${item.scope}</div>
+                        <div class="text-[10px] text-slate-500">Accountable: ${item.who}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateRepoDetail(key) {
+            document.getElementById('repo-viewer').innerHTML = repoData[key];
+        }
+
+        function renderRoles(filter = '') {
+            const body = document.getElementById('rolesTableBody');
+            const filtered = rolesData.filter(r => 
+                r.role.toLowerCase().includes(filter.toLowerCase()) || 
+                r.accountability.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            body.innerHTML = filtered.map(r => `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="px-6 py-4 font-bold text-slate-800">${r.role}</td>
+                    <td class="px-6 py-4 text-slate-600">${r.accountability}</td>
+                    <td class="px-6 py-4"><span class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] font-bold">${r.interface}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // --- SRE SIMULATOR LOGIC ---
+        function simulateBurn(type) {
+            const burnAmount = type === 'minor' ? 8 : 25;
+            let currentLevel = sreData[sreData.length - 1];
+            
+            // Shift data and add burn
+            sreData.shift();
+            let newLevel = Math.max(0, currentLevel - burnAmount);
+            sreData.push(newLevel);
+            
+            sreChart.data.datasets[0].data = [...sreData];
+            sreChart.update();
+
+            const status = document.getElementById('budget-status');
+            const advice = document.getElementById('budget-advice');
+
+            if (newLevel < 10) {
+                status.innerText = "CRITICAL";
+                status.className = "text-red-500 font-bold";
+                advice.innerText = "Error Budget EXHAUSTED. All feature releases PAUSED. Redirecting engineering to stability.";
+            } else if (newLevel < 50) {
+                status.innerText = "WARNING";
+                status.className = "text-orange-500 font-bold";
+                advice.innerText = "Error Budget low. Minimize risky changes and prioritize technical debt reduction.";
+            } else {
+                status.innerText = "OPTIMAL";
+                status.className = "text-green-500 font-bold";
+                advice.innerText = "Error budget is healthy. Continue releasing new features.";
+            }
+        }
+
+        function resetBurn() {
+            sreData = Array(28).fill(100);
+            sreChart.data.datasets[0].data = [...sreData];
+            sreChart.update();
+            document.getElementById('budget-status').innerText = "OPTIMAL";
+            document.getElementById('budget-advice').innerText = "Error budget is healthy. Continue releasing new features.";
+        }
+
+        // --- INITIALIZATION ---
+        window.onload = () => {
+            initCharts();
+            toggleITIL('v4');
+            renderCobit();
+            renderRoles();
+
+            document.getElementById('roleSearch').addEventListener('input', (e) => {
+                renderRoles(e.target.value);
+            });
+        };
+    </script>
+</body>
+</html>

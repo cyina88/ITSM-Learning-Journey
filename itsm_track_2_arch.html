@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Track 2: Enterprise ITSM Architectures — ITSM & HR Service</title>
+<style>
+  :root {
+    --navy:#032D60;--blue:#0176D3;--sky:#1B96FF;--teal:#06A59A;--purple:#7526E3;
+    --green:#2E844A;--amber:#FE9339;--red:#C23934;
+    --grey0:#F3F3F3;--grey1:#E8EDF2;--grey2:#AEAEAE;--dark:#181818;--white:#FFFFFF;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Salesforce Sans',Arial,sans-serif;background:#F8F9FB;color:var(--dark);line-height:1.5;}
+  .back-nav{background:var(--white);border-bottom:2px solid var(--grey1);padding:12px 24px;display:flex;align-items:center;gap:12px;}
+  .back-nav a{font-size:13px;font-weight:700;color:var(--blue);text-decoration:none;}
+  .back-nav a:hover{text-decoration:underline;}
+  .back-nav-sep{color:var(--grey2);font-size:12px;}
+  .back-nav-cur{font-size:13px;font-weight:600;color:var(--dark);}
+  .hero{background:linear-gradient(135deg,var(--purple) 0%,#5B1DB5 60%,#481A8F 100%);color:var(--white);padding:48px 48px 56px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,0.08);pointer-events:none;}
+  .hero-eye{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:10px;}
+  .hero-num{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.15);font-size:22px;margin-bottom:14px;}
+  .hero h1{font-size:36px;font-weight:800;line-height:1.15;max-width:660px;}
+  .hero-sub{margin-top:12px;font-size:15px;color:rgba(255,255,255,0.8);max-width:560px;}
+  .hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;}
+  .hero-tag{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:4px 13px;font-size:12px;font-weight:600;}
+  .hero-meta{margin-top:26px;display:flex;gap:28px;font-size:13px;color:rgba(255,255,255,0.65);flex-wrap:wrap;}
+  .hero-meta strong{color:var(--white);font-weight:700;}
+  .main{max-width:1100px;margin:0 auto;padding:48px 24px 80px;}
+  .divider{border:none;border-top:2px solid var(--grey1);margin:40px 0;}
+  .section-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey2);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--grey1);}
+  .sh{display:flex;align-items:flex-start;gap:14px;margin-bottom:24px;}
+  .sh-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .sh-text h2{font-size:21px;font-weight:800;color:var(--navy);}
+  .sh-text p{font-size:13px;color:#555;margin-top:3px;}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:28px;}
+  .ov-card{background:var(--white);border:1.5px solid var(--grey1);border-radius:12px;padding:16px;}
+  .ov-card-icon{font-size:26px;margin-bottom:8px;}
+  .ov-card h3{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+  .ov-card p{font-size:12px;color:#555;line-height:1.5;}
+  .purple-box{background:#F3E5F5;border-left:4px solid var(--purple);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#4A148C;margin-bottom:22px;line-height:1.6;}
+  .info-box{background:#EBF5FB;border-left:4px solid var(--blue);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#0B3D8F;margin-bottom:22px;line-height:1.6;}
+  .warn-box{background:#FFF8E1;border-left:4px solid var(--amber);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#795200;margin-bottom:22px;line-height:1.6;}
+  .qa-list{display:flex;flex-direction:column;gap:10px;}
+  .qa-item{border:1.5px solid var(--grey1);border-radius:10px;overflow:hidden;background:var(--white);}
+  .qa-item summary{padding:13px 18px;cursor:pointer;font-weight:700;font-size:13px;color:var(--navy);display:flex;align-items:center;gap:10px;list-style:none;background:var(--white);transition:background .15s;}
+  .qa-item summary::-webkit-details-marker{display:none;}
+  .qa-item summary::marker{display:none;}
+  .qa-item>summary::before{content:'▸';font-size:11px;color:var(--grey2);flex-shrink:0;display:inline-block;transition:transform .2s;}
+  .qa-item[open]>summary{background:var(--grey0);border-bottom:1.5px solid var(--grey1);}
+  .qa-item[open]>summary::before{transform:rotate(90deg);}
+  .qa-body{padding:16px 20px;font-size:13px;line-height:1.7;color:#444;}
+  .qa-body ul{padding-left:20px;margin:8px 0;}
+  .qa-body li{margin-bottom:7px;}
+  .qa-body strong{color:var(--navy);}
+  .qa-body h4{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 6px;}
+  .src{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-left:auto;flex-shrink:0;white-space:nowrap;}
+  .src-pjf{background:#E8EAF6;color:#303F9F;}
+  .src-it{background:#E0F2F1;color:#004D40;}
+  .card-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));}
+  .card{background:var(--white);border-radius:12px;border:1.5px solid var(--grey1);padding:18px 18px 14px;display:flex;flex-direction:column;gap:9px;transition:box-shadow .2s,border-color .2s;position:relative;overflow:hidden;}
+  .card:hover{box-shadow:0 6px 22px rgba(0,0,0,0.09);border-color:var(--sky);}
+  .card-acc{position:absolute;top:0;left:0;right:0;height:4px;border-radius:12px 12px 0 0;}
+  .card-tr{display:flex;align-items:center;justify-content:space-between;}
+  .cbadge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:9px;text-transform:uppercase;letter-spacing:.3px;}
+  .crole{font-size:11px;color:var(--grey2);font-weight:600;}
+  .card h3{font-size:13px;font-weight:700;color:var(--navy);line-height:1.3;}
+  .card p{font-size:12px;color:#555;line-height:1.55;flex:1;}
+  .card-ft{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
+  .ct{font-size:11px;color:var(--grey2);font-weight:600;}
+  .cl{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--blue);text-decoration:none;padding:5px 11px;border-radius:7px;border:1.5px solid var(--blue);transition:background .15s,color .15s;}
+  .cl:hover{background:var(--blue);color:var(--white);}
+  .bt{background:#EBF5FB;color:#0176D3;}.bsl{background:#E8EAF6;color:#303F9F;}.bdoc{background:#F3E5F5;color:#6A1B9A;}
+  .bslides{background:#E8F5E9;color:#1B5E20;}.bnb{background:#EDE7F6;color:#4527A0;}.barch{background:#E0F2F1;color:#004D40;}
+  .acc-b{background:var(--blue);}.acc-t{background:var(--teal);}.acc-p{background:var(--purple);}
+  .acc-g{background:var(--green);}.acc-n{background:var(--navy);}
+  footer{background:var(--navy);color:rgba(255,255,255,0.6);text-align:center;padding:22px;font-size:12px;}
+  footer strong{color:var(--white);}
+  footer a{color:rgba(255,255,255,0.7);text-decoration:none;}
+  footer a:hover{color:var(--white);}
+  .domain-pill{font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px;flex-shrink:0;}
+  .dp-it{background:#EBF5FB;color:#0B3D8F;border:1px solid #B3D4EF;}
+  .dp-hr{background:#E0F2F1;color:#004D40;border:1px solid #A7D7D5;}
+  .dp-both{background:#F9F0FF;color:#5A1A99;border:1px solid #D4B8F0;}
+  .res-domain-hdr{font-size:13px;font-weight:800;padding:10px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:8px;border:1.5px solid transparent;border-bottom:none;}
+  .rdit{background:#EBF5FB;color:#0B3D8F;border-color:#B3D4EF;}
+  .rdhr{background:#E0F2F1;color:#004D40;border-color:#A7D7D5;}
+  .res-domain-body{border:1.5px solid var(--grey1);border-radius:0 0 10px 10px;padding:16px;margin-bottom:4px;background:var(--white);}
+</style>
+</head>
+<body>
+
+<div class="back-nav">
+  <a href="itsm_hr_learning_journey.html">← Learning Journey</a>
+  <span class="back-nav-sep">/</span>
+  <span class="back-nav-cur">🏗️ Track 2 · Enterprise ITSM Architectures</span>
+</div>
+
+<div class="hero">
+  <div class="hero-eye">Salesforce ProServ · ITSM &amp; HR Service · Learning Track 2 of 4</div>
+  <div class="hero-num">🏗️</div>
+  <h1>Enterprise ITSM Architectures</h1>
+  <p class="hero-sub">Understand how real-life enterprise ecosystems are implemented. Deep dives on CMDB, Service Graph, Data Cloud architecture, and unified data models.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">CMDB &amp; Service Graph</span>
+    <span class="hero-tag">Data Cloud Architecture</span>
+    <span class="hero-tag">Unified Data Model</span>
+    <span class="hero-tag">AI Reasoning &amp; Actions</span>
+  </div>
+  <div class="hero-meta">
+    <span><strong>40 Hours</strong> · Estimated effort</span>
+    <span><strong>SA · Architect</strong> · Days 30–60</span>
+    <span><strong>Outcome:</strong> Incident routing, SLA escalation, CMDB CI relationships, incident-from-alert builds, knowledge workflows</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="purple-box">
+    🎯 <strong>Track Goal:</strong> Enable the team to understand how real enterprise ITSM ecosystems are implemented — with focus on ServiceNow, JIRA Service Management, and Freshservice as competitive context, and deep knowledge of Salesforce's CMDB, Service Graph, and Data Cloud architecture as differentiators.
+  </div>
+
+  <div class="warn-box">
+    ⚠️ <strong>Current Functional Gaps — verify before scoping any engagement.</strong> Known platform limitations as of June 2026.
+  </div>
+
+  <div class="flag-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:28px;">
+    <div style="background:var(--white);border:1.5px solid #FE9339;border-radius:10px;padding:16px;position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--amber);"></div><h3 style="font-size:13px;font-weight:800;color:#795200;margin-bottom:6px;">CMDB — Separate SKU</h3><p style="font-size:12px;color:#555;line-height:1.5;">CMDB is <strong>not included</strong> in the base IT Service Desk SKU. CI relationship topology and Service Graph require a separate CMDB license. Always clarify in scoping.</p><span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:#FFF8E1;color:#795200;margin-top:8px;">Separate SKU</span></div>
+    <div style="background:var(--white);border:1.5px solid #FE9339;border-radius:10px;padding:16px;position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--amber);"></div><h3 style="font-size:13px;font-weight:800;color:#795200;margin-bottom:6px;">Single-Org HR + IT</h3><p style="font-size:12px;color:#555;line-height:1.5;"><strong>Roadmap only.</strong> HR Service and IT Service require separate employee orgs today. Single-org design is not available — separate employee org required in all current engagements.</p><span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:#FFF8E1;color:#795200;margin-top:8px;">Roadmap</span></div>
+    <div style="background:var(--white);border:1.5px solid #FE9339;border-radius:10px;padding:16px;position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--amber);"></div><h3 style="font-size:13px;font-weight:800;color:#795200;margin-bottom:6px;">Case OWD — Must Be Private</h3><p style="font-size:12px;color:#555;line-height:1.5;"><strong>Mandatory design gate.</strong> Case OWD must be set to Private for ER and HR cases. Non-negotiable — affects the entire sharing model design.</p><span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:#FFF8E1;color:#795200;margin-top:8px;">Mandatory</span></div>
+    <div style="background:var(--white);border:1.5px solid #FE9339;border-radius:10px;padding:16px;position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--amber);"></div><h3 style="font-size:13px;font-weight:800;color:#795200;margin-bottom:6px;">MS Teams — Known Gaps</h3><p style="font-size:12px;color:#555;line-height:1.5;">Teams lacks <strong>Incident Broadcast</strong> and full <strong>Swarm</strong> parity vs. Slack. Raise early in discovery for Teams-only customers. Multi-agent orchestration in Slack also not yet available (P-stage).</p><span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:#FFF8E1;color:#795200;margin-top:8px;">Known Gap</span></div>
+    <div style="background:var(--white);border:1.5px solid #FE9339;border-radius:10px;padding:16px;position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--amber);"></div><h3 style="font-size:13px;font-weight:800;color:#795200;margin-bottom:6px;">HAM — Not Yet GA</h3><p style="font-size:12px;color:#555;line-height:1.5;">Hardware Asset Management is <strong>NOT YET GA</strong>. SAM (Software Asset Management) requires partner integration. Do not scope HAM in any current engagement.</p><span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:#FFF8E1;color:#795200;margin-top:8px;">Roadmap</span></div>
+    <div style="background:var(--white);border:1.5px solid #FE9339;border-radius:10px;padding:16px;position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;right:0;height:4px;background:var(--amber);"></div><h3 style="font-size:13px;font-weight:800;color:#795200;margin-bottom:6px;">GCP &amp; Kubernetes Discovery</h3><p style="font-size:12px;color:#555;line-height:1.5;"><strong>Highest-priority CMDB gap.</strong> Native discovery for GCP and Kubernetes (services, namespaces, pods) is not yet available — supersedes other API/scalability roadmap work.</p><span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:#FFF8E1;color:#795200;margin-top:8px;">Roadmap</span></div>
+  </div>
+
+  <div class="ov-grid">
+    <div class="ov-card"><div class="ov-card-icon">🗄️</div><h3>CMDB</h3><p>Configuration Management Database — single source of truth for IT infrastructure, assets, and their relationships.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">🕸️</div><h3>Service Graph</h3><p>Visual map of CI dependencies — shows ripple effects of outages and changes across the entire infrastructure.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">☁️</div><h3>Data Cloud</h3><p>Zero-copy architecture with RAG for secure real-time AI access to all organizational data without duplication.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">🧩</div><h3>Unified Data Model</h3><p>Breaks down IT/HR/Finance/Facilities silos — one employee profile across all internal support needs.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">🤖</div><h3>Agentic Actions</h3><p>AI-driven CMDB health, dependency analysis, affected CI prediction, and impact analysis.</p></div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="sh">
+    <div class="sh-icon" style="background:#F3E5F5;">🔍</div>
+    <div class="sh-text"><h2>CMDB, Service Graph &amp; Data Architecture</h2><p>Deep dive Q&amp;A from both IT Service notebooks on how Salesforce processes and organizes ITSM data.</p></div>
+  </div>
+
+  <div class="section-label">🖥️ IT Service — Data Architecture &amp; CMDB</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>How does Salesforce process and use data in Agentforce for ITSM?<span class="domain-pill dp-it">IT Service</span><span class="src src-pjf">PJF Notebook</span></summary>
+      <div class="qa-body">
+        <h4>1. Data Foundation &amp; Ingestion (Data Cloud &amp; Zero Copy)</h4>
+        <p>Agentforce ITSM operates natively on the Salesforce platform using Data Cloud to break down data silos. It relies on a <strong>"zero copy" architecture</strong> and <strong>Retrieval-Augmented Generation (RAG)</strong> to ensure AI agents have secure, real-time access to all organizational data without duplicating it.</p>
+        <ul>
+          <li><strong>Data Streams and DMOs:</strong> Core ITSM data (incidents, problems, change requests) is ingested into Data Cloud via predefined data streams, mapping Salesforce objects to Data Model Objects (DMOs).</li>
+          <li><strong>Search Indexing:</strong> Search Indexes are built by "chunking" key fields like incident subjects, descriptions, and categories to enable fast AI querying.</li>
+          <li><strong>Knowledge Integration:</strong> External and internal knowledge articles are indexed, providing the foundational grounding data that Agentforce uses to generate accurate responses.</li>
+        </ul>
+        <h4>2. Asset Data Processing (CMDB &amp; Discovery)</h4>
+        <p>The CMDB acts as the single source of truth for IT infrastructure, populating Data Cloud with real-time asset configurations.</p>
+        <ul>
+          <li><strong>Discovery Scanning:</strong> Agent-based and agentless tools scan networks using WMI, SSH, SNMP to detect hardware, software, and cloud resources, sending raw data to the CMDB.</li>
+          <li><strong>Identification Rules &amp; Process Jobs:</strong> Identification Rules match incoming discovery data against existing CIs to prevent duplicates. Process Jobs then analyze data to automatically build a Service Graph, mapping dependencies and relationships between assets.</li>
+        </ul>
+        <h4>3. AI Reasoning and Action Loops</h4>
+        <p>The AI evaluates requests, selects the appropriate "Topic" (Service Catalog rules or ITIL processes), and executes tasks using connected tools, APIs, and workflows.</p>
+        <h4>4. Practical Uses of ITSM Data</h4>
+        <ul>
+          <li><strong>Intelligent Incident Triage &amp; Routing:</strong> Checks new incidents against historical data to validate attributes, then routes to the most qualified IT fulfiller based on past success.</li>
+          <li><strong>Semantic Association of Records:</strong> Semantic searches find and automatically link similar incidents (e.g., identifying 22 VPN failures in 48 hours).</li>
+          <li><strong>Root Cause Analysis &amp; Problem Management:</strong> Processes CMDB dependency maps and analyzes related incidents or change requests to generate root-cause summaries and automatically draft Problem records.</li>
+          <li><strong>Automated Knowledge Creation:</strong> Einstein uses prompt templates grounded in ITSM record data to transform incidents into reusable Known Error or Troubleshooting Knowledge Articles.</li>
+          <li><strong>Analytics and Leadership Insights:</strong> IT Service Analytics bundles bring data into Tableau-powered dashboards for KPI calculation, SLA breach monitoring, asset health, and agent productivity evaluation.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>How does a CMDB differ from standard asset management?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <h4>Asset Management (ITAM)</h4>
+        <p>Focuses on the <strong>financial, contractual, and complete lifecycle</strong> of IT components.</p>
+        <ul>
+          <li><strong>Purpose:</strong> Manages the complete lifecycle — procurement, assignment, deployment, maintenance, retirement.</li>
+          <li><strong>Key Focus:</strong> Financial tracking, demonstrating ownership, cost optimization.</li>
+        </ul>
+        <h4>CMDB</h4>
+        <p>Focuses on <strong>operational data, technical configurations, and how components relate to one another</strong>.</p>
+        <ul>
+          <li><strong>Purpose:</strong> Dynamic repository storing Configuration Items (CIs) — functional components of the entire IT infrastructure — along with their specific attributes and dependencies.</li>
+          <li><strong>Key Focus:</strong> Support service delivery and processes like incident and change management by providing a "service map" of how components interact and rely on one another.</li>
+        </ul>
+        <p>In short: an <strong>asset is tracked for its financial value and ownership</strong>; a <strong>CI is tracked for its operational role and technical relationships</strong>. In a robust IT service system, physical and digital assets are linked directly to their corresponding operational CIs in the CMDB.</p>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>How does CMDB solve API integration, privacy, security, and user context pain points?<span class="domain-pill dp-it">IT Service</span><span class="src src-pjf">PJF Notebook</span></summary>
+      <div class="qa-body">
+        <h4>API Integration</h4>
+        <p>Agentforce IT Service offers <strong>100+ pre-built connectors</strong> (Jamf, Workday, Google, Microsoft) out of the box. Because the CMDB operates on a deeply unified platform, IT teams connect their existing IT landscape without building complex API integrations or relying on bolt-on third-party solutions.</p>
+        <h4>Privacy and Security</h4>
+        <p>The CMDB runs on Data Cloud with a <strong>"zero-data copy" architecture alongside RAG</strong>. AI agents securely search and reason over enterprise data without duplicating or moving it. The Salesforce platform provides built-in security, trust, and strict AI guardrails.</p>
+        <h4>User Context and Visibility</h4>
+        <ul>
+          <li><strong>The Service Graph:</strong> Maps complex relationships and dependencies between hardware, software, and applications — a real-time "contextual map" that both human fulfillers and AI agents use to see how an outage impacts a specific user, assess change risk, or perform root-cause analysis automatically.</li>
+          <li><strong>Unified Employee Profile:</strong> Asset data from the CMDB (employee's assigned laptop or software) is tied to a Unified Employee Profile — a 360-degree view showing active IT incidents, HR data, and assigned hardware all in one place.</li>
+        </ul>
+      </div>
+    </details>
+
+  </div>
+
+  <hr class="divider" />
+
+  <div class="section-label">🖥️ IT Service — Service Graph &amp; Impact Analysis</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>How does a Service Graph visualize asset dependencies?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>A Service Graph (also called a Service Map) acts as a visual representation — like a giant map — displaying how different Configuration Items (CIs) are connected. It automatically maps the dependency chain from bottom-level assets (servers, databases, storage) up to the critical business applications and portals they support.</p>
+        <ul>
+          <li><strong>Real-Time Impact Analysis:</strong> Maps real-time dependencies so IT teams immediately see the "ripple effect" of an outage. If a server goes down, the map visually highlights dependent business services.</li>
+          <li><strong>Contextualizing Active Issues:</strong> Surfaces active incidents, problems, and change requests logged directly against specific nodes — not just the assets and connections.</li>
+          <li><strong>Visual Root Cause Identification:</strong> Enables fulfillers to trace the origin of an issue visually. E.g., view a failing VPN service node and immediately see that a recent change was executed on a connected gateway cluster.</li>
+          <li><strong>Interactive Drill-Down:</strong> Click and drill down into any node to view deeper details, attributes, and specific issues tied to that CI.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>How do Service Graphs help identify root causes?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <ul>
+          <li><strong>Visualizing the Entire Dependency Chain:</strong> Automatically maps connections between CIs — from an end-user portal down to web servers, application servers, databases, and underlying storage. Teams trace the origin of an issue rather than just treating the symptom.</li>
+          <li><strong>Overlaying Active IT Records:</strong> Overlays active incidents, open problems, and recently closed change requests directly onto the affected nodes in the map.</li>
+          <li><strong>Isolating Single Points of Failure:</strong> A Problem Manager traces visual dependencies to pinpoint a single failing component as root cause — applies a permanent fix to prevent future outages.</li>
+          <li><strong>Validating AI-Suggested Root Causes:</strong> If Agentforce suggests a potential root cause, fulfillers can open the Service Map to visually confirm it.</li>
+          <li><strong>Interactive Drill-Downs:</strong> Click specific flagged nodes to drill down into details without toggling between different systems.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What are agentic actions in the Service Graph?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>The Service Graph integrates with Agentforce to support specific agentic actions that help IT fulfillers analyze and remediate issues autonomously:</p>
+        <ul>
+          <li><strong>Advanced Dependency Analysis:</strong> AI agents reason over the Service Graph using natural language. Fulfillers can ask "What is the impact if this server goes down?" and the agent analyzes mapped dependencies to explain downstream business impact.</li>
+          <li><strong>Affected CI Suggestion:</strong> Instead of manually hunting through the service map, the AI analyzes incident context alongside the Service Graph to provide real-time, intelligent recommendations for which specific CIs are affected.</li>
+          <li><strong>In-Map AI Agent Actions:</strong> The Service Map incorporates AI Agent actions — IT teams can execute tasks, view AI-generated summaries, and interact with CI dependencies directly from the visual map.</li>
+          <li><strong>Automated CMDB Health Actions:</strong> Agents autonomously perform background actions including Discovery Scan Summarization (analyzing scan logs to diagnose failures), Duplicate CI Detection, and Unhealthy CI Reporting.</li>
+        </ul>
+        <p>Agentic actions transform the Service Graph from a passive visual diagram into an interactive, AI-driven diagnostic tool where agents proactively interpret relationships, suggest affected assets, and help execute remediation tasks.</p>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>How does AI analyze dependencies for impact analysis?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <ul>
+          <li><strong>Advanced Dependency Analysis via Natural Language:</strong> Ask "What is the impact if this server goes down?" — the AI reasons over the Service Graph to immediately explain downstream business impact.</li>
+          <li><strong>Summarizing the Scope of Outages:</strong> During an active incident, AI summarizes the complex web of dependencies, assessing the full scope of the outage's impact — which critical business services, employees, and customers are affected.</li>
+          <li><strong>Automated Risk Assessment for Change Management:</strong> Before a system update is approved, the AI uses mapped dependencies to provide automated risk calculations. Evaluates dependent applications connected to the target asset, anticipates potential risks, and helps schedule changes for lowest-impact time windows.</li>
+          <li><strong>Predicting Affected Configuration Items (CIs):</strong> As a fulfiller describes an issue or a ticket is logged, the AI provides real-time, predictive suggestions for which specific CIs are affected — immediately linking the ticket to the correct dependency chain.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>How does AI predict affected CIs?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>AI predicts affected Configuration Items through a capability called <strong>Affected CI Suggestion</strong>:</p>
+        <ul>
+          <li><strong>Real-Time Context Analysis:</strong> As an IT fulfiller describes an issue or incident details are captured, the AI actively analyzes the context of the situation.</li>
+          <li><strong>Leveraging the Service Graph:</strong> The AI grounds its predictions by combining specific incident information with the dependency mapping found in your Service Graph.</li>
+          <li><strong>Proactive Recommendations:</strong> Instead of requiring a human agent to manually hunt through the CMDB to link an asset, the AI provides real-time, intelligent suggestions for the exact CIs that are impacted and should be associated with the ticket.</li>
+        </ul>
+        <p>By automating this asset association, the AI improves data accuracy and significantly reduces time to resolution.</p>
+      </div>
+    </details>
+
+  </div>
+
+  <hr class="divider" />
+
+  <div class="section-label">👥 IT + HR Unified — Data Model &amp; Governance</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>What are the benefits of a Unified Data Model?<span class="domain-pill dp-both">IT + HR Unified</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>A Unified Data Model brings IT, HR, Finance, Facilities, and customer records together onto a single foundation — moving from a fragmented "ticketing-centric" model to a unified "customer-centric" data model.</p>
+        <ul>
+          <li><strong>Eliminates Silos and Enables Cross-Department Visibility:</strong> Breaks down traditional walls between departments. Provides CIOs and leadership with company-wide, real-time context for better decision-making and reporting.</li>
+          <li><strong>Reduces Integration Complexity and Costs:</strong> Severely reduces data duplication, integration risks, vendor sprawl, and the high maintenance overhead of connecting multiple disparate legacy systems.</li>
+          <li><strong>Streamlined "Single Pane of Glass" Employee Experience:</strong> Employees get a unified profile and a true one-stop-shop for all internal needs — Wi-Fi outage (IT), payroll error (HR), or parking token request (Facilities) all in one seamless interface.</li>
+          <li><strong>Seamless, Contextual Handoffs:</strong> Because IT and Customer Service operate on the same data model, both teams share a complete real-time view of any issue. No need for users to repeat explanations or toggle between different systems.</li>
+          <li><strong>Powers Smarter, Cross-Domain AI:</strong> When AI agents are grounded in unified real-time data through Data Cloud, they can connect IT issues directly to business impact, employee profiles, and customer revenue to proactively triage, route, and autonomously resolve issues.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>Who is the CI Owner — how does ownership work in Agentforce ITSM?<span class="domain-pill dp-it">IT Service</span><span class="src src-pjf">PJF Notebook</span></summary>
+      <div class="qa-body">
+        <p>In Agentforce ITSM, a Configuration Item is managed by a <strong>CI Owner</strong> — a user responsible for a specific asset or CI. They are assigned the "CI Owner" permission set group, granting access to create, own, and manage their assigned configuration items and related records.</p>
+        <p>The term "fulfiller" is reserved for personas who handle IT service workflows and tickets, not the underlying assets:</p>
+        <ul>
+          <li><strong>Incident Fulfiller:</strong> Triages and resolves incidents, can propose major incidents, and create related problems and change requests.</li>
+          <li><strong>Problem Fulfiller:</strong> Investigates and manages the lifecycle of assigned problems, conducts root-cause analysis, implements solutions.</li>
+          <li><strong>Change Fulfiller:</strong> Executes implementation of approved changes, develops change plans, coordinates task assignments, validates fixes through testing.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What certifications and compliance standards does ITSM meet?<span class="domain-pill dp-it">IT Service</span><span class="src src-pjf">PJF Notebook</span></summary>
+      <div class="qa-body">
+        <h4>Current Certifications</h4>
+        <ul>
+          <li><strong>PinkVERIFY Certified:</strong> Confirms that service management workflows adhere to industry standards.</li>
+          <li><strong>ITIL Compliant:</strong> End-to-end ITSM functionalities — incident, problem, and change management — are fully compliant with ITIL best practices.</li>
+        </ul>
+        <h4>Planned / Not Yet Available</h4>
+        <ul>
+          <li><strong>FedRAMP and IL4 &amp; 5:</strong> Not yet compliant with DoD public/private standards — on the product roadmap.</li>
+          <li><strong>Dedicated IT Compliance Features:</strong> Specialized applications for "Regulations &amp; Controls" and "Risk Mgmt. &amp; Audit Compliance" not yet available — targeted for June 2026.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What framework can ITSM be packaged and distributed in?<span class="domain-pill dp-it">IT Service</span><span class="src src-pjf">PJF Notebook</span></summary>
+      <div class="qa-body">
+        <h4>1. Data Kits for Data Components</h4>
+        <p>A <strong>Data Kit</strong> packages Data Cloud components — data model objects and data streams — so they can be readily deployed into an org. The predefined Agentforce IT Service Data Kit includes bundles of data streams (IT Service Core and Analytics bundles) and search indexes.</p>
+        <h4>2. Salesforce Go "Solution Bundles"</h4>
+        <p><strong>Salesforce Go</strong> is a consolidated setup experience offering predefined Solution Bundles:</p>
+        <ul>
+          <li><strong>IT Service Standard Solution:</strong> Packages foundational processes — Incident, Problem, Change, Release Management, Self-Service Portal, SLA Management.</li>
+          <li><strong>IT Service Enhanced Solution:</strong> Everything in Standard, plus CMDB and Agentforce capabilities.</li>
+          <li><strong>IT Service Sample Data Solution:</strong> Packages sample data to instantly populate the org for exploration without manual data entry.</li>
+        </ul>
+        <h4>3. ITIL (Conceptual Framework)</h4>
+        <p>The platform's workflows are packaged and distributed according to the <strong>ITIL</strong> framework — the industry-standard best practices that guide high-quality and efficient IT service management.</p>
+      </div>
+    </details>
+
+  </div>
+
+  <hr class="divider" />
+
+  <div class="sh">
+    <div class="sh-icon" style="background:#EBF5FB;">📚</div>
+    <div class="sh-text"><h2>Track 2 Resources</h2><p>Architecture documentation and deep-dive references, organized by domain.</p></div>
+  </div>
+
+  <!-- IT Service Resources -->
+  <div class="res-domain-hdr rdit">🖥️ IT Service Architecture Resources</div>
+  <div class="res-domain-body">
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-acc acc-t"></div>
+        <div class="card-tr"><span class="cbadge barch">🏗️ Docs</span><span class="crole">Architect · Dev</span></div>
+        <h3>Service Cloud Data Model Overview</h3>
+        <p>Official developer documentation for the Service Cloud object and data model. Covers Case, Entitlement, Knowledge, Asset, and the full object graph.</p>
+        <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://developer.salesforce.com/docs/platform/data-models/guide/service-cloud-overview.html" target="_blank" class="cl">Open Docs ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-n"></div>
+        <div class="card-tr"><span class="cbadge bslides">📊 Slides</span><span class="crole">SC · Architect</span></div>
+        <h3>FY27 Agentforce IT Service — Product Deep Dive</h3>
+        <p>Latest product deep dive deck — full ITSM platform, ITIL process flows, AI capabilities, Slack Swarm architecture, SKU breakdown, and competitive positioning.</p>
+        <div class="card-ft"><span class="ct">⏱ ~45 min</span><a href="https://docs.google.com/presentation/d/11Zajz-hBCVEFnVt6VzMC-alXJzAFH3zXUf2dhIrw_8U/edit" target="_blank" class="cl">Open Slides ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-b"></div>
+        <div class="card-tr"><span class="cbadge bslides">📊 Slides</span><span class="crole">Architect · SC</span></div>
+        <h3>IT Service in Slack — Use Cases Deep Dive</h3>
+        <p>Advanced Slack-first ITSM patterns — Swarm configuration, Incident Broadcast setup, Teams vs. Slack gap analysis, and employee intake channel design.</p>
+        <div class="card-ft"><span class="ct">⏱ ~30 min</span><a href="https://docs.google.com/presentation/d/1j_60donqTcUWZmAVmERAaWCQzBiRRKRr2X4psYKgQE4/edit?slide=id.g380c3bfebed_0_12307" target="_blank" class="cl">Open Slides ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-n"></div>
+        <div class="card-tr"><span class="cbadge bsl">💬 Canvas</span><span class="crole">Architect · Dev</span></div>
+        <h3>Agentic IT Service Playbook</h3>
+        <p>Discovery questions, differentiators, competitive positioning, objection handling, and demo library. Critical for architects preparing for customer-facing ITSM engagements.</p>
+        <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F09N3JXU6LX" target="_blank" class="cl">Open Canvas ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-n"></div>
+        <div class="card-tr"><span class="cbadge bsl">💬 Canvas</span><span class="crole">Dev · QA · Arch</span></div>
+        <h3>IT Service Implementation Readiness</h3>
+        <p>Trailhead links, NotebookLM resources, and implementation readiness checklist — technical prerequisites, org configuration order-of-operations, and known gotchas before go-live.</p>
+        <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B7H0PAFL2" target="_blank" class="cl">Open Canvas ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-p"></div>
+        <div class="card-tr"><span class="cbadge bnb">🤖 NotebookLM</span><span class="crole">Architect · Dev</span></div>
+        <h3>IT Service NotebookLM</h3>
+        <p>Interactive AI notebook for ITSM architecture questions — CMDB, Service Graph, Agentforce AI actions, implementation readiness.</p>
+        <div class="card-ft"><span class="ct">⏱ Interactive</span><a href="https://notebooklm.google.com/notebook/09f332f4-c910-4100-80d1-8e0cd042eaf2" target="_blank" class="cl">Open ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-n"></div>
+        <div class="card-tr"><span class="cbadge bnb">🤖 NotebookLM</span><span class="crole">Architect · SC</span></div>
+        <h3>Agentforce IT Service — PJF NotebookLM</h3>
+        <p>Sales and GTM-focused notebook — pricing, competitive positioning, market strategy, and data architecture for Agentforce ITSM. Great for pre-engagement prep.</p>
+        <div class="card-ft"><span class="ct">⏱ Interactive</span><a href="https://notebooklm.google.com/notebook/995161ca-4a96-4e21-9bd6-ae28e412a260" target="_blank" class="cl">Open ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-b"></div>
+        <div class="card-tr"><span class="cbadge bsl">💬 Canvas</span><span class="crole">All Roles</span></div>
+        <h3>Services Enablement for ITSM</h3>
+        <p>Comprehensive internal Slack canvas — component overview, ITIL process flows, SKU analysis, Slack Swarm deep dive, competitive FAQs, and implementation readiness checklist.</p>
+        <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B8E3R2VM5" target="_blank" class="cl">Open Canvas ↗</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:24px;"></div>
+
+  <!-- HR Service Resources -->
+  <div class="res-domain-hdr rdhr">👥 HR Service Architecture Resources</div>
+  <div class="res-domain-body">
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-acc acc-t"></div>
+        <div class="card-tr"><span class="cbadge barch">🏗️ Setup Guide</span><span class="crole">Architect · Dev</span></div>
+        <h3>HR Service (Employee Service) Setup Guide</h3>
+        <p>Official Salesforce Help for Employee Service — permissions, case model extensions, HR Agent configuration, privacy and security model, community portal setup.</p>
+        <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://help.salesforce.com/s/articleView?id=service.es_employee_service_setup.htm&type=5" target="_blank" class="cl">Open Docs ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-n"></div>
+        <div class="card-tr"><span class="cbadge bslides">📊 Blueprint</span><span class="crole">All Roles</span></div>
+        <h3>Capability Blueprint Deck</h3>
+        <p>9-slide internal ProServ capability reference deck. HR Service Core, HR Extensions, ITSM Core, ITSM Platform/Gaps, and 4 role profile slides with validation flags.</p>
+        <div class="card-ft"><span class="ct">⏱ ~45 min</span><a href="https://docs.google.com/presentation/d/1J8iWADstLfj5MF6kHDdYIbipOrPudTKUqOq_s2hZW3E/edit" target="_blank" class="cl">Open Blueprint ↗</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:36px;text-align:center;">
+    <a href="itsm_hr_learning_journey.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:white;padding:11px 22px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;">← Back to Learning Journey</a>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Track 2 · Enterprise ITSM Architectures</strong> — <a href="itsm_hr_learning_journey.html">Agentforce IT Service &amp; HR Service Learning Journey</a><br/>
+  Salesforce ProServ · June 2026
+</footer>
+</body>
+</html>

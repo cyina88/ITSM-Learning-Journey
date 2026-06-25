@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise HR Service Management: Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-primary: #fdfbf7;
+            --text-main: #2d3748;
+            --accent-soft: #63b3ed;
+            --accent-warm: #ed8936;
+            --neutral-card: #ffffff;
+        }
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .workflow-step.active {
+            border-color: #ed8936;
+            background-color: #fffaf0;
+        }
+        .ulrich-quadrant {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .ulrich-quadrant:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Chosen Palette: Warm Professionalism (Warm neutrals, Slate text, Burnt Orange and Sky Blue accents) -->
+    
+    <!-- Application Structure Plan: 
+         The SPA is organized into five thematic 'Chapters' rather than following the report's linear structure:
+         1. Foundations: Translates the 'What-Who-How' framework into interactive cards.
+         2. Personnel: An interactive UI for Dave Ulrich's model and functional roles.
+         3. Operations: A step-through interactive for the high-complexity workflows (Onboarding/Offboarding).
+         4. Metrics & Compliance: A live calculator for SLA compliance and a regulatory timeline.
+         5. The Future: A data-driven look at AI adoption and vendor landscapes.
+         Navigation is fixed for easy jumping between concepts. 
+    -->
+
+    <!-- Visualization & Content Choices: 
+         - Ulrich Matrix -> Interactive Grid -> Allows users to see the People vs Process focus instantly -> Vanilla JS.
+         - Onboarding Steps -> Horizontal Process Flow -> Simplifies a 6-step cross-departmental process -> Vanilla JS logic.
+         - AI Adoption -> Donut Chart (Chart.js) -> Visualizes the 39% adoption vs FOMO parity mentioned in report.
+         - SLA Targets -> Radar or Bar Chart (Chart.js) -> Compares P1, P2, and P3 resolution times.
+         - SLA Calculator -> Interactive Input/Output -> Makes the mathematical formula ($SLA_c$) practical for users.
+         - NO SVG/MERMAID: Using Canvas for charts and CSS/Tailwind for all diagrams/icons.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="glass-nav fixed top-0 w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold text-slate-800">HRSM <span class="text-orange-500">Navigator</span></h1>
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#foundation" class="hover:text-orange-500 transition">Foundation</a>
+                <a href="#people" class="hover:text-orange-500 transition">Personnel</a>
+                <a href="#workflows" class="hover:text-orange-500 transition">Workflows</a>
+                <a href="#governance" class="hover:text-orange-500 transition">Governance</a>
+                <a href="#tech" class="hover:text-orange-500 transition">Technology</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="mt-24 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
+        <!-- Introduction Section -->
+        <section class="mb-20 text-center">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6">The Engineering of Human Capital</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                Modern enterprises don't just manage people; they engineer services. Transitioning from reactive administration to an agile, metric-driven <strong>HR Service Management (HRSM)</strong> model reduces overhead and elevates the employee experience.
+            </p>
+        </section>
+
+        <!-- Chapter 1: Foundations -->
+        <section id="foundation" class="mb-24 scroll-mt-24">
+            <div class="border-l-4 border-orange-500 pl-6 mb-12">
+                <h3 class="text-3xl font-bold text-slate-800">The Structural Design Framework</h3>
+                <p class="mt-2 text-slate-600">Before automation, we define the architecture. The "What-Who-How" framework ensures every service is explicitly mapped.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-6 text-orange-600 font-bold text-xl">1</div>
+                    <h4 class="text-xl font-bold mb-3">WHAT</h4>
+                    <p class="text-slate-600 text-sm mb-4">The explicit catalog of services and resources required for execution.</p>
+                    <ul class="text-xs space-y-2 text-slate-500 italic">
+                        <li>• Service definition</li>
+                        <li>• Template compilation</li>
+                        <li>• Knowledge base development</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6 text-blue-600 font-bold text-xl">2</div>
+                    <h4 class="text-xl font-bold mb-3">WHO</h4>
+                    <p class="text-slate-600 text-sm mb-4">The assignment of responsibilities to specific roles and expert skill sets.</p>
+                    <ul class="text-xs space-y-2 text-slate-500 italic">
+                        <li>• Specialist escalation</li>
+                        <li>• Generalist triage</li>
+                        <li>• Legal & Tax alignment</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-6 text-green-600 font-bold text-xl">3</div>
+                    <h4 class="text-xl font-bold mb-3">HOW</h4>
+                    <p class="text-slate-600 text-sm mb-4">The digital and physical channels utilized to deliver and measure the service.</p>
+                    <ul class="text-xs space-y-2 text-slate-500 italic">
+                        <li>• Self-service portals</li>
+                        <li>• Automated routing</li>
+                        <li>• Real-time SLA metrics</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 2: The People -->
+        <section id="people" class="mb-24 scroll-mt-24">
+            <div class="border-l-4 border-blue-500 pl-6 mb-12">
+                <h3 class="text-3xl font-bold text-slate-800">The Human Network</h3>
+                <p class="mt-2 text-slate-600">HRSM moves away from the 'jack-of-all-trades' generalist toward specialized roles that optimize efficiency and strategic value.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h4 class="text-xl font-bold mb-6 text-slate-700">Dave Ulrich's Core Transformation Model</h4>
+                    <p class="text-sm text-slate-500 mb-6 italic">Click a quadrant to explore the focus and objectives of each HR role.</p>
+                    
+                    <div class="grid grid-cols-2 gap-4 h-96">
+                        <div onclick="showUlrich('partner')" class="ulrich-quadrant bg-slate-800 text-white p-6 rounded-xl flex flex-col justify-center items-center text-center border-2 border-transparent" id="q-partner">
+                            <span class="font-bold">Strategic Partner</span>
+                            <span class="text-[10px] opacity-70 mt-2">STRATEGIC / PROCESS</span>
+                        </div>
+                        <div onclick="showUlrich('agent')" class="ulrich-quadrant bg-orange-500 text-white p-6 rounded-xl flex flex-col justify-center items-center text-center border-2 border-transparent" id="q-agent">
+                            <span class="font-bold">Change Agent</span>
+                            <span class="text-[10px] opacity-70 mt-2">STRATEGIC / PEOPLE</span>
+                        </div>
+                        <div onclick="showUlrich('expert')" class="ulrich-quadrant bg-blue-500 text-white p-6 rounded-xl flex flex-col justify-center items-center text-center border-2 border-transparent" id="q-expert">
+                            <span class="font-bold">Administrative Expert</span>
+                            <span class="text-[10px] opacity-70 mt-2">OPERATIONAL / PROCESS</span>
+                        </div>
+                        <div onclick="showUlrich('champion')" class="ulrich-quadrant bg-slate-200 text-slate-800 p-6 rounded-xl flex flex-col justify-center items-center text-center border-2 border-transparent" id="q-champion">
+                            <span class="font-bold">Employee Champion</span>
+                            <span class="text-[10px] opacity-70 mt-2">OPERATIONAL / PEOPLE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ulrich-detail" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm min-h-[300px]">
+                    <h5 id="ud-title" class="text-2xl font-bold text-slate-800 mb-4">Select a Quadrant</h5>
+                    <p id="ud-desc" class="text-slate-600 leading-relaxed">The Dave Ulrich model divides HR into four roles along two axes. This matrix ensures that the organization maintains operational discipline while building long-term capability.</p>
+                    <div id="ud-tasks" class="mt-6 space-y-3">
+                        <!-- Dynamic Content -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Functional Roles List -->
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="p-4 border border-slate-200 rounded-lg">
+                    <h6 class="font-bold text-slate-800">HR Business Partners (HRBPs)</h6>
+                    <p class="text-xs text-slate-500">Embedded strategic advisors for business units.</p>
+                </div>
+                <div class="p-4 border border-slate-200 rounded-lg">
+                    <h6 class="font-bold text-slate-800">Centers of Expertise (COEs)</h6>
+                    <p class="text-xs text-slate-500">Subject experts designing global frameworks (Comp, Benefits, L&D).</p>
+                </div>
+                <div class="p-4 border border-slate-200 rounded-lg">
+                    <h6 class="font-bold text-slate-800">Shared Services Center</h6>
+                    <p class="text-xs text-slate-500">Operational generalists managing high-volume intake.</p>
+                </div>
+                <div class="p-4 border border-slate-200 rounded-lg">
+                    <h6 class="font-bold text-slate-800">ER Investigators</h6>
+                    <p class="text-xs text-slate-500">Specialists managing sensitive compliance and grievances.</p>
+                </div>
+                <div class="p-4 border border-slate-200 rounded-lg">
+                    <h6 class="font-bold text-slate-800">HR IT / IS Specialists</h6>
+                    <p class="text-xs text-slate-500">Technical architects of database and workflow integrations.</p>
+                </div>
+                <div class="p-4 border border-slate-200 rounded-lg">
+                    <h6 class="font-bold text-slate-800">External Providers</h6>
+                    <p class="text-xs text-slate-500">Third-party vendors managing payroll or global benefits.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 3: Workflows -->
+        <section id="workflows" class="mb-24 scroll-mt-24">
+            <div class="border-l-4 border-green-500 pl-6 mb-12">
+                <h3 class="text-3xl font-bold text-slate-800">Standardized Workflows</h3>
+                <p class="mt-2 text-slate-600">Efficiency depends on the replacement of unstructured interactions with automated, multi-step processes.</p>
+            </div>
+
+            <!-- Case Management Explorer -->
+            <div class="bg-slate-900 text-white rounded-3xl p-8 md:p-12 mb-16 overflow-hidden relative">
+                <div class="relative z-10">
+                    <h4 class="text-2xl font-bold mb-8">The Lifecycle of a Case</h4>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-8 md:space-y-0 relative">
+                        <!-- Connecting Line (Desktop) -->
+                        <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-slate-700 -z-10"></div>
+                        
+                        <div class="flex flex-col items-center text-center max-w-[150px]">
+                            <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center font-bold mb-4 ring-8 ring-slate-900">1</div>
+                            <span class="text-xs font-bold uppercase tracking-wider">Intake</span>
+                            <p class="text-[10px] opacity-60 mt-2 italic">Portal/Chatbot/Phone Integration</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center max-w-[150px]">
+                            <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center font-bold mb-4 ring-8 ring-slate-900">2</div>
+                            <span class="text-xs font-bold uppercase tracking-wider">Triage</span>
+                            <p class="text-[10px] opacity-60 mt-2 italic">Auto-Categorization & Classification</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center max-w-[150px]">
+                            <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center font-bold mb-4 ring-8 ring-slate-900">3</div>
+                            <span class="text-xs font-bold uppercase tracking-wider">Routing</span>
+                            <p class="text-[10px] opacity-60 mt-2 italic">Skills-based matching rules</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center max-w-[150px]">
+                            <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center font-bold mb-4 ring-8 ring-slate-900">4</div>
+                            <span class="text-xs font-bold uppercase tracking-wider">Resolution</span>
+                            <p class="text-[10px] opacity-60 mt-2 italic">Knowledge base & SLA tracking</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center max-w-[150px]">
+                            <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center font-bold mb-4 ring-8 ring-slate-900">5</div>
+                            <span class="text-xs font-bold uppercase tracking-wider">Archive</span>
+                            <p class="text-[10px] opacity-60 mt-2 italic">Secure audit trail closure</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onboarding Orchestration Interactive -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
+                <h4 class="text-xl font-bold mb-8 text-slate-800">Orchestrating Complex Events: Onboarding</h4>
+                <p class="text-sm text-slate-600 mb-10">Onboarding is a cross-functional synchronization of HR, IT, Security, and Facilities. Click a step to see the system impact.</p>
+                
+                <div class="flex flex-wrap gap-4 mb-10">
+                    <button onclick="toggleOnboard(1)" id="btn-ob-1" class="workflow-step border-2 border-slate-200 px-4 py-2 rounded-full text-xs font-bold active">1. HCM Init</button>
+                    <button onclick="toggleOnboard(2)" id="btn-ob-2" class="workflow-step border-2 border-slate-200 px-4 py-2 rounded-full text-xs font-bold">2. Identity</button>
+                    <button onclick="toggleOnboard(3)" id="btn-ob-3" class="workflow-step border-2 border-slate-200 px-4 py-2 rounded-full text-xs font-bold">3. Access</button>
+                    <button onclick="toggleOnboard(4)" id="btn-ob-4" class="workflow-step border-2 border-slate-200 px-4 py-2 rounded-full text-xs font-bold">4. IT Hardware</button>
+                    <button onclick="toggleOnboard(5)" id="btn-ob-5" class="workflow-step border-2 border-slate-200 px-4 py-2 rounded-full text-xs font-bold">5. Facilities</button>
+                    <button onclick="toggleOnboard(6)" id="btn-ob-6" class="workflow-step border-2 border-slate-200 px-4 py-2 rounded-full text-xs font-bold">6. Compliance</button>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-xl border-l-4 border-orange-400" id="ob-content">
+                    <h5 class="font-bold text-slate-800">Step 1: HRIS Record Initialization</h5>
+                    <p class="text-sm text-slate-600 mt-2">The accepted offer triggers the automated creation of the employee’s profile in the core HCM system (e.g., Workday), generating a unique employee identifier and establishing payroll records.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 4: Governance & SLAs -->
+        <section id="governance" class="mb-24 scroll-mt-24">
+            <div class="border-l-4 border-purple-500 pl-6 mb-12">
+                <h3 class="text-3xl font-bold text-slate-800">Governance & SLAs</h3>
+                <p class="mt-2 text-slate-600">Service quality is maintained through explicit targets and statutory compliance across localized labor regulations.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                <!-- SLA Compliance Calculator -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <h4 class="text-xl font-bold mb-6">SLA Compliance Calculator</h4>
+                    <p class="text-xs text-slate-500 mb-8 italic">Calculate the service level agreement compliance rate based on the standard formula: $SLA_c = (C_t / C_d) \times 100$</p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Cases Resolved Within Target (C<sub>t</sub>)</label>
+                            <input type="number" id="ct-input" value="85" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 outline-none focus:ring-2 focus:ring-purple-400" oninput="calcSLA()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Total Cases Closed (C<sub>d</sub>)</label>
+                            <input type="number" id="cd-input" value="100" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 outline-none focus:ring-2 focus:ring-purple-400" oninput="calcSLA()">
+                        </div>
+                        <div class="pt-6 border-t border-slate-100 flex items-center justify-between">
+                            <span class="text-sm font-bold text-slate-600 uppercase tracking-widest">Compliance Rate</span>
+                            <span id="sla-result" class="text-4xl font-black text-purple-600">85.0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Priority Visualization -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <h4 class="text-xl font-bold mb-6">Resolution Targets by Priority</h4>
+                    <div class="chart-container">
+                        <canvas id="slaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regulatory Milestones -->
+            <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200">
+                <h4 class="text-xl font-bold mb-8">AI Regulatory Milestones (EU AI Act)</h4>
+                <div class="space-y-8 relative">
+                    <div class="absolute left-4 top-0 h-full w-0.5 bg-slate-200"></div>
+                    
+                    <div class="relative pl-12">
+                        <div class="absolute left-[13px] top-1 w-2 h-2 rounded-full bg-purple-500"></div>
+                        <p class="text-sm font-bold text-slate-800">Feb 2, 2026</p>
+                        <p class="text-xs text-slate-600 mt-1">Complete prohibition of high-risk AI uses (biometrics, social scoring). Mandatory AI literacy for all HR staff.</p>
+                    </div>
+                    
+                    <div class="relative pl-12">
+                        <div class="absolute left-[13px] top-1 w-2 h-2 rounded-full bg-purple-500"></div>
+                        <p class="text-sm font-bold text-slate-800">Aug 2, 2026</p>
+                        <p class="text-xs text-slate-600 mt-1">GPAI governance active. High-risk employment screening must comply with transparency protocols.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 5: Technology -->
+        <section id="tech" class="mb-24 scroll-mt-24">
+            <div class="border-l-4 border-slate-800 pl-6 mb-12">
+                <h3 class="text-3xl font-bold text-slate-800">The Technology Stack</h3>
+                <p class="mt-2 text-slate-600">Modern HRSM utilizes an integrated matrix that separates core records from automated operational workflows.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Core HCM -->
+                <div class="bg-white p-8 rounded-2xl border-t-4 border-slate-800 shadow-sm">
+                    <h4 class="text-lg font-bold mb-2">Systems of Record (HCM)</h4>
+                    <p class="text-xs text-slate-500 mb-6">Master data & Foundations</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="px-3 py-1 bg-slate-100 rounded text-[10px] font-bold text-slate-700 uppercase">Workday</span>
+                        <span class="px-3 py-1 bg-slate-100 rounded text-[10px] font-bold text-slate-700 uppercase">SAP SuccessFactors</span>
+                        <span class="px-3 py-1 bg-slate-100 rounded text-[10px] font-bold text-slate-700 uppercase">Darwinbox</span>
+                    </div>
+                    <p class="text-sm text-slate-600 leading-relaxed italic">Technical focus: Core master data, global payroll, benefits, and foundational talent profiles.</p>
+                </div>
+
+                <!-- HRSD -->
+                <div class="bg-white p-8 rounded-2xl border-t-4 border-orange-500 shadow-sm">
+                    <h4 class="text-lg font-bold mb-2">Systems of Action (HRSD)</h4>
+                    <p class="text-xs text-slate-500 mb-6">Orchestration & Workflow</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="px-3 py-1 bg-orange-100 rounded text-[10px] font-bold text-orange-700 uppercase">ServiceNow</span>
+                        <span class="px-3 py-1 bg-orange-100 rounded text-[10px] font-bold text-orange-700 uppercase">SAP ESM</span>
+                        <span class="px-3 py-1 bg-orange-100 rounded text-[10px] font-bold text-orange-700 uppercase">Leena AI</span>
+                    </div>
+                    <p class="text-sm text-slate-600 leading-relaxed italic">Technical focus: Dynamic conversational intake, advanced workflow engines, and automated routing.</p>
+                </div>
+            </div>
+
+            <!-- AI Adoption Chart -->
+            <div class="mt-16 bg-white p-12 rounded-3xl border border-slate-100 shadow-sm text-center">
+                <h4 class="text-2xl font-bold mb-4">The AI Adoption Paradox</h4>
+                <p class="text-sm text-slate-500 max-w-xl mx-auto mb-10">Data shows a exact parity between those who have deployed AI and those who feel they are falling behind (FOMO).</p>
+                <div class="chart-container !h-64">
+                    <canvas id="aiChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 px-6 text-center text-xs">
+        <p class="mb-4">&copy; 2024 HR Service Management Strategic Interactive Framework</p>
+        <p>Operational Alignment • Workforce Engineering • Digital Transformation</p>
+    </footer>
+
+    <script>
+        // Data and State
+        const ulrichData = {
+            partner: {
+                title: "Strategic Partner",
+                desc: "Aligns the HR roadmap with corporate strategy and models future skill gaps.",
+                tasks: ["Corporate strategy alignment", "Workforce planning", "Skill gap modeling"]
+            },
+            agent: {
+                title: "Change Agent",
+                desc: "Facilitates organizational design updates and manages cultural transformations.",
+                tasks: ["Hybrid transitions", "Org design updates", "Culture management"]
+            },
+            expert: {
+                title: "Administrative Expert",
+                desc: "Optimizes administrative costs and implements standardized workflows.",
+                tasks: ["Cost optimization", "Workflow standardization", "Database management"]
+            },
+            champion: {
+                title: "Employee Champion",
+                desc: "Advocates for workforce well-being and executes engagement programs.",
+                tasks: ["Workforce well-being", "Grievance resolution", "Engagement execution"]
+            }
+        };
+
+        const onboardingSteps = [
+            { title: "Step 1: HRIS Record Initialization", body: "The accepted offer triggers the automated creation of the employee’s profile in the core HCM system (e.g., Workday), generating a unique employee identifier and establishing payroll records." },
+            { title: "Step 2: Identity Provisioning", body: "The HCM payload is pushed to an identity provider platform (such as Okta) to create corporate credentials, define security groups, and assign default email access." },
+            { title: "Step 3: Access and Account Provisioning", body: "The orchestration system uses SCIM protocols to configure access across enterprise software applications like CRM, ERP, and code repositories." },
+            { title: "Step 4: Hardware Procurement", body: "An automated request is dispatched to IT Asset Management to configure, image, and ship the necessary computer hardware to the user's location." },
+            { title: "Step 5: Workplace Readiness", body: "Parallel tickets are routed to Facilities to allocate physical desk space, generate building security badges, and configure localized logistics." },
+            { title: "Step 6: Compliance and Benefit Enrollment", body: "The employee is registered for mandatory compliance trainings and guided through digital benefit selection portals." }
+        ];
+
+        // Interaction Logic
+        function showUlrich(key) {
+            const data = ulrichData[key];
+            const detail = document.getElementById('ulrich-detail');
+            const quadrants = document.querySelectorAll('.ulrich-quadrant');
+            
+            // UI Feedback
+            quadrants.forEach(q => q.classList.remove('ring-4', 'ring-orange-200'));
+            document.getElementById(`q-${key}`).classList.add('ring-4', 'ring-orange-200');
+
+            document.getElementById('ud-title').innerText = data.title;
+            document.getElementById('ud-desc').innerText = data.desc;
+            
+            let tasksHtml = '';
+            data.tasks.forEach(t => {
+                tasksHtml += `<div class="flex items-center text-xs text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-3"></span> ${t}
+                </div>`;
+            });
+            document.getElementById('ud-tasks').innerHTML = tasksHtml;
+        }
+
+        function toggleOnboard(id) {
+            const steps = document.querySelectorAll('.workflow-step');
+            steps.forEach(s => s.classList.remove('active'));
+            document.getElementById(`btn-ob-${id}`).classList.add('active');
+            
+            const data = onboardingSteps[id-1];
+            document.getElementById('ob-content').innerHTML = `
+                <h5 class="font-bold text-slate-800">${data.title}</h5>
+                <p class="text-sm text-slate-600 mt-2">${data.body}</p>
+            `;
+        }
+
+        function calcSLA() {
+            const ct = parseFloat(document.getElementById('ct-input').value) || 0;
+            const cd = parseFloat(document.getElementById('cd-input').value) || 1;
+            const res = (ct / cd) * 100;
+            document.getElementById('sla-result').innerText = res.toFixed(1) + '%';
+        }
+
+        // Charts
+        function initCharts() {
+            // SLA Priority Chart
+            const slaCtx = document.getElementById('slaChart').getContext('2d');
+            new Chart(slaCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['P1 - Critical', 'P2 - Urgent', 'P3 - Routine'],
+                    datasets: [
+                        {
+                            label: 'Response (Mins)',
+                            data: [15, 60, 240], // 4 hours = 240
+                            backgroundColor: 'rgba(237, 137, 54, 0.2)',
+                            borderColor: 'rgba(237, 137, 54, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Resolution (Hrs)',
+                            data: [4, 24, 72], // 1 day = 24, 3 days = 72
+                            backgroundColor: 'rgba(99, 179, 237, 0.2)',
+                            borderColor: 'rgba(99, 179, 237, 1)',
+                            borderWidth: 1,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { type: 'linear', position: 'left', title: { display: true, text: 'Response Time (Minutes)' } },
+                        y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Resolution Time (Hours)' } }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // AI Adoption Chart
+            const aiCtx = document.getElementById('aiChart').getContext('2d');
+            new Chart(aiCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Deployed AI', 'AI FOMO', 'Other/Neutral'],
+                    datasets: [{
+                        data: [39, 39, 22],
+                        backgroundColor: ['#ed8936', '#63b3ed', '#e2e8f0'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'right' }
+                    }
+                }
+            });
+        }
+
+        window.onload = initCharts;
+    </script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Track 4: Salesforce Integration Plans — ITSM & HR Service</title>
+<style>
+  :root {
+    --navy:#032D60;--blue:#0176D3;--sky:#1B96FF;--teal:#06A59A;--purple:#7526E3;
+    --green:#2E844A;--amber:#FE9339;--red:#C23934;
+    --grey0:#F3F3F3;--grey1:#E8EDF2;--grey2:#AEAEAE;--dark:#181818;--white:#FFFFFF;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Salesforce Sans',Arial,sans-serif;background:#F8F9FB;color:var(--dark);line-height:1.5;}
+  .back-nav{background:var(--white);border-bottom:2px solid var(--grey1);padding:12px 24px;display:flex;align-items:center;gap:12px;}
+  .back-nav a{font-size:13px;font-weight:700;color:var(--blue);text-decoration:none;}
+  .back-nav a:hover{text-decoration:underline;}
+  .back-nav-sep{color:var(--grey2);font-size:12px;}
+  .back-nav-cur{font-size:13px;font-weight:600;color:var(--dark);}
+  .hero{background:linear-gradient(135deg,var(--green) 0%,#236B3A 60%,#1A5C2E 100%);color:var(--white);padding:48px 48px 56px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,0.08);pointer-events:none;}
+  .hero-eye{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:10px;}
+  .hero-num{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.15);font-size:22px;margin-bottom:14px;}
+  .hero h1{font-size:36px;font-weight:800;line-height:1.15;max-width:660px;}
+  .hero-sub{margin-top:12px;font-size:15px;color:rgba(255,255,255,0.8);max-width:560px;}
+  .hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;}
+  .hero-tag{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:4px 13px;font-size:12px;font-weight:600;}
+  .hero-meta{margin-top:26px;display:flex;gap:28px;font-size:13px;color:rgba(255,255,255,0.65);flex-wrap:wrap;}
+  .hero-meta strong{color:var(--white);font-weight:700;}
+  .main{max-width:1100px;margin:0 auto;padding:48px 24px 80px;}
+  .divider{border:none;border-top:2px solid var(--grey1);margin:40px 0;}
+  .section-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey2);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--grey1);}
+  .sh{display:flex;align-items:flex-start;gap:14px;margin-bottom:24px;}
+  .sh-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .sh-text h2{font-size:21px;font-weight:800;color:var(--navy);}
+  .sh-text p{font-size:13px;color:#555;margin-top:3px;}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:28px;}
+  .ov-card{background:var(--white);border:1.5px solid var(--grey1);border-radius:12px;padding:16px;}
+  .ov-card-icon{font-size:26px;margin-bottom:8px;}
+  .ov-card h3{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+  .ov-card p{font-size:12px;color:#555;line-height:1.5;}
+  .green-box{background:#EDF7F0;border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#1B5E20;margin-bottom:22px;line-height:1.6;}
+  .info-box{background:#EBF5FB;border-left:4px solid var(--blue);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#0B3D8F;margin-bottom:22px;line-height:1.6;}
+  .warn-box{background:#FFF8E1;border-left:4px solid var(--amber);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#795200;margin-bottom:22px;line-height:1.6;}
+  .qa-list{display:flex;flex-direction:column;gap:10px;}
+  .qa-item{border:1.5px solid var(--grey1);border-radius:10px;overflow:hidden;background:var(--white);}
+  .qa-item summary{padding:13px 18px;cursor:pointer;font-weight:700;font-size:13px;color:var(--navy);display:flex;align-items:center;gap:10px;list-style:none;background:var(--white);transition:background .15s;}
+  .qa-item summary::-webkit-details-marker{display:none;}
+  .qa-item summary::marker{display:none;}
+  .qa-item>summary::before{content:'▸';font-size:11px;color:var(--grey2);flex-shrink:0;display:inline-block;transition:transform .2s;}
+  .qa-item[open]>summary{background:var(--grey0);border-bottom:1.5px solid var(--grey1);}
+  .qa-item[open]>summary::before{transform:rotate(90deg);}
+  .qa-body{padding:16px 20px;font-size:13px;line-height:1.7;color:#444;}
+  .qa-body ul{padding-left:20px;margin:8px 0;}
+  .qa-body li{margin-bottom:7px;}
+  .qa-body strong{color:var(--navy);}
+  .qa-body h4{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 6px;}
+  .src{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-left:auto;flex-shrink:0;white-space:nowrap;}
+  .src-pjf{background:#E8EAF6;color:#303F9F;}
+  .src-it{background:#E0F2F1;color:#004D40;}
+  .int-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:28px;}
+  .int-card{background:var(--white);border:2px solid var(--grey1);border-radius:12px;padding:18px;}
+  .int-card-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .int-card-icon{font-size:28px;}
+  .int-card h3{font-size:13px;font-weight:800;color:var(--navy);}
+  .int-card p{font-size:12px;color:#555;line-height:1.5;}
+  .int-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-top:8px;display:inline-block;}
+  .it-hr{background:#FCE4EC;color:#880E4F;}
+  .it-it{background:#E8EAF6;color:#303F9F;}
+  .it-both{background:#E0F2F1;color:#004D40;}
+  .card-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));}
+  .card{background:var(--white);border-radius:12px;border:1.5px solid var(--grey1);padding:18px 18px 14px;display:flex;flex-direction:column;gap:9px;transition:box-shadow .2s,border-color .2s;position:relative;overflow:hidden;}
+  .card:hover{box-shadow:0 6px 22px rgba(0,0,0,0.09);border-color:var(--sky);}
+  .card-acc{position:absolute;top:0;left:0;right:0;height:4px;border-radius:12px 12px 0 0;}
+  .card-tr{display:flex;align-items:center;justify-content:space-between;}
+  .cbadge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:9px;text-transform:uppercase;letter-spacing:.3px;}
+  .crole{font-size:11px;color:var(--grey2);font-weight:600;}
+  .card h3{font-size:13px;font-weight:700;color:var(--navy);line-height:1.3;}
+  .card p{font-size:12px;color:#555;line-height:1.55;flex:1;}
+  .card-ft{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
+  .ct{font-size:11px;color:var(--grey2);font-weight:600;}
+  .cl{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--blue);text-decoration:none;padding:5px 11px;border-radius:7px;border:1.5px solid var(--blue);transition:background .15s,color .15s;}
+  .cl:hover{background:var(--blue);color:var(--white);}
+  .bsl{background:#E8EAF6;color:#303F9F;}.bdoc{background:#F3E5F5;color:#6A1B9A;}
+  .bslides{background:#E8F5E9;color:#1B5E20;}.bnb{background:#EDE7F6;color:#4527A0;}
+  .acc-b{background:var(--blue);}.acc-t{background:var(--teal);}.acc-p{background:var(--purple);}
+  .acc-g{background:var(--green);}.acc-n{background:var(--navy);}
+  footer{background:var(--navy);color:rgba(255,255,255,0.6);text-align:center;padding:22px;font-size:12px;}
+  footer strong{color:var(--white);}
+  footer a{color:rgba(255,255,255,0.7);text-decoration:none;}
+  footer a:hover{color:var(--white);}
+  .domain-pill{font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px;flex-shrink:0;}
+  .dp-it{background:#EBF5FB;color:#0B3D8F;border:1px solid #B3D4EF;}
+  .dp-hr{background:#E0F2F1;color:#004D40;border:1px solid #A7D7D5;}
+  .dp-both{background:#F9F0FF;color:#5A1A99;border:1px solid #D4B8F0;}
+  .res-domain-hdr{font-size:13px;font-weight:800;padding:10px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:8px;border:1.5px solid transparent;border-bottom:none;}
+  .rdit{background:#EBF5FB;color:#0B3D8F;border-color:#B3D4EF;}
+  .rdhr{background:#E0F2F1;color:#004D40;border-color:#A7D7D5;}
+  .res-domain-body{border:1.5px solid var(--grey1);border-radius:0 0 10px 10px;padding:16px;margin-bottom:4px;background:var(--white);}
+</style>
+</head>
+<body>
+
+<div class="back-nav">
+  <a href="itsm_hr_learning_journey.html">← Learning Journey</a>
+  <span class="back-nav-sep">/</span>
+  <span class="back-nav-cur">🔗 Track 4 · Salesforce Integration Plans</span>
+</div>
+
+<div class="hero">
+  <div class="hero-eye">Salesforce ProServ · ITSM &amp; HR Service · Learning Track 4 of 4</div>
+  <div class="hero-num">🔗</div>
+  <h1>Salesforce Integration Plans</h1>
+  <p class="hero-sub">Layer Agentforce on top of existing customer workflows and products. Create an AI orchestration layer without needing to rip and replace the customer's existing tech stack.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">ServiceNow Co-Existence</span>
+    <span class="hero-tag">Workday Integration</span>
+    <span class="hero-tag">MuleSoft API-Led</span>
+    <span class="hero-tag">Slack &amp; Teams</span>
+    <span class="hero-tag">Data Cloud Streams</span>
+  </div>
+  <div class="hero-meta">
+    <span><strong>40 Hours</strong> · Estimated effort</span>
+    <span><strong>Dev/TA · PM</strong> · Days 60–90</span>
+    <span><strong>Outcome:</strong> Salesforce Product Certifications + hands-on integration exercises in demo environments</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="green-box">
+    🎯 <strong>Track Goal:</strong> Enable the team to layer Agents on top of existing customer workflows and products — creating an AI orchestration layer without needing to "rip and replace" a customer's existing tech stack. Demonstrated by hands-on exercises in demo environments.
+  </div>
+
+  <div class="info-box">
+    💡 <strong>Core positioning:</strong> Salesforce Agentforce ITSM is not a replacement mandate — it's an <strong>AI orchestration layer</strong> that integrates natively with ServiceNow, Jira, Freshservice, Workday, and legacy ITSM tools. This is the primary competitive differentiator vs. rip-and-replace alternatives.
+  </div>
+
+  <div class="section-label">Key Integration Patterns</div>
+  <div class="int-grid">
+    <div class="int-card">
+      <div class="int-card-header"><div class="int-card-icon">🔄</div><h3>ServiceNow / Jira Co-Existence</h3></div>
+      <p>Agentforce as the AI conversation and routing layer on top of existing ITSM tools. Incidents created in ServiceNow synced via MuleSoft or Platform Events.</p>
+      <span class="int-tag it-it">IT Service</span>
+    </div>
+    <div class="int-card">
+      <div class="int-card-header"><div class="int-card-icon">👤</div><h3>Workday Integration</h3></div>
+      <p>HR Service cases trigger Workday workflows for position management, onboarding, payroll corrections, and leave requests. Two-way sync via MuleSoft or outbound messaging.</p>
+      <span class="int-tag it-hr">HR Service</span>
+    </div>
+    <div class="int-card">
+      <div class="int-card-header"><div class="int-card-icon">🔌</div><h3>MuleSoft API-Led</h3></div>
+      <p>API-led connectivity pattern for building the orchestration layer across ServiceNow, Jira, Freshservice, and Workday without rip-and-replace. Core pattern for enterprise ITSM co-existence.</p>
+      <span class="int-tag it-both">IT + HR</span>
+    </div>
+    <div class="int-card">
+      <div class="int-card-header"><div class="int-card-icon">💬</div><h3>Slack Integration</h3></div>
+      <p>Incident Broadcast, Swarm channels, employee intake via Slack channels. Platform Events and Change Data Capture drive real-time Slack notifications and actions.</p>
+      <span class="int-tag it-it">IT Service</span>
+    </div>
+    <div class="int-card">
+      <div class="int-card-header"><div class="int-card-icon">🖥️</div><h3>Microsoft Teams</h3></div>
+      <p>Teams-based employee intake and notifications. Known gaps: no Incident Broadcast, limited Swarm parity vs. Slack. Flag early in discovery for Teams-only customers.</p>
+      <span class="int-tag it-it">IT Service</span>
+    </div>
+    <div class="int-card">
+      <div class="int-card-header"><div class="int-card-icon">📡</div><h3>Endpoint Monitoring</h3></div>
+      <p>100+ pre-built connectors including Jamf, Intune, CrowdStrike, Kandji for endpoint agent proactive detection. Agentless and agent-based discovery for CMDB population.</p>
+      <span class="int-tag it-it">IT Service</span>
+    </div>
+    <div class="int-card">
+      <div class="int-card-header"><div class="int-card-icon">☁️</div><h3>Data Cloud Streams</h3></div>
+      <p>Core ITSM data ingested via predefined data streams, mapped to Data Model Objects (DMOs). Search indexes built by chunking key fields for AI querying.</p>
+      <span class="int-tag it-both">IT + HR</span>
+    </div>
+    <div class="int-card">
+      <div class="int-card-header"><div class="int-card-icon">🗃️</div><h3>Legacy ITSM Migration</h3></div>
+      <p>Bulk API for migrating Case and CMDB data from ServiceNow/Jira. LDV strategies and Informatica IDMC for large-scale CMDB bulk ingestion from legacy tools.</p>
+      <span class="int-tag it-it">IT Service</span>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="sh">
+    <div class="sh-icon" style="background:#EDF7F0;">🔗</div>
+    <div class="sh-text"><h2>Integration Architecture Q&amp;A</h2><p>From both IT Service notebooks on integration patterns, data flows, and co-existence strategy.</p></div>
+  </div>
+
+  <div class="section-label">🖥️ IT Service — Co-Existence &amp; Orchestration Strategy</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>How does CMDB solve API integration, privacy, security, and user context pain points for IT teams?<span class="domain-pill dp-it">IT Service</span><span class="src src-pjf">PJF Notebook</span></summary>
+      <div class="qa-body">
+        <h4>API Integration</h4>
+        <p>Agentforce IT Service offers <strong>100+ pre-built connectors</strong> (Jamf, Workday, Google, Microsoft) out of the box. Because the CMDB operates on a deeply unified platform, IT teams can seamlessly connect their existing IT landscape without building complex API integrations from scratch or relying on "bolt-on" third-party solutions.</p>
+        <h4>Privacy and Security</h4>
+        <p>The CMDB runs on Data Cloud with a "zero-data copy" architecture alongside <strong>Retrieval-Augmented Generation (RAG)</strong>. AI agents securely search and reason over enterprise data without duplicating or moving it. The Salesforce platform provides built-in security, trust, and strict AI guardrails.</p>
+        <h4>User Context and Visibility</h4>
+        <ul>
+          <li><strong>The Service Graph:</strong> Maps complex relationships and dependencies between hardware, software, and applications — a real-time "contextual map" for both human fulfillers and AI agents to immediately see how an outage impacts a specific user, assess change risk, or automatically perform root-cause analysis.</li>
+          <li><strong>Unified Employee Profile:</strong> Asset data from the CMDB (employee's assigned laptop or software) is tied to a Unified Employee Profile — a 360-degree view showing active IT incidents, HR data, and assigned hardware all in one place.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>How can ITSM be integrated into a build-operate-transfer model?<span class="domain-pill dp-it">IT Service</span><span class="src src-pjf">PJF Notebook</span></summary>
+      <div class="qa-body">
+        <p>The notebook sources do not contain explicit guidance on integrating the ITSM solution into a Build-Operate-Transfer (BOT) model. The sources primarily focus on standard ITIL processes, deploying the platform using Salesforce Go, and utilizing AI agents for ongoing IT operations.</p>
+        <p>However, the <strong>Agent-Driven Ramp Plan</strong> in the main Learning Journey provides a ProServ-specific framework that maps to BOT phases:</p>
+        <ul>
+          <li><strong>Build (Days 1–60):</strong> Tiger Team intensive training, reference architecture development, solution bundles, and first POC SOWs</li>
+          <li><strong>Operate (Days 60–90):</strong> Market entry, governance &amp; PM rigor, onboard PM/TA/SA, create and reuse agents and accelerators</li>
+          <li><strong>Transfer (Day 90–120+):</strong> Global delivery model, establish feedback loop, Primary Consultant becomes team lead, SAs create accelerators</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What framework can ITSM be packaged and distributed in?<span class="domain-pill dp-it">IT Service</span><span class="src src-pjf">PJF Notebook</span></summary>
+      <div class="qa-body">
+        <h4>1. Data Kits for Data Components</h4>
+        <p>A <strong>Data Kit</strong> packages Data Cloud components — data model objects and data streams — so they can be readily deployed into an org. The predefined Agentforce IT Service Data Kit includes bundles of data streams (IT Service Core and Analytics bundles) and search indexes.</p>
+        <h4>2. Salesforce Go "Solution Bundles" for App Features</h4>
+        <ul>
+          <li><strong>IT Service Standard Solution:</strong> Incident, Problem, Change, Release Management, Self-Service Portal, SLA Management</li>
+          <li><strong>IT Service Enhanced Solution:</strong> Everything in Standard, plus CMDB and Agentforce capabilities</li>
+          <li><strong>IT Service Sample Data Solution:</strong> Packages sample data to instantly populate the org for exploration</li>
+        </ul>
+        <h4>3. ITIL (Conceptual Framework)</h4>
+        <p>The platform's workflows are packaged and distributed according to the ITIL framework — the industry-standard best practices for high-quality and efficient IT service management.</p>
+      </div>
+    </details>
+
+  </div>
+
+  <div class="section-label" style="margin-top:28px;">👥 HR Service — Integration Patterns</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>How does IT Service integrate with HR needs on a shared platform?<span class="domain-pill dp-both">IT + HR Unified</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <ul>
+          <li><strong>Combined AI Agents for Employees:</strong> The AI Agents for Employees license provides both "IT and HR service" across the Employee Portal, Slack, Microsoft Teams, and Webchat — a single conversational agent routes requests to the right backend, whether IT or HR.</li>
+          <li><strong>Unified Data Model:</strong> IT and HR Services use a Unified Data Model combining IT, HR, Finance, and employee records. A single employee profile displays IT incidents (Wi-Fi issues, software access) alongside HR cases (payroll errors, badge issues) and HR data (title, location).</li>
+          <li><strong>Shared and Secure Environment:</strong> IT and HR share a dedicated employee org, entirely separate from the external Customer Service CRM org. This protects confidential employee data (HIPAA, payroll, internal IT infrastructure) and ensures separate release cycles and security controls.</li>
+          <li><strong>Seamless Contextual Handoffs:</strong> Because IT and Customer Service operate on the same data model, both teams share a complete real-time view of any issue — no need for users to repeat themselves or toggle between different systems.</li>
+        </ul>
+        <div class="warn-box" style="margin-top:12px;">⚠️ <strong>Single-Org Limitation:</strong> IT Service and HR Service currently require separate employee orgs. Single-org design is roadmap only — separate employee org required in all current engagements.</div>
+      </div>
+    </details>
+
+  </div>
+
+  <hr class="divider" />
+
+  <div class="sh">
+    <div class="sh-icon" style="background:#EBF5FB;">📚</div>
+    <div class="sh-text"><h2>Track 4 Resources</h2><p>Integration architecture references organized by domain — IT Service and HR Service.</p></div>
+  </div>
+
+  <!-- IT Service Resources -->
+  <div class="res-domain-hdr rdit">🖥️ IT Service Integration Resources</div>
+  <div class="res-domain-body">
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-acc acc-b"></div>
+        <div class="card-tr"><span class="cbadge bslides">📊 Slides</span><span class="crole">SC · Architect</span></div>
+        <h3>Agentforce IT Service in Slack — Use Cases</h3>
+        <p>Slack-first ITSM use cases — Incident Broadcast, Swarm configuration, Teams vs. Slack gap analysis, and employee intake channel patterns.</p>
+        <div class="card-ft"><span class="ct">⏱ ~30 min</span><a href="https://docs.google.com/presentation/d/1j_60donqTcUWZmAVmERAaWCQzBiRRKRr2X4psYKgQE4/edit" target="_blank" class="cl">Open Slides ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-n"></div>
+        <div class="card-tr"><span class="cbadge bsl">💬 Canvas</span><span class="crole">Architect · Dev</span></div>
+        <h3>Agentic IT Service Playbook</h3>
+        <p>Discovery questions, differentiators, competitive positioning, objection handling, and demo library. Critical for architects and SCs preparing for customer-facing engagements.</p>
+        <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F09N3JXU6LX" target="_blank" class="cl">Open Canvas ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-n"></div>
+        <div class="card-tr"><span class="cbadge bsl">💬 Canvas</span><span class="crole">Dev · QA · Arch</span></div>
+        <h3>IT Service Implementation Readiness</h3>
+        <p>Trailhead links, NotebookLM resources, implementation readiness checklist — technical prerequisites, org configuration order-of-operations, and known gotchas before go-live.</p>
+        <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B7H0PAFL2" target="_blank" class="cl">Open Canvas ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-b"></div>
+        <div class="card-tr"><span class="cbadge bsl">💬 Canvas</span><span class="crole">All Roles</span></div>
+        <h3>Services Enablement for ITSM</h3>
+        <p>Comprehensive internal Slack canvas — component overview, ITIL process flows, SKU analysis, Slack Swarm deep dive, competitive FAQs, and implementation readiness checklist.</p>
+        <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B8E3R2VM5" target="_blank" class="cl">Open Canvas ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-g"></div>
+        <div class="card-tr"><span class="cbadge bnb">🤖 NotebookLM</span><span class="crole">Architect · Dev</span></div>
+        <h3>IT Service NotebookLM</h3>
+        <p>Interactive AI notebook — ask questions about integration patterns, CMDB data flows, and Agentforce AI actions for ITSM builds.</p>
+        <div class="card-ft"><span class="ct">⏱ Interactive</span><a href="https://notebooklm.google.com/notebook/09f332f4-c910-4100-80d1-8e0cd042eaf2" target="_blank" class="cl">Open ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-n"></div>
+        <div class="card-tr"><span class="cbadge bnb">🤖 NotebookLM</span><span class="crole">Architect · Dev</span></div>
+        <h3>Agentforce IT Service — PJF NotebookLM</h3>
+        <p>Sales, GTM, pricing, competitive positioning, and data architecture notebook for the orchestration layer strategy and co-existence patterns.</p>
+        <div class="card-ft"><span class="ct">⏱ Interactive</span><a href="https://notebooklm.google.com/notebook/995161ca-4a96-4e21-9bd6-ae28e412a260" target="_blank" class="cl">Open ↗</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:24px;"></div>
+
+  <!-- HR Service Resources -->
+  <div class="res-domain-hdr rdhr">👥 HR Service Integration Resources</div>
+  <div class="res-domain-body">
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-acc" style="background:var(--teal);"></div>
+        <div class="card-tr"><span class="cbadge bsl" style="background:#E0F2F1;color:#004D40;">💬 Canvas</span><span class="crole">All Roles</span></div>
+        <h3>HR Service — Product &amp; Resource Canvas</h3>
+        <p>HR Service product material, use cases, enablement resources, and implementation reference. Key canvas for HR Service delivery readiness.</p>
+        <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F07HXF5BV4J" target="_blank" class="cl">Open Canvas ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc" style="background:var(--teal);"></div>
+        <div class="card-tr"><span class="cbadge" style="background:#E0F2F1;color:#004D40;">🏗️ Setup Guide</span><span class="crole">Architect · Dev</span></div>
+        <h3>HR Service (Employee Service) Setup Guide</h3>
+        <p>Official Salesforce Help for Employee Service — permissions, case model extensions, HR Agent configuration, privacy and security model, community portal setup.</p>
+        <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://help.salesforce.com/s/articleView?id=service.es_employee_service_setup.htm&type=5" target="_blank" class="cl">Open Docs ↗</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:36px;text-align:center;">
+    <a href="itsm_hr_learning_journey.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:white;padding:11px 22px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;">← Back to Learning Journey</a>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Track 4 · Salesforce Integration Plans</strong> — <a href="itsm_hr_learning_journey.html">Agentforce IT Service &amp; HR Service Learning Journey</a><br/>
+  Salesforce ProServ · June 2026
+</footer>
+</body>
+</html>

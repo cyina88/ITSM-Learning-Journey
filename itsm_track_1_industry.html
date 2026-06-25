@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Track 1: Industry Fundamentals — ITSM & HR Service</title>
+<style>
+  :root {
+    --navy:#032D60;--blue:#0176D3;--sky:#1B96FF;--teal:#06A59A;--purple:#7526E3;
+    --green:#2E844A;--amber:#FE9339;--red:#C23934;
+    --grey0:#F3F3F3;--grey1:#E8EDF2;--grey2:#AEAEAE;--dark:#181818;--white:#FFFFFF;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Salesforce Sans',Arial,sans-serif;background:#F8F9FB;color:var(--dark);line-height:1.5;}
+  .back-nav{background:var(--white);border-bottom:2px solid var(--grey1);padding:12px 24px;display:flex;align-items:center;gap:12px;}
+  .back-nav a{font-size:13px;font-weight:700;color:var(--blue);text-decoration:none;}
+  .back-nav a:hover{text-decoration:underline;}
+  .back-nav-sep{color:var(--grey2);font-size:12px;}
+  .back-nav-cur{font-size:13px;font-weight:600;color:var(--dark);}
+  .hero{background:linear-gradient(135deg,var(--teal) 0%,#04867D 60%,#026B63 100%);color:var(--white);padding:48px 48px 56px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,0.08);pointer-events:none;}
+  .hero-eye{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:10px;}
+  .hero-num{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.15);font-size:22px;margin-bottom:14px;}
+  .hero h1{font-size:36px;font-weight:800;line-height:1.15;max-width:660px;}
+  .hero-sub{margin-top:12px;font-size:15px;color:rgba(255,255,255,0.8);max-width:560px;}
+  .hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;}
+  .hero-tag{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:4px 13px;font-size:12px;font-weight:600;}
+  .hero-meta{margin-top:26px;display:flex;gap:28px;font-size:13px;color:rgba(255,255,255,0.65);flex-wrap:wrap;}
+  .hero-meta strong{color:var(--white);font-weight:700;}
+  .main{max-width:1100px;margin:0 auto;padding:48px 24px 80px;}
+  .divider{border:none;border-top:2px solid var(--grey1);margin:40px 0;}
+  .section-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey2);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--grey1);}
+  .sh{display:flex;align-items:flex-start;gap:14px;margin-bottom:24px;}
+  .sh-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .sh-text h2{font-size:21px;font-weight:800;color:var(--navy);}
+  .sh-text p{font-size:13px;color:#555;margin-top:3px;}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:28px;}
+  .ov-card{background:var(--white);border:1.5px solid var(--grey1);border-radius:12px;padding:16px;}
+  .ov-card-icon{font-size:26px;margin-bottom:8px;}
+  .ov-card h3{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+  .ov-card p{font-size:12px;color:#555;line-height:1.5;}
+  .teal-box{background:#E0F2F1;border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#004D40;margin-bottom:22px;line-height:1.6;}
+  .info-box{background:#EBF5FB;border-left:4px solid var(--blue);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#0B3D8F;margin-bottom:22px;line-height:1.6;}
+  .qa-list{display:flex;flex-direction:column;gap:10px;}
+  .qa-item{border:1.5px solid var(--grey1);border-radius:10px;overflow:hidden;background:var(--white);}
+  .qa-item summary{padding:13px 18px;cursor:pointer;font-weight:700;font-size:13px;color:var(--navy);display:flex;align-items:center;gap:10px;list-style:none;background:var(--white);transition:background .15s;}
+  .qa-item summary::-webkit-details-marker{display:none;}
+  .qa-item summary::marker{display:none;}
+  .qa-item>summary::before{content:'▸';font-size:11px;color:var(--grey2);flex-shrink:0;display:inline-block;transition:transform .2s;}
+  .qa-item[open]>summary{background:var(--grey0);border-bottom:1.5px solid var(--grey1);}
+  .qa-item[open]>summary::before{transform:rotate(90deg);}
+  .qa-body{padding:16px 20px;font-size:13px;line-height:1.7;color:#444;}
+  .qa-body ul{padding-left:20px;margin:8px 0;}
+  .qa-body li{margin-bottom:7px;}
+  .qa-body strong{color:var(--navy);}
+  .qa-body h4{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 6px;}
+  .src{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-left:auto;flex-shrink:0;white-space:nowrap;}
+  .src-pjf{background:#E8EAF6;color:#303F9F;}
+  .src-it{background:#E0F2F1;color:#004D40;}
+  .card-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));}
+  .card{background:var(--white);border-radius:12px;border:1.5px solid var(--grey1);padding:18px 18px 14px;display:flex;flex-direction:column;gap:9px;transition:box-shadow .2s,border-color .2s;position:relative;overflow:hidden;}
+  .card:hover{box-shadow:0 6px 22px rgba(0,0,0,0.09);border-color:var(--sky);}
+  .card-acc{position:absolute;top:0;left:0;right:0;height:4px;border-radius:12px 12px 0 0;}
+  .card-tr{display:flex;align-items:center;justify-content:space-between;}
+  .cbadge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:9px;text-transform:uppercase;letter-spacing:.3px;}
+  .crole{font-size:11px;color:var(--grey2);font-weight:600;}
+  .card h3{font-size:13px;font-weight:700;color:var(--navy);line-height:1.3;}
+  .card p{font-size:12px;color:#555;line-height:1.55;flex:1;}
+  .card-ft{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
+  .ct{font-size:11px;color:var(--grey2);font-weight:600;}
+  .cl{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--blue);text-decoration:none;padding:5px 11px;border-radius:7px;border:1.5px solid var(--blue);transition:background .15s,color .15s;}
+  .cl:hover{background:var(--blue);color:var(--white);}
+  .bt{background:#EBF5FB;color:#0176D3;}.bsl{background:#E8EAF6;color:#303F9F;}.bdoc{background:#F3E5F5;color:#6A1B9A;}
+  .bslides{background:#E8F5E9;color:#1B5E20;}.bnb{background:#EDE7F6;color:#4527A0;}
+  .acc-b{background:var(--blue);}.acc-t{background:var(--teal);}.acc-p{background:var(--purple);}
+  .acc-g{background:var(--green);}.acc-n{background:var(--navy);}
+  footer{background:var(--navy);color:rgba(255,255,255,0.6);text-align:center;padding:22px;font-size:12px;}
+  footer strong{color:var(--white);}
+  footer a{color:rgba(255,255,255,0.7);text-decoration:none;}
+  footer a:hover{color:var(--white);}
+  .domain-pill{font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px;flex-shrink:0;}
+  .dp-it{background:#EBF5FB;color:#0B3D8F;border:1px solid #B3D4EF;}
+  .dp-hr{background:#E0F2F1;color:#004D40;border:1px solid #A7D7D5;}
+  .dp-both{background:#F9F0FF;color:#5A1A99;border:1px solid #D4B8F0;}
+  .res-domain-hdr{font-size:13px;font-weight:800;padding:10px 16px;border-radius:10px 10px 0 0;display:flex;align-items:center;gap:8px;border:1.5px solid transparent;border-bottom:none;}
+  .rdit{background:#EBF5FB;color:#0B3D8F;border-color:#B3D4EF;}
+  .rdhr{background:#E0F2F1;color:#004D40;border-color:#A7D7D5;}
+  .res-domain-body{border:1.5px solid var(--grey1);border-radius:0 0 10px 10px;padding:16px;margin-bottom:4px;background:var(--white);}
+  .baudio{background:#FFF3E0;color:#E65100;}
+  .bguide{background:#F3E5F5;color:#6A1B9A;}
+</style>
+</head>
+<body>
+
+<div class="back-nav">
+  <a href="itsm_hr_learning_journey.html">← Learning Journey</a>
+  <span class="back-nav-sep">/</span>
+  <span class="back-nav-cur">🏭 Track 1 · Industry Fundamentals</span>
+</div>
+
+<div class="hero">
+  <div class="hero-eye">Salesforce ProServ · ITSM &amp; HR Service · Learning Track 1 of 4</div>
+  <div class="hero-num">🏭</div>
+  <h1>Industry Fundamentals</h1>
+  <p class="hero-sub">Understand enterprise ITSM ecosystems, speak the customer's operational language, and build the domain foundation needed before any technical depth.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">ITIL Framework</span>
+    <span class="hero-tag">Incident &amp; Problem Mgmt</span>
+    <span class="hero-tag">IT + HR Unified</span>
+    <span class="hero-tag">Competitive Landscape</span>
+  </div>
+  <div class="hero-meta">
+    <span><strong>60 Hours</strong> · Estimated effort</span>
+    <span><strong>All Roles</strong> · Primary Consultant first (Days 1–30)</span>
+    <span><strong>Outcome:</strong> Incident workflow diagrams, change mgmt flows, service catalog, CMDB map</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="teal-box">
+    🎯 <strong>Track Goal:</strong> Enable the team to understand enterprise ITSM ecosystems, speak customer operational language, integrate AI agents into existing environments, and design safe enterprise-grade AI workflow orchestration.
+  </div>
+
+  <div class="ov-grid">
+    <div class="ov-card"><div class="ov-card-icon">📋</div><h3>ITIL Framework</h3><p>The industry-standard playbook for delivering high-quality IT services — the "how" behind ITSM.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">🔥</div><h3>Incident Management</h3><p>Reactive firefighting — restore service ASAP. The starting point of every IT support lifecycle.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">🔍</div><h3>Problem Management</h3><p>Proactive root-cause investigation — find and fix why incidents keep happening.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">👥</div><h3>IT + HR Unified</h3><p>Salesforce extends ITIL best practices to HR — one unified employee experience platform.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">⚔️</div><h3>Competitive Context</h3><p>Legacy chatbot and bolt-on AI pain points vs. natively integrated Agentforce ITSM.</p></div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="sh">
+    <div class="sh-icon" style="background:#E0F2F1;">📖</div>
+    <div class="sh-text"><h2>Core Concepts — Notebook Q&amp;A</h2><p>Key questions and answers from the ITSM notebooks, organized by domain. Click any question to expand.</p></div>
+  </div>
+
+  <div class="section-label">🖥️ IT Service — ITSM &amp; ITIL Foundations</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>What are core industry concepts in IT Service?<span class="domain-pill dp-it">IT Service</span><span class="src src-pjf">PJF Notebook</span></summary>
+      <div class="qa-body">
+        <p>ITSM is built around the <strong>ITIL (Information Technology Infrastructure Library)</strong> framework — the industry standard of best practices for delivering high-quality IT services.</p>
+        <h4>Core Service Lifecycle Concepts</h4>
+        <ul>
+          <li><strong>Incident:</strong> An unplanned interruption to an IT service or reduction in quality (e.g., unable to log in to Zoom).</li>
+          <li><strong>Major Incident:</strong> High-impact critical disruption affecting many users. Requires immediate coordinated action.</li>
+          <li><strong>Problem:</strong> The underlying root cause of one or more incidents (e.g., faulty authentication server). Involves Root Cause Analysis (RCA).</li>
+          <li><strong>Change (Change Request):</strong> Formal request for addition, modification, or removal of anything that could affect IT services. Undergoes Risk Assessment before implementation.</li>
+          <li><strong>Release:</strong> A version of one or more configuration items or IT services made available for use, or a formal request to deploy into the live environment.</li>
+          <li><strong>Service Request:</strong> A formal, expected user request — VPN access, software installation, new hardware.</li>
+        </ul>
+        <h4>Assets, Operations &amp; Metrics</h4>
+        <ul>
+          <li><strong>Configuration Item (CI):</strong> Any physical or virtual component managed to deliver an IT service — servers, network routers, software licenses, cloud services.</li>
+          <li><strong>Service Catalog:</strong> Structured list of IT services employees can browse and request.</li>
+          <li><strong>Service Level Agreement (SLA):</strong> Formal agreement defining service levels, performance targets, and responsibilities.</li>
+          <li><strong>Knowledge Article:</strong> Documented information providing solutions, FAQs, and troubleshooting guidance for self-service and IT staff.</li>
+          <li><strong>Swarming:</strong> Collaborative approach where a diverse team of experts rapidly comes together to diagnose and resolve a complex or critical problem.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>Give me key industry terms and concepts in ITSM<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p><strong>ITSM</strong> is the broad practice of designing, delivering, managing, and continually improving IT services. <strong>ITIL</strong> is the specific playbook — the "how" for structuring high-quality service delivery.</p>
+        <h4>Core Service Management Processes</h4>
+        <ul>
+          <li><strong>Incident Management:</strong> "Wartime" firefighting — restore service fast and minimize downtime.</li>
+          <li><strong>Problem Management:</strong> "Fire investigators" — come in after an incident to find root cause and prevent recurrence.</li>
+          <li><strong>Change Management:</strong> Structured process for planning, approving, testing, and rolling out updates safely.</li>
+          <li><strong>Release Management:</strong> Planning, scheduling, and deploying versions of services into the live environment.</li>
+          <li><strong>Service Request (Request Management):</strong> Formal user requests — new software license, laptop, VPN access.</li>
+          <li><strong>Knowledge Management:</strong> Capturing and sharing IT information through structured articles to enable self-service and faster support.</li>
+        </ul>
+        <h4>Infrastructure &amp; Asset Tracking</h4>
+        <ul>
+          <li><strong>Configuration Item (CI):</strong> Any component — server, router, software license, cloud resource — managed to deliver an IT service. CIs include the asset plus its relationships to other components.</li>
+          <li><strong>CMDB (Configuration Management Database):</strong> Dynamic relational repository storing all CIs, attributes, relationships, and dependencies. A giant map of the company's technology and how it's connected.</li>
+          <li><strong>Asset Management (ITAM):</strong> Lifecycle management — procurement through retirement — of physical (HAM) and digital (SAM) assets. Unlike a CI (operational relationships), an asset is tracked for financial, contractual, and ownership value.</li>
+          <li><strong>Discovery:</strong> Automated process of scanning the IT environment to detect hardware, software, and cloud resources.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>How does Problem Management differ from Incident Management?<span class="domain-pill dp-it">IT Service</span><span class="src src-pjf">PJF Notebook</span></summary>
+      <div class="qa-body">
+        <p>The primary difference is objective: Incident Management is a <strong>short-term reactive response</strong> to fix an immediate issue; Problem Management is a <strong>proactive long-term process</strong> aimed at finding and fixing the root cause so the issue doesn't recur.</p>
+        <h4>Incident Management</h4>
+        <ul>
+          <li><strong>Definition:</strong> Unplanned interruption to an IT service or reduction in quality.</li>
+          <li><strong>Focus:</strong> Restore normal service operations as quickly as possible — the "firefighting" mode.</li>
+          <li><strong>Example:</strong> Employee reports they can't log in to Zoom.</li>
+        </ul>
+        <h4>Problem Management</h4>
+        <ul>
+          <li><strong>Definition:</strong> The underlying or root cause of one or more incidents.</li>
+          <li><strong>Focus:</strong> Investigate WHY the disruption occurred. Conduct Root Cause Analysis (RCA) — identify a temporary workaround or permanent solution.</li>
+          <li><strong>Example:</strong> After multiple Zoom incidents, IT investigates and determines a faulty authentication server is the root cause.</li>
+        </ul>
+        <h4>How They Work Together</h4>
+        <p>The ITSM lifecycle begins with an incident. If similar incidents recur or a complex incident is identified, it triggers a Problem record — moving IT from reactive ticketing to a strategic approach that improves the long-term health and stability of the environment.</p>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What processes, people, and technology are involved in IT service?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <h4>Processes (ITIL-aligned)</h4>
+        <ul>
+          <li><strong>Service Operations:</strong> Incident Management, Problem Management, Request Management</li>
+          <li><strong>Service Transition:</strong> Change Management, Release Management, Configuration Management (CMDB), Knowledge Management</li>
+          <li><strong>IT Asset Management (ITAM):</strong> Full lifecycle management of physical hardware and digital software assets</li>
+        </ul>
+        <h4>People</h4>
+        <ul>
+          <li><strong>Requesters (Employees):</strong> End-users who submit incidents, browse service catalogs, and seek IT answers</li>
+          <li><strong>Fulfillers (IT Service Agents):</strong> IT team members who triage, investigate, and resolve incidents, problems, and change requests</li>
+          <li><strong>Collaborators (SMEs):</strong> Specialists pulled into "swarms" to solve complex or major incidents</li>
+          <li><strong>IT Managers:</strong> Leaders who monitor metrics, track team performance, and analyze trends</li>
+          <li><strong>Administrators:</strong> Technical staff who configure SLA policies and manage the ITSM platform</li>
+        </ul>
+        <h4>Technology</h4>
+        <ul>
+          <li><strong>AI Agents:</strong> 24/7 conversational support, instant answers, auto-resolution for routine issues. Co-pilots for IT fulfillers.</li>
+          <li><strong>Omnichannel Interfaces:</strong> Slack, Microsoft Teams, Webchat, Email, Employee Portals</li>
+          <li><strong>IT Service Desk Console:</strong> Centralized workspace for fulfillers to manage ITIL processes, track SLAs, and view analytics</li>
+          <li><strong>Agentic CMDB &amp; Asset Discovery:</strong> Automated tools that scan the network to populate a dynamic CMDB and generate a real-time Service Graph</li>
+          <li><strong>Unified Platform:</strong> Data Cloud for secure data sharing across IT, HR, and Customer Service</li>
+        </ul>
+      </div>
+    </details>
+
+  </div>
+
+  <hr class="divider" />
+
+  <div class="section-label">👥 HR Service — Employee Experience Foundation</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>Does IT Service include HR needs?<span class="domain-pill dp-both">IT + HR Unified</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>Yes. Salesforce's IT Service approach integrates and supports HR needs as part of a broader, unified employee experience strategy.</p>
+        <ul>
+          <li><strong>Combined AI Agents for Employees:</strong> The AI Agents for Employees license explicitly provides both "IT and HR service" across the Employee Portal, Slack, Microsoft Teams, and Webchat. A single conversational agent acts as concierge routing requests to the right backend — whether a laptop replacement (IT) or a wellness reimbursement (HR).</li>
+          <li><strong>One-Stop-Shop for Employees:</strong> Salesforce views ITSM as a comprehensive Employee Experience Platform, extending beyond IT to encompass HR, Finance, and Facilities.</li>
+          <li><strong>Unified Data Model:</strong> IT and HR Services use a Unified Data Model combining IT, HR, Finance, and employee records — a single profile displaying IT incidents alongside HR cases and HR data (title, location).</li>
+          <li><strong>Shared Secure Environment:</strong> Because both IT and HR deal with sensitive employee information (HIPAA, payroll, internal IT infrastructure), Salesforce recommends a dedicated employee org, entirely separate from the external Customer Service CRM org.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>Does all of ITSM including HR Services use the ITIL framework?<span class="domain-pill dp-both">IT + HR Unified</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>Yes. While ITIL is traditionally a framework for IT teams, Salesforce's unified platform applies the same structured, repeatable methodologies across the entire enterprise — including HR.</p>
+        <ul>
+          <li><strong>Core ITIL Compliance:</strong> Agentforce IT Service fully supports structured incident management, problem management, change management, release management, service catalogs, approvals, SLAs, and audit trails.</li>
+          <li><strong>Extension to HR Services:</strong> Instead of keeping ITIL best practices siloed within IT, Salesforce's unified platform allows HR to utilize the same ITIL-based service management framework for case management, service requests, and approvals — ensuring consistent, trackable service delivery across all departments.</li>
+        </ul>
+        <p>Salesforce takes the proven ITIL playbook used for IT and extends it enterprise-wide so HR and other departments benefit from the same service maturity and automation.</p>
+      </div>
+    </details>
+
+  </div>
+
+  <hr class="divider" />
+
+  <div class="section-label">⚔️ Competitive Landscape</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>What are the biggest pain points for companies running bolt-on chatbots and LLM-based AI?<span class="domain-pill dp-it">IT Service</span><span class="src src-pjf">PJF Notebook</span></summary>
+      <div class="qa-body">
+        <p>Key pain points experienced when using competing "AI upstarts" or "bolt-on" conversational AI solutions (such as Moveworks, Aisera, or ServiceNow's legacy AI agents) instead of a natively integrated platform:</p>
+        <ul>
+          <li><strong>Increased Complexity and Disparate Tech Stacks:</strong> Bolt-on conversational experiences not natively integrated into the company's platform result in a fragmented, disparate tech stack that's hard to manage. Adding tools like Moveworks increases overall complexity.</li>
+          <li><strong>Limited Workflows and Automation:</strong> GenAI upstarts often focus only on the front-end employee search experience but have limited overall ITSM offerings. They frequently lack the robust workflow capabilities, APIs, and RPA tools necessary to actually execute tasks.</li>
+          <li><strong>Missing Context and Deep Data Integration:</strong> Standalone AI agents often lack deep integration with Knowledge Management and a natively integrated CMDB and Service Graph — required for contextual root-cause resolutions.</li>
+          <li><strong>Struggles with Intent Detection:</strong> Legacy AI agents often struggle with accurately detecting user intent — resulting in basic Q&amp;A bots rather than autonomous agents capable of resolving complex issues in the flow of work.</li>
+        </ul>
+      </div>
+    </details>
+
+  </div>
+
+  <hr class="divider" />
+
+  <div class="sh">
+    <div class="sh-icon" style="background:#EBF5FB;">📚</div>
+    <div class="sh-text"><h2>Track 1 Resources</h2><p>Essential learning materials organized by domain — IT Service and HR Service.</p></div>
+  </div>
+
+  <!-- IT Service Resources -->
+  <div class="res-domain-hdr rdit">🖥️ IT Service Resources</div>
+  <div class="res-domain-body">
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-acc acc-b"></div>
+        <div class="card-tr"><span class="cbadge bt">🏔️ Trail</span><span class="crole">All Roles</span></div>
+        <h3>Get Started with Agentforce IT Service</h3>
+        <p>Primary Trailhead trail — end-to-end platform overview covering Incident, Problem, Change, Knowledge, and AI capabilities.</p>
+        <div class="card-ft"><span class="ct">⏱ ~3 hrs</span><a href="https://trailhead.salesforce.com/content/learn/trails/agentforce-it-service-2" target="_blank" class="cl">Open Trail ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-b"></div>
+        <div class="card-tr"><span class="cbadge bt">🏔️ Module</span><span class="crole">All Roles</span></div>
+        <h3>AI for Agentforce IT Service</h3>
+        <p>Focused module on Einstein and Agentforce capabilities — article recommendations, case classification, agent topics and actions, and deflection patterns.</p>
+        <div class="card-ft"><span class="ct">⏱ ~1 hr</span><a href="https://trailhead.salesforce.com/content/learn/modules/ai-for-agentforce-it-service" target="_blank" class="cl">Open Module ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-b"></div>
+        <div class="card-tr"><span class="cbadge bguide">📖 Interactive Guide</span><span class="crole">All Roles</span></div>
+        <h3>ITSM Mastery Interactive Guide</h3>
+        <p>Deep-dive interactive guide through Agentforce IT Service — ITIL processes, configuration, and platform capabilities in a hands-on format.</p>
+        <div class="card-ft"><span class="ct">⏱ Self-paced</span><a href="itsm_mastery_interactive_guide.html" class="cl">Open Guide →</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-b"></div>
+        <div class="card-tr"><span class="cbadge baudio">🎵 Audio</span><span class="crole">All Roles</span></div>
+        <h3>From ITIL to Autonomous Agentic AI</h3>
+        <p>Audio deep dive on the journey from traditional ITIL-based IT service management to AI-native autonomous agents on the Salesforce platform.</p>
+        <div class="card-ft"><span class="ct">⏱ Listen</span></div>
+        <audio controls style="width:100%;margin-top:8px;border-radius:6px;">
+          <source src="From ITIL to Autonomous Agentic AI.mp3" type="audio/mpeg">
+          Your browser does not support audio playback.
+        </audio>
+      </div>
+      <div class="card">
+        <div class="card-acc" style="background:var(--teal);"></div>
+        <div class="card-tr"><span class="cbadge bnb">🤖 NotebookLM</span><span class="crole">All Roles</span></div>
+        <h3>IT Service NotebookLM</h3>
+        <p>AI-powered notebook loaded with IT Service source material. Ask questions interactively about ITIL processes, CMDB, Slack Swarm, and AI capabilities.</p>
+        <div class="card-ft"><span class="ct">⏱ Interactive</span><a href="https://notebooklm.google.com/notebook/09f332f4-c910-4100-80d1-8e0cd042eaf2" target="_blank" class="cl">Open ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-n"></div>
+        <div class="card-tr"><span class="cbadge bnb">🤖 NotebookLM</span><span class="crole">All Roles</span></div>
+        <h3>Agentforce IT Service — PJF NotebookLM</h3>
+        <p>Sales and GTM-focused notebook — pricing, competitive positioning, market strategy, and data architecture for Agentforce ITSM.</p>
+        <div class="card-ft"><span class="ct">⏱ Interactive</span><a href="https://notebooklm.google.com/notebook/995161ca-4a96-4e21-9bd6-ae28e412a260" target="_blank" class="cl">Open ↗</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-b"></div>
+        <div class="card-tr"><span class="cbadge bslides">📊 Slides</span><span class="crole">SC · Architect</span></div>
+        <h3>Agentforce IT Service in Slack — Use Cases</h3>
+        <p>Slack-first ITSM use cases — Incident Broadcast, Swarm configuration, Teams vs. Slack gap analysis, and employee intake channel patterns.</p>
+        <div class="card-ft"><span class="ct">⏱ ~30 min</span><a href="https://docs.google.com/presentation/d/1j_60donqTcUWZmAVmERAaWCQzBiRRKRr2X4psYKgQE4/edit" target="_blank" class="cl">Open Slides ↗</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:24px;"></div>
+
+  <!-- HR Service Resources -->
+  <div class="res-domain-hdr rdhr">👥 HR Service Resources</div>
+  <div class="res-domain-body">
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-acc" style="background:var(--teal);"></div>
+        <div class="card-tr"><span class="cbadge bguide">📖 Interactive Guide</span><span class="crole">All Roles</span></div>
+        <h3>HR Service Management Interactive Guide</h3>
+        <p>Hands-on interactive guide through Salesforce HR Service — case management, employee portal, Agentforce HR Agent, and People Manager workflows.</p>
+        <div class="card-ft"><span class="ct">⏱ Self-paced</span><a href="hr_service_management_interactive_guide.html" class="cl">Open Guide →</a></div>
+      </div>
+      <div class="card">
+        <div class="card-acc" style="background:var(--teal);"></div>
+        <div class="card-tr"><span class="cbadge baudio">🎵 Audio</span><span class="crole">All Roles</span></div>
+        <h3>Engineering The Modern HR Service Machine</h3>
+        <p>Audio exploration of how modern HR service delivery is engineered on the Salesforce platform — from case routing to AI-driven self-service.</p>
+        <div class="card-ft"><span class="ct">⏱ Listen</span></div>
+        <audio controls style="width:100%;margin-top:8px;border-radius:6px;">
+          <source src="Engineering The Modern HR Service Machine.mp3" type="audio/mpeg">
+          Your browser does not support audio playback.
+        </audio>
+      </div>
+      <div class="card">
+        <div class="card-acc acc-p"></div>
+        <div class="card-tr"><span class="cbadge bdoc">📘 Partner Portal</span><span class="crole">All Roles</span></div>
+        <h3>Partner Enablement Journey</h3>
+        <p>Official ProServ partner enablement journey — structured learning paths, product readiness, and delivery guidance for IT Service and HR Service.</p>
+        <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://docs.google.com/document/d/1W7vSPDAmrYS6pEOJe7QUvmvHDw_IUd8U-qvfQu5x8YU/edit?tab=t.s6ppyc7cs7uo" target="_blank" class="cl">Open Doc ↗</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:36px;text-align:center;">
+    <a href="itsm_hr_learning_journey.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:white;padding:11px 22px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;">← Back to Learning Journey</a>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Track 1 · Industry Fundamentals</strong> — <a href="itsm_hr_learning_journey.html">Agentforce IT Service &amp; HR Service Learning Journey</a><br/>
+  Salesforce ProServ · June 2026
+</footer>
+</body>
+</html>

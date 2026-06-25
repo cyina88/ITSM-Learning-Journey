@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Track 3: Salesforce eServices Tools — ITSM & HR Service</title>
+<style>
+  :root {
+    --navy:#032D60;--blue:#0176D3;--sky:#1B96FF;--teal:#06A59A;--purple:#7526E3;
+    --green:#2E844A;--amber:#FE9339;--red:#C23934;
+    --grey0:#F3F3F3;--grey1:#E8EDF2;--grey2:#AEAEAE;--dark:#181818;--white:#FFFFFF;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Salesforce Sans',Arial,sans-serif;background:#F8F9FB;color:var(--dark);line-height:1.5;}
+  .back-nav{background:var(--white);border-bottom:2px solid var(--grey1);padding:12px 24px;display:flex;align-items:center;gap:12px;}
+  .back-nav a{font-size:13px;font-weight:700;color:var(--blue);text-decoration:none;}
+  .back-nav a:hover{text-decoration:underline;}
+  .back-nav-sep{color:var(--grey2);font-size:12px;}
+  .back-nav-cur{font-size:13px;font-weight:600;color:var(--dark);}
+  .hero{background:linear-gradient(135deg,var(--blue) 0%,#015BAB 60%,#014A8F 100%);color:var(--white);padding:48px 48px 56px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,0.08);pointer-events:none;}
+  .hero-eye{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:10px;}
+  .hero-num{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.15);font-size:22px;margin-bottom:14px;}
+  .hero h1{font-size:36px;font-weight:800;line-height:1.15;max-width:660px;}
+  .hero-sub{margin-top:12px;font-size:15px;color:rgba(255,255,255,0.8);max-width:560px;}
+  .hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;}
+  .hero-tag{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:4px 13px;font-size:12px;font-weight:600;}
+  .hero-meta{margin-top:26px;display:flex;gap:28px;font-size:13px;color:rgba(255,255,255,0.65);flex-wrap:wrap;}
+  .hero-meta strong{color:var(--white);font-weight:700;}
+  .main{max-width:1100px;margin:0 auto;padding:48px 24px 80px;}
+  .divider{border:none;border-top:2px solid var(--grey1);margin:40px 0;}
+  .section-label{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey2);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--grey1);}
+  .sh{display:flex;align-items:flex-start;gap:14px;margin-bottom:24px;}
+  .sh-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .sh-text h2{font-size:21px;font-weight:800;color:var(--navy);}
+  .sh-text p{font-size:13px;color:#555;margin-top:3px;}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:28px;}
+  .ov-card{background:var(--white);border:1.5px solid var(--grey1);border-radius:12px;padding:16px;}
+  .ov-card-icon{font-size:26px;margin-bottom:8px;}
+  .ov-card h3{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+  .ov-card p{font-size:12px;color:#555;line-height:1.5;}
+  .blue-box{background:#EBF5FB;border-left:4px solid var(--blue);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#0B3D8F;margin-bottom:22px;line-height:1.6;}
+  .warn-box{background:#FFF8E1;border-left:4px solid var(--amber);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#795200;margin-bottom:22px;line-height:1.6;}
+  .teal-box{background:#E0F2F1;border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;color:#004D40;margin-bottom:22px;line-height:1.6;}
+  .qa-list{display:flex;flex-direction:column;gap:10px;}
+  .qa-item{border:1.5px solid var(--grey1);border-radius:10px;overflow:hidden;background:var(--white);}
+  .qa-item summary{padding:13px 18px;cursor:pointer;font-weight:700;font-size:13px;color:var(--navy);display:flex;align-items:center;gap:10px;list-style:none;background:var(--white);transition:background .15s;}
+  .qa-item summary::-webkit-details-marker{display:none;}
+  .qa-item summary::marker{display:none;}
+  .qa-item>summary::before{content:'▸';font-size:11px;color:var(--grey2);flex-shrink:0;display:inline-block;transition:transform .2s;}
+  .qa-item[open]>summary{background:var(--grey0);border-bottom:1.5px solid var(--grey1);}
+  .qa-item[open]>summary::before{transform:rotate(90deg);}
+  .qa-body{padding:16px 20px;font-size:13px;line-height:1.7;color:#444;}
+  .qa-body ul{padding-left:20px;margin:8px 0;}
+  .qa-body li{margin-bottom:7px;}
+  .qa-body strong{color:var(--navy);}
+  .qa-body h4{font-size:11px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 6px;}
+  .src{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-left:auto;flex-shrink:0;white-space:nowrap;}
+  .src-pjf{background:#E8EAF6;color:#303F9F;}
+  .src-it{background:#E0F2F1;color:#004D40;}
+  .flag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:28px;}
+  .flag-card{background:var(--white);border:1.5px solid #FE9339;border-radius:10px;padding:16px;position:relative;overflow:hidden;}
+  .flag-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--amber);}
+  .flag-card h3{font-size:13px;font-weight:800;color:#795200;margin-bottom:6px;}
+  .flag-card p{font-size:12px;color:#555;line-height:1.5;}
+  .flag-status{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:#FFF8E1;color:#795200;margin-top:8px;}
+  .card-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));}
+  .card{background:var(--white);border-radius:12px;border:1.5px solid var(--grey1);padding:18px 18px 14px;display:flex;flex-direction:column;gap:9px;transition:box-shadow .2s,border-color .2s;position:relative;overflow:hidden;}
+  .card:hover{box-shadow:0 6px 22px rgba(0,0,0,0.09);border-color:var(--sky);}
+  .card-acc{position:absolute;top:0;left:0;right:0;height:4px;border-radius:12px 12px 0 0;}
+  .card-tr{display:flex;align-items:center;justify-content:space-between;}
+  .cbadge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:9px;text-transform:uppercase;letter-spacing:.3px;}
+  .crole{font-size:11px;color:var(--grey2);font-weight:600;}
+  .card h3{font-size:13px;font-weight:700;color:var(--navy);line-height:1.3;}
+  .card p{font-size:12px;color:#555;line-height:1.55;flex:1;}
+  .card-ft{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
+  .ct{font-size:11px;color:var(--grey2);font-weight:600;}
+  .cl{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--blue);text-decoration:none;padding:5px 11px;border-radius:7px;border:1.5px solid var(--blue);transition:background .15s,color .15s;}
+  .cl:hover{background:var(--blue);color:var(--white);}
+  .bt{background:#EBF5FB;color:#0176D3;}.bsl{background:#E8EAF6;color:#303F9F;}.bdoc{background:#F3E5F5;color:#6A1B9A;}
+  .bslides{background:#E8F5E9;color:#1B5E20;}.bnb{background:#EDE7F6;color:#4527A0;}.barch{background:#E0F2F1;color:#004D40;}.bbrix{background:#FBE9E7;color:#BF360C;}
+  .acc-b{background:var(--blue);}.acc-t{background:var(--teal);}.acc-p{background:var(--purple);}
+  .acc-g{background:var(--green);}.acc-n{background:var(--navy);}.acc-a{background:var(--amber);}
+  footer{background:var(--navy);color:rgba(255,255,255,0.6);text-align:center;padding:22px;font-size:12px;}
+  footer strong{color:var(--white);}
+  footer a{color:rgba(255,255,255,0.7);text-decoration:none;}
+  footer a:hover{color:var(--white);}
+  .domain-pill{font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.3px;flex-shrink:0;}
+  .dp-it{background:#EBF5FB;color:#0B3D8F;border:1px solid #B3D4EF;}
+  .dp-hr{background:#E0F2F1;color:#004D40;border:1px solid #A7D7D5;}
+  .dp-both{background:#F9F0FF;color:#5A1A99;border:1px solid #D4B8F0;}
+  .src-262{background:#FFF3E0;color:#BF360C;}
+</style>
+</head>
+<body>
+
+<div class="back-nav">
+  <a href="itsm_hr_learning_journey.html">← Learning Journey</a>
+  <span class="back-nav-sep">/</span>
+  <span class="back-nav-cur">⚙️ Track 3 · Salesforce eServices Tools</span>
+</div>
+
+<div class="hero">
+  <div class="hero-eye">Salesforce ProServ · ITSM &amp; HR Service · Learning Track 3 of 4</div>
+  <div class="hero-num">⚙️</div>
+  <h1>Salesforce eServices Tools</h1>
+  <p class="hero-sub">Install and configure ITSM, Service Cloud, CMDB, Knowledgebase, Agents, Slack/Teams integrations, and Data Cloud in hands-on demo environments.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Agentforce AI Agents</span>
+    <span class="hero-tag">Knowledge Management</span>
+    <span class="hero-tag">Proactive Assistance</span>
+    <span class="hero-tag">Endpoint Agents</span>
+    <span class="hero-tag">HR Service Tools</span>
+  </div>
+  <div class="hero-meta">
+    <span><strong>60 Hours</strong> · Estimated effort</span>
+    <span><strong>SA · Dev/TA</strong> · Days 30–90</span>
+    <span><strong>Outcome:</strong> Hands-on exercises in demo environments — all eServices tools configured end-to-end</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="blue-box">
+    🎯 <strong>Track Goal:</strong> Enable the team to install and configure all eServices tools including ITSM, Service Cloud, CMDB, Knowledgebase, Agents, Slack and Teams integrations, and Data Cloud. Demonstrated by hands-on exercises in demo environments.
+  </div>
+
+  <div class="ov-grid">
+    <div class="ov-card"><div class="ov-card-icon">🤖</div><h3>AI Agents</h3><p>Employee-facing and fulfiller-facing AI agents — resolution, proactive detection, knowledge answers.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">📖</div><h3>Knowledge Mgmt</h3><p>Automated knowledge creation, AI-powered article drafting, smart recommendations.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">🖥️</div><h3>IT Service Console</h3><p>Proactive Assistance tool, fulfiller workflows, SLA tracking, service analytics.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">📡</div><h3>Endpoint Agents</h3><p>Proactive device monitoring via Jamf, Intune, CrowdStrike — detect and resolve before employees report.</p></div>
+    <div class="ov-card"><div class="ov-card-icon">👥</div><h3>HR Service Tools</h3><p>Employee Service setup, HR Agent, HR case model extensions, privacy model configuration.</p></div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="warn-box">
+    ⚠️ <strong>Current Functional Gaps — check before scoping any engagement.</strong> Known platform limitations as of June 2026.
+  </div>
+
+  <div class="flag-grid">
+    <div class="flag-card"><h3>HAM — Hardware Asset Management</h3><p><strong>NOT YET GA.</strong> HAM is a proprietary solution; SAM (Software Asset Management) requires partner integration. Do not scope HAM in any current engagement.</p><span class="flag-status">Roadmap</span></div>
+    <div class="flag-card"><h3>Single-Org HR + IT</h3><p><strong>Roadmap only.</strong> HR Service and IT Service require separate employee orgs today. Single-org design is not available.</p><span class="flag-status">Roadmap</span></div>
+    <div class="flag-card"><h3>Case OWD — Must Be Private</h3><p><strong>Mandatory design gate.</strong> Case OWD must be set to Private for ER and HR cases. Non-negotiable security requirement.</p><span class="flag-status">Mandatory</span></div>
+    <div class="flag-card"><h3>MS Teams — Known Gaps</h3><p>Teams lacks <strong>Incident Broadcast</strong> and full <strong>Swarm</strong> parity vs. Slack. Raise early in discovery for Teams-only customers.</p><span class="flag-status">Known Gap</span></div>
+    <div class="flag-card"><h3>CMDB — Separate SKU</h3><p>CMDB is <strong>not included</strong> in the base IT Service Desk SKU. CI relationship topology requires a separate CMDB license.</p><span class="flag-status">Separate SKU</span></div>
+    <div class="flag-card"><h3>People Manager Workflow</h3><p><strong>Active product gap.</strong> No native People Manager visibility/approval workflow in HR Service today. Must be custom-built.</p><span class="flag-status">Product Gap</span></div>
+    <div class="flag-card"><h3>Multi-Agent Orchestration — Slack</h3><p><strong>Not yet available in Slack.</strong> Multi-agent orchestration works in MS Teams and portals; Slack is still a P-stage work-in-progress. Do not promise Slack-based orchestration.</p><span class="flag-status">In Progress</span></div>
+    <div class="flag-card"><h3>GCP &amp; Kubernetes Discovery</h3><p><strong>Highest-priority CMDB gap.</strong> Native discovery for GCP and Kubernetes (services, namespaces, pods) is not yet available. Supersedes other API/scalability work on the roadmap.</p><span class="flag-status">Roadmap</span></div>
+    <div class="flag-card"><h3>Enterprise Knowledge AI Summaries</h3><p>Enterprise Knowledge can ingest from Google Drive, Confluence, and SharePoint into Data Cloud — but <strong>AI-generated summaries are not yet available.</strong> Configuration is manual; not part of first-run experience.</p><span class="flag-status">Roadmap</span></div>
+    <div class="flag-card"><h3>Slack App — Adaptive Cards</h3><p>Current Slack app UI is pre-final. <strong>Do not present current non-final iterations to customers.</strong> Moving to a unified Salesforce app with adaptive cards for improved UX.</p><span class="flag-status">In Progress</span></div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="sh">
+    <div class="sh-icon" style="background:#EBF5FB;">🤖</div>
+    <div class="sh-text"><h2>AI Agent Capabilities — Tool-Level Deep Dives</h2><p>Q&amp;A from the IT Service notebooks on specific Agentforce tools and how they work.</p></div>
+  </div>
+
+  <div class="section-label">🖥️ IT Service — Employee-Facing AI Agents</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>How do AI agents autonomously resolve issues for employees?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>AI agents provide proactive, conversational support directly in Slack, Microsoft Teams, and the Employee Portal.</p>
+        <ul>
+          <li><strong>Generative Knowledge Answers:</strong> Agents scan the knowledge base and integrated enterprise data. For a VPN issue in Slack, the agent uses "Answer Questions with Knowledge" to instantly surface and summarize the troubleshooting steps needed.</li>
+          <li><strong>Automated Service Requests:</strong> Handles routine requests — password resets, account unlocks, software provisioning, adding users to distribution lists — without human IT intervention. The agent confirms details, submits the request, and routes approval to the manager.</li>
+          <li><strong>Proactive Endpoint Remediation:</strong> Endpoint agents integrate with device monitoring tools to proactively detect issues before the employee reports them. If a computer has high memory usage, the agent pings the employee in Slack, identifies the problem, and asks permission to remotely restart the app.</li>
+          <li><strong>Automated Escalation and Ticketing:</strong> If too complex for auto-resolution, the agent automatically creates a detailed incident ticket with full context from the natural-language conversation and routes to the IT service desk. Employees don't need to repeat themselves or fill out forms.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What is the role of endpoint agents in resolving issues?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <ul>
+          <li><strong>Proactive Detection via Integrations:</strong> Endpoint agents integrate directly with Jamf, Intune, Kandji, Workspace ONE, and CrowdStrike. They receive real-time alerts when something goes wrong on a remote device — tracking metrics like abnormal CPU spikes or high memory usage.</li>
+          <li><strong>Conversational Remediation:</strong> When an issue is detected (e.g., high memory causing device slowdowns), the agent immediately starts a conversation with the employee in Slack, notifying them of the specific problem and asking permission to execute a fix.</li>
+          <li><strong>Automated Remote Actions:</strong> Once the user grants approval, the endpoint agent autonomously kills and restarts a resource-heavy application (e.g., Google Chrome), then confirms memory levels have returned to normal.</li>
+          <li><strong>Broad Endpoint Coverage:</strong> Extends beyond laptops and desktops — endpoint agents peer into Kubernetes containers and Virtual Desktop Infrastructure (VDI) environments such as VMware, Citrix, and hypervisors.</li>
+        </ul>
+        <p>Especially valuable for non-technical staff — hospital nurses and similar roles — who need seamless background IT support without manual troubleshooting or ticket submission.</p>
+      </div>
+    </details>
+
+  </div>
+
+  <div class="section-label" style="margin-top:28px;">🖥️ IT Service — Fulfiller-Facing AI &amp; Proactive Assistance</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>What is the Proactive Assistance tool in the IT Service Console?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>The <strong>Proactive Assistance</strong> tool is a widget in the IT Service Console that consolidates several Agentforce actions — providing a 360-degree, AI-driven view of an incident. It saves fulfillers hours of manual research and troubleshooting.</p>
+        <h4>Core Capabilities</h4>
+        <ul>
+          <li><strong>Check Attributes:</strong> Validates key incident fields and can automatically update them based on historical context (e.g., changing impact and urgency from medium to high).</li>
+          <li><strong>Incident Summary:</strong> High-level overview of the incident including relevant details, SLA statuses, and associated knowledge articles or tasks.</li>
+          <li><strong>Root Cause Summary:</strong> Analyzes previous similar incidents to highlight contributing factors and provides a high-level summary of what might be causing the current issue.</li>
+          <li><strong>Associate Similar Incidents:</strong> Automatically surfaces and links similar past incidents — gives the fulfiller broader context and helps evaluate whether escalation to a Major Incident is needed.</li>
+          <li><strong>Propose Resolution Summary:</strong> Reviews how similar issues were solved in the past, alongside relevant knowledge articles, to provide clear step-by-step recommended actions.</li>
+          <li><strong>Agent Based Assignment:</strong> Einstein-powered action that automatically suggests the right person, team, or queue to assign the incident to — analyzing subject, description, priority, and past resolution skills.</li>
+        </ul>
+        <p>Fulfillers can expand and view AI-generated insights directly on the incident record. If new data comes in, they can "refresh" to regenerate results in seconds. Also being extended to <strong>Problem Management</strong> (Proactive Assistant Problem, added in the 260 release).</p>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What is the Propose Resolution Summary action?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>The <strong>Propose Resolution Summary</strong> action is an Agentforce capability available within the Proactive Assistance tool for both incidents and problems. It does the heavy lifting of troubleshooting by instantly digesting how similar issues were handled in the past.</p>
+        <p>The AI evaluates existing knowledge base articles alongside resolution details of past related incidents or problems, then synthesizes historical data into clear, step-by-step recommended actions tailored to the current issue.</p>
+        <p><strong>Example:</strong> For a VPN connection failure, the action might suggest verifying the portal address based on a specific knowledge article, then testing for firewall interference based on how a previous similar incident was successfully resolved.</p>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What is the Create Incident Root Cause Summary action?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>The <strong>Create Incident Root Cause Summary</strong> (also called Incident Cause Analysis) is an Agentforce AI capability that automatically generates a proposed root cause summary for an active incident by analyzing:</p>
+        <ul>
+          <li><strong>Current and Past Incident Data:</strong> Details and descriptions of the active incident compared against similar historical incidents to identify patterns and contributing factors.</li>
+          <li><strong>Affected Configuration Items (CIs):</strong> The agent examines asset dependencies mapped in the CMDB and Service Graph. E.g., traces a failing VPN service node back to a change request executed on a connected gateway cluster.</li>
+          <li><strong>Knowledge Articles and Related Records:</strong> Digests existing knowledge base articles, known errors, and open problem records for grounded context.</li>
+        </ul>
+        <p>Accessible via the Proactive Assistance tool in the Incident Management app. Saves significant investigation time and accelerates resolution.</p>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>How does AI use historical data to propose resolution steps?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <ul>
+          <li><strong>Searching Past Resolutions:</strong> The AI scans for previously resolved incidents or problems that share characteristics with the current issue.</li>
+          <li><strong>Extracting Proven Steps:</strong> Identifies related historical records and digests the specific resolution summaries, action plans, and tasks that were used to fix those past issues. E.g., finds that a past VPN ticket was resolved by reviewing recent software changes and rolling back a specific implementation.</li>
+          <li><strong>Synthesizing with Knowledge Base Data:</strong> Cross-references historical actions with relevant troubleshooting steps in the knowledge base articles.</li>
+          <li><strong>Generating Actionable Recommendations:</strong> Synthesizes combined historical context into a clear, step-by-step list of "Recommended Actions" — allows fulfillers to immediately apply proven fixes without manually hunting through old tickets.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>How does AI prioritize which incidents to analyze first?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>The AI helps prioritize incidents for human IT teams through several mechanisms:</p>
+        <ul>
+          <li><strong>Predicting SLA Breaches:</strong> Uses predictive models and historical data to anticipate which active incidents are likely to breach their SLAs. Proactively highlights at-risk issues so fulfillers know to prioritize them.</li>
+          <li><strong>Predicting Major Incidents:</strong> Evaluates patterns in incoming tickets — e.g., a sudden surge of VPN connectivity issues within the last hour — to predict the likelihood of escalation to a Major Incident.</li>
+          <li><strong>Prioritization and Categorization Checks:</strong> For individual tickets, the AI actively checks if the incident has been assigned the correct priority, category, and subcategory, offering intelligent correction suggestions.</li>
+          <li><strong>Rule-Based Automation:</strong> Alongside AI-driven insights, the IT Service Console uses automated, rule-based priority settings to consistently categorize and prioritize the incident backlog.</li>
+        </ul>
+      </div>
+    </details>
+
+  </div>
+
+  <div class="section-label" style="margin-top:28px;">🖥️ IT Service — Knowledge Management</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>How do AI agents use Knowledge for troubleshooting?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <ul>
+          <li><strong>Generative AI-Powered Answers for Self-Service:</strong> Instead of forcing employees to hunt through long articles, agents scan the centralized knowledge base and integrated enterprise data to instantly surface and summarize troubleshooting steps — conversationally in Slack.</li>
+          <li><strong>Proposing Resolution Steps for IT Fulfillers:</strong> The AI runs a "Propose Resolution Summary" action — digesting relevant knowledge articles alongside past resolved incidents to provide the human fulfiller with clear, recommended step-by-step troubleshooting actions.</li>
+          <li><strong>Intelligent Knowledge Recommendations:</strong> During incident or problem diagnosis, agents actively suggest relevant knowledge articles, known errors, and temporary workarounds based on historical data and the specific context of the issue.</li>
+          <li><strong>Automated Knowledge Creation:</strong> After resolving a new or complex issue, the AI automatically drafts a new knowledge article detailing the root cause, steps taken to fix it, and preventative best practices. Continuous learning loop ensures future troubleshooting is significantly faster.</li>
+          <li><strong>Smart, Permission-Aware Search:</strong> AI-powered search consolidates data from multiple sources — including SharePoint, Zendesk, or Google Drive — into a single summarized answer, ensuring employees and agents only access information they're authorized to view.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What is the Knowledge Creation action and how does it work?<span class="domain-pill dp-it">IT Service</span><span class="src src-it">IT Service Notebook</span></summary>
+      <div class="qa-body">
+        <p>The <strong>Knowledge Creation action</strong> is an Einstein-powered Generative AI capability that automatically drafts new knowledge base articles when an IT team resolves an issue.</p>
+        <h4>How It Works</h4>
+        <ul>
+          <li><strong>Contextual Extraction:</strong> Pulls relevant data directly from IT records — the incident's identified root cause and specific steps taken to reach resolution.</li>
+          <li><strong>Generative Drafting:</strong> Autonomously drafts a comprehensive new knowledge article. E.g., if a service outage was resolved by reverting a faulty security patch, the article details the root cause, resolution applied, and preventative best practices for testing future deployments.</li>
+          <li><strong>Continuous Improvement:</strong> In addition to creating new articles, the AI evaluates historical resolutions to suggest updates to existing articles, or drafts new "known error" records and temporary workarounds.</li>
+          <li><strong>Human Review &amp; Publishing:</strong> The IT team reviews the AI-assisted draft before publishing. Once published, the knowledge base immediately empowers faster employee self-service.</li>
+        </ul>
+        <h4>Availability</h4>
+        <p>Included natively in the <strong>Agentforce IT Service Desk Unlimited Edition (UE)</strong>, or accessible through the <strong>Agentforce for Service (A4S)</strong> add-on.</p>
+      </div>
+    </details>
+
+  </div>
+
+  <hr class="divider" />
+
+  <div class="sh">
+    <div class="sh-icon" style="background:#EBF5FB;">🗂️</div>
+    <div class="sh-text"><h2>262 GTM Technical Enablement — Key Themes</h2><p>Session notes from the 262 ITSM &amp; HR Service Technical Enablement series. Click any item to expand.</p></div>
+  </div>
+
+  <div class="section-label" style="margin-top:0;">🖥️ IT Service — Enterprise Knowledge &amp; Experience</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>What is Enterprise Knowledge and how does it work?<span class="domain-pill dp-it">IT Service</span><span class="src src-262">262 Notes</span></summary>
+      <div class="qa-body">
+        <p><strong>Enterprise Knowledge</strong> enables ingestion from external sources — Google Drive, Confluence, SharePoint — into Data Cloud to create a unified Salesforce knowledge base.</p>
+        <ul>
+          <li><strong>Harmonization Layer:</strong> Formats external content for readability before surfacing in Salesforce.</li>
+          <li><strong>Hybrid Search:</strong> Suggests relevant articles based on incident subject and description context.</li>
+          <li><strong>RAG-Style Direction:</strong> Current keyword search is insufficient — roadmap push toward full RAG-style search for Enterprise Knowledge.</li>
+        </ul>
+        <div class="warn-box" style="margin-top:12px;">⚠️ <strong>Not Yet Available:</strong> AI-generated summaries within Enterprise Knowledge are on the roadmap but not yet delivered. Configuration must be performed explicitly — not automated as part of first-run experience.</div>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What changes came in 262 for Employee &amp; IT Agent experience?<span class="domain-pill dp-it">IT Service</span><span class="src src-262">262 Notes</span></summary>
+      <div class="qa-body">
+        <ul>
+          <li><strong>Email to Incident/Case/Service Request:</strong> Email threading and fulfiller response capabilities introduced in 262; additional refinements targeted for 264.</li>
+          <li><strong>Slack App Consolidation:</strong> Moving toward a unified "Salesforce app" for Slack to handle notifications and approvals — reduces need for multiple app installations. Better adaptive card UX required. <strong>Do not present current non-final iterations to customers.</strong></li>
+          <li><strong>Microsoft Teams:</strong> Automated setup improvements for the IT service app. Internal troubleshooting "cloud agent" available for GTM/SCE teams to debug setup issues.</li>
+          <li><strong>Change Advisory Board (CAB):</strong> Integrates governance into platform but deprioritized for this release — lacks immediate customer requests.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What is the current state of Agentforce agent design?<span class="domain-pill dp-it">IT Service</span><span class="src src-262">262 Notes</span></summary>
+      <div class="qa-body">
+        <p>The 262 enablement sessions surfaced significant concerns about the current agent design approach:</p>
+        <ul>
+          <li><strong>"One-Shot" Agent Problem:</strong> Current reliance on one-shot agents and service catalog-based workflows is characterized as "brittle" and "backward-looking." Team is prioritizing an <strong>agent script approach</strong> that is more legible and extensible.</li>
+          <li><strong>Multi-Agent Orchestration:</strong> Available for Microsoft Teams and portals; <strong>Slack remains a work in progress (P-stage)</strong> — significant gap for upcoming releases.</li>
+          <li><strong>Demo Quality Bar:</strong> Current device security assistance agent demo is <strong>not ready for customer presentations.</strong> Mandate: build a new production-ready demo focused on a single high-quality agent (e.g., software access management) rather than many shallow agents.</li>
+          <li><strong>Non-Catalog Logic Needed:</strong> Must move beyond service catalog-only approach — need agent skills, tool calling APIs, and proper workflow design.</li>
+          <li><strong>Parallel Execution Gap:</strong> Current multi-agent path is serial — parallel execution needed for efficiency.</li>
+          <li><strong>Human Escalation:</strong> Live agent handoff must work for both single agents and multi-agent orchestrated flows across all platforms.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What are the confirmed roadmap investments from 262 feedback?<span class="domain-pill dp-it">IT Service</span><span class="src src-262">262 Notes</span></summary>
+      <div class="qa-body">
+        <ul>
+          <li><strong>Unified Fulfiller View:</strong> Investment planned for a unified ticket view for fulfillers to reduce tool-switching.</li>
+          <li><strong>Knowledge Agent + Configurable Article Suggestions:</strong> Planned for future releases to improve self-service accuracy.</li>
+          <li><strong>MS Teams &amp; Slack Enhancements:</strong> "My Assets" visibility in collaboration tools + richer Agentforce interactions prioritized.</li>
+          <li><strong>Multilingual Support:</strong> Multilingual template management within the notification framework — mandatory as product scales.</li>
+        </ul>
+      </div>
+    </details>
+
+  </div>
+
+  <div class="section-label" style="margin-top:28px;">💲 Licensing — UEL vs. CCP</div>
+  <div class="qa-list">
+
+    <details class="qa-item">
+      <summary>What is UEL and how does it differ from CCP?<span class="domain-pill dp-both">IT + HR Unified</span><span class="src src-262">262 Notes</span></summary>
+      <div class="qa-body">
+        <p><strong>UEL (Universal Employee License)</strong> — also called EUL (Employee User License) — is the platform-based license that now underpins the <strong>AUL</strong> and <strong>AI Agents for Employees</strong> SKUs. CCP (Customer Community Plus) was the original license at launch and has been replaced by UEL for all new deals.</p>
+        <div style="overflow-x:auto;margin:12px 0;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <thead><tr style="background:#F3F3F3;">
+              <th style="padding:8px 10px;text-align:left;border:1px solid #E8EDF2;">Area</th>
+              <th style="padding:8px 10px;text-align:left;border:1px solid #E8EDF2;color:#795200;">CCP (Legacy)</th>
+              <th style="padding:8px 10px;text-align:left;border:1px solid #E8EDF2;color:#032D60;">UEL (Current)</th>
+            </tr></thead>
+            <tbody>
+              <tr><td style="padding:7px 10px;border:1px solid #E8EDF2;font-weight:700;">AI Innovation</td><td style="padding:7px 10px;border:1px solid #E8EDF2;">No new OOTB agents, workflows, or connectors will be added</td><td style="padding:7px 10px;border:1px solid #E8EDF2;">Full access to all new AI features, agents, and OOTB workflows</td></tr>
+              <tr style="background:#F9F9F9;"><td style="padding:7px 10px;border:1px solid #E8EDF2;font-weight:700;">Platform flexibility</td><td style="padding:7px 10px;border:1px solid #E8EDF2;">Community Plus — limited extensibility</td><td style="padding:7px 10px;border:1px solid #E8EDF2;">Native Salesforce platform license — full extensibility</td></tr>
+              <tr><td style="padding:7px 10px;border:1px solid #E8EDF2;font-weight:700;">SKU</td><td style="padding:7px 10px;border:1px solid #E8EDF2;">Employee Portal – Named User / Login</td><td style="padding:7px 10px;border:1px solid #E8EDF2;">AUL and AI Agents for Employees ($15/user/month)</td></tr>
+              <tr style="background:#F9F9F9;"><td style="padding:7px 10px;border:1px solid #E8EDF2;font-weight:700;">Upgrade path</td><td style="padding:7px 10px;border:1px solid #E8EDF2;">Stuck unless migrated</td><td style="padding:7px 10px;border:1px solid #E8EDF2;">Can upgrade AUL → PUL seamlessly</td></tr>
+              <tr><td style="padding:7px 10px;border:1px solid #E8EDF2;font-weight:700;">EOL</td><td style="padding:7px 10px;border:1px solid #E8EDF2;">Supported until Jan 31, 2031 — no new innovation</td><td style="padding:7px 10px;border:1px solid #E8EDF2;">Active investment and roadmap</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="warn-box" style="margin-top:8px;">⚠️ <strong>Legacy SKU EOR:</strong> "Employee Portal – Named User" and "Employee Portal – Login" (both CCP-based) — End of Revenue: <strong>September 1, 2026.</strong> Replaceable with AI Agents for Employees (UEL) via 1:1 swap.</div>
+      </div>
+    </details>
+
+    <details class="qa-item">
+      <summary>What is the recommendation for existing CCP customers?<span class="domain-pill dp-both">IT + HR Unified</span><span class="src src-262">262 Notes</span></summary>
+      <div class="qa-body">
+        <p>Strong recommendation is to migrate CCP customers to UEL as soon as possible. CCP-based licenses will be supported until EOL (Jan 31, 2031) but <strong>no new OOTB agents, workflows, or connectors will be added to CCP</strong>.</p>
+        <ul>
+          <li><strong>Migration Tool:</strong> A Summer 2026 migration tool is being released to support the CCP → UEL transition.</li>
+          <li><strong>Recommended SI for migrations:</strong> CustomerTimes.</li>
+          <li><strong>Demo orgs:</strong> May currently show CCP-based licenses — expected for now. New users in demo orgs should be set up with UEL to test latest functionality.</li>
+        </ul>
+      </div>
+    </details>
+
+  </div>
+
+  <hr class="divider" />
+
+  <div class="sh">
+    <div class="sh-icon" style="background:#E0F2F1;">🛠️</div>
+    <div class="sh-text"><h2>Track 3 Resources — Hands-On Setup</h2><p>Demo org setup, Solution Central brix, configuration guides, and HR Service tools.</p></div>
+  </div>
+
+  <div class="section-label">🖥️ IT Service Demo Setup</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-acc acc-b"></div>
+      <div class="card-tr"><span class="cbadge bbrix">🧱 Brix</span><span class="crole">SC · Dev</span></div>
+      <h3>Agentforce IT Service — Base Demo</h3>
+      <p>Base demo configuration brix. Provisions Incident, Problem, Change Request, Release, Knowledge, and Product2 objects plus page layouts and Lightning pages.</p>
+      <div class="card-ft"><span class="ct">⏱ ~30 min</span><a href="https://www.solutionswork.space/demos/store/detail/a4yKi000000seqPIAQ" target="_blank" class="cl">Install Brix ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-b"></div>
+      <div class="card-tr"><span class="cbadge bbrix">🧱 Brix</span><span class="crole">SC · Dev</span></div>
+      <h3>Agentforce IT Service — License Configuration</h3>
+      <p>Creates personas Elijah Taylor (IT Fulfiller) and Rafael Silva (Employee). Provisions profiles, roles, permission sets, and all key object configurations.</p>
+      <div class="card-ft"><span class="ct">⏱ ~20 min</span><a href="https://www.solutionswork.space/demos/store/detail/a4yKi000000seFXIAY" target="_blank" class="cl">Install Brix ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-b"></div>
+      <div class="card-tr"><span class="cbadge bbrix">🧱 Brix</span><span class="crole">Architect</span></div>
+      <h3>Automation — Orchestrate Large-Scale Incidents</h3>
+      <p>Packages connection, provisioning, authentication, and automation steps for Major Incident orchestration. Full P1 escalation and Swarm flow without manual config.</p>
+      <div class="card-ft"><span class="ct">⏱ ~15 min</span><a href="https://www.solutionswork.space/demos/store/detail/a4y5b000000gwQHAAY" target="_blank" class="cl">Install Brix ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-g"></div>
+      <div class="card-tr"><span class="cbadge bdoc" style="background:#E8F5E9;color:#1B5E20;">📄 Guide</span><span class="crole">SC · QA</span></div>
+      <h3>Employee Service Demo Quick Guide — SDO</h3>
+      <p>How to request credentials, activate the Agentforce IT Service agent, and navigate the provisioned demo org. Start here for first-time demo org access.</p>
+      <div class="card-ft"><span class="ct">⏱ ~15 min</span><a href="https://docs.google.com/document/d/12bubRokL8NIyXLb6N6rla9WJoCbzk3D0EktEvh_rtOw/edit?tab=t.0" target="_blank" class="cl">Open Guide ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-g"></div>
+      <div class="card-tr"><span class="cbadge bdoc" style="background:#E8F5E9;color:#1B5E20;">📄 Config Notes</span><span class="crole">SC · Dev</span></div>
+      <h3>SE — IT Service Demo Org Config Notes v2</h3>
+      <p>Standard configuration notes used by the SE community. Covers org settings, agent activation, record type setup, and known configuration gotchas.</p>
+      <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://docs.google.com/document/d/1rYA8vBM4Ikh3g5B9799EV7w4bycqCDT4eUK0qTgbF6k/edit?tab=t.0" target="_blank" class="cl">Open Doc ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-g"></div>
+      <div class="card-tr"><span class="cbadge bdoc" style="background:#E8F5E9;color:#1B5E20;">📄 Setup Guide</span><span class="crole">Dev · QA</span></div>
+      <h3>IT Service Demo Setup from SDO v1</h3>
+      <p>Step-by-step guide for building the IT Service demo on top of an SDO. Covers Q Branch tooling, brix sequencing, and validation steps.</p>
+      <div class="card-ft"><span class="ct">⏱ ~2 hrs</span><a href="https://docs.google.com/document/d/1fISKt2_NbCxdlTnETPX3ahl7f3oKGVWfm4JwYmKvgSY/edit?tab=t.0" target="_blank" class="cl">Open Doc ↗</a></div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:28px;">🎥 262 GTM Enablement Session Recordings</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-acc acc-b"></div>
+      <div class="card-tr"><span class="cbadge" style="background:#FFF3E0;color:#BF360C;">🎥 Recording</span><span class="crole">IT Service</span></div>
+      <h3>Hardware Asset Management</h3>
+      <p>262 GTM enablement session — HAM vs SAM distinction, lifecycle processes, agentic direction, demo standards, and MuleSoft procurement bridge.</p>
+      <div class="card-ft"><span class="ct">⏱ ~60 min</span><a href="https://drive.google.com/file/d/1ePEvR0JEh1QH2idoE0AjHrEvQ4iuK0w2/view?usp=drive_link" target="_blank" class="cl">Watch ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-b"></div>
+      <div class="card-tr"><span class="cbadge" style="background:#FFF3E0;color:#BF360C;">🎥 Recording</span><span class="crole">IT Service</span></div>
+      <h3>CMDB, Discovery &amp; Service Graph</h3>
+      <p>262 GTM enablement — Intune/Jamf integrations, CI tags, Mule for Flow, test vehicle, GCP/Kubernetes gap, headless mandate.</p>
+      <div class="card-ft"><span class="ct">⏱ ~60 min</span><a href="https://drive.google.com/file/d/1fOHezJtxNWmR1-pLzgD6sCGcDU57F6aq/view?usp=drive_link" target="_blank" class="cl">Watch ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-b"></div>
+      <div class="card-tr"><span class="cbadge" style="background:#FFF3E0;color:#BF360C;">🎥 Recording</span><span class="crole">IT Service</span></div>
+      <h3>Agentforce</h3>
+      <p>262 GTM enablement — multi-agent orchestration gaps, agent script approach, demo quality mandate, single-agent-per-slide format.</p>
+      <div class="card-ft"><span class="ct">⏱ ~60 min</span><a href="https://drive.google.com/file/d/1y8Wrfdm63RI0o4R8Sw4Fl9JO-XdRsEGB/view?usp=drive_link" target="_blank" class="cl">Watch ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-b"></div>
+      <div class="card-tr"><span class="cbadge" style="background:#FFF3E0;color:#BF360C;">🎥 Recording</span><span class="crole">IT Service</span></div>
+      <h3>IT Compliance</h3>
+      <p>262 GTM enablement — agent-first UX, licensed content requirement, mid-market personas, GRC positioning as ITSM add-on, audit evidence connectors.</p>
+      <div class="card-ft"><span class="ct">⏱ ~60 min</span><a href="https://drive.google.com/file/d/1Yu_wBVQRS8-0VXxQc9SFv7zajbzw9RCk/view?usp=drive_link" target="_blank" class="cl">Watch ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-b"></div>
+      <div class="card-tr"><span class="cbadge" style="background:#FFF3E0;color:#BF360C;">🎥 Recording</span><span class="crole">IT + HR</span></div>
+      <h3>Experience — Employee &amp; IT Agent</h3>
+      <p>262 GTM enablement — email-to-incident (262), Slack app consolidation, Teams improvements, Enterprise Knowledge setup, CAB deprioritization.</p>
+      <div class="card-ft"><span class="ct">⏱ ~60 min</span><a href="https://drive.google.com/file/d/17mq0hztVeMd61CTXv0q-3f9uBbk-4E4s/view?usp=drive_link" target="_blank" class="cl">Watch ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-n"></div>
+      <div class="card-tr"><span class="cbadge bslides">📊 Deck</span><span class="crole">All Roles</span></div>
+      <h3>262 Product Capabilities &amp; Roadmap</h3>
+      <p>Master deck from the 262 GTM Technical Enablement series — product capabilities, roadmap priorities, and functional gap summary across all ITSM topics.</p>
+      <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://docs.google.com/presentation/d/1zUrMi-MUw3ykrY1c8Zcg3fGgG5JjvnNHLfJN0RXq1Dg/edit?usp=drive_link" target="_blank" class="cl">Open Deck ↗</a></div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:28px;">👥 HR Service Demo Setup</div>
+  <div class="teal-box">
+    <strong>HR Service uses SDO + Brix</strong> (not a dedicated demo org). Install the Employee Service brix on a standard SDO. For combined IT + HR demos, HR Service can be added to the IT Service demo org — both run in the employee org.
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-acc acc-t"></div>
+      <div class="card-tr"><span class="cbadge bbrix">🧱 Brix</span><span class="crole">SC · Dev</span></div>
+      <h3>Employee Service (HR Service) Brix</h3>
+      <p>Sets up HR Service on an SDO — HR Community User profile, HR Service Agent User, permission sets, Employee Service Console App, Service Process record type, context definitions, and all required Case and Product2 field extensions.</p>
+      <div class="card-ft"><span class="ct">⏱ ~30 min</span><a href="https://www.solutionswork.space/demos/store/detail/a4yKi000000sZELIA2" target="_blank" class="cl">Install Brix ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-t"></div>
+      <div class="card-tr"><span class="cbadge" style="background:#E0F2F1;color:#004D40;">🎯 Option 1 — Recommended</span><span class="crole">Standalone HR</span></div>
+      <h3>SDO + HR Service Brix</h3>
+      <p>Most common and stable approach. Request a standard SDO, install the Employee Service brix on top. Full Q Branch tooling available. Best for standalone HR Service demos.</p>
+      <div class="card-ft"><span class="ct">⏱ ~45 min total</span><a href="https://docs.google.com/document/d/1fISKt2_NbCxdlTnETPX3ahl7f3oKGVWfm4JwYmKvgSY/edit?tab=t.0" target="_blank" class="cl">SDO Setup Guide ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-t"></div>
+      <div class="card-tr"><span class="cbadge" style="background:#E0F2F1;color:#004D40;">🎯 Option 2 — Combined IT + HR</span><span class="crole">IT + HR Together</span></div>
+      <h3>IT Service Demo Org + HR Topics &amp; Actions</h3>
+      <p>For demos covering both IT and HR together. HR Service shares the employee org with IT Service. Add HR Topics and Actions to the Employee Agent in the IT Service demo org — no separate org needed.</p>
+      <div class="card-ft"><span class="ct">⏱ ~1 hr config</span><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B2FH7BWKB" target="_blank" class="cl">Demo Org FAQ ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-t"></div>
+      <div class="card-tr"><span class="cbadge" style="background:#E0F2F1;color:#004D40;">🎯 Option 3 — With Slack</span><span class="crole">Slack-First Demo</span></div>
+      <h3>Slack IDO + SDO Pairing</h3>
+      <p>Request a Slack Demo Org (IDO) via Solutions Workspace to pair with your SDO. Required for demonstrating Agentforce HR Agent + Slack channel intake experience end-to-end.</p>
+      <div class="card-ft"><span class="ct">⏱ ~1–2 days to provision</span><a href="https://www.solutionswork.space" target="_blank" class="cl">Solutions Workspace ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-t"></div>
+      <div class="card-tr"><span class="cbadge barch" style="background:#E0F2F1;color:#004D40;">🏗️ Setup Guide</span><span class="crole">Architect · Dev</span></div>
+      <h3>HR Service (Employee Service) Setup Guide</h3>
+      <p>Official Salesforce Help for Employee Service — permissions, case model extensions, HR Agent configuration, privacy and security model, and community portal setup.</p>
+      <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://help.salesforce.com/s/articleView?id=service.es_employee_service_setup.htm&type=5" target="_blank" class="cl">Open Docs ↗</a></div>
+    </div>
+    <div class="card">
+      <div class="card-acc acc-b"></div>
+      <div class="card-tr"><span class="cbadge bsl">💬 Canvas</span><span class="crole">All Roles</span></div>
+      <h3>Services Enablement for ITSM</h3>
+      <p>Primary internal Slack canvas — component overview, ITIL process flows, SKU analysis, Slack Swarm deep dive, competitive FAQs, and implementation readiness checklist.</p>
+      <div class="card-ft"><span class="ct">⏱ Reference</span><a href="https://salesforce.enterprise.slack.com/docs/T026QPGMQ/F0B8E3R2VM5" target="_blank" class="cl">Open Canvas ↗</a></div>
+    </div>
+  </div>
+
+  <div style="margin-top:36px;text-align:center;">
+    <a href="itsm_hr_learning_journey.html" style="display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:white;padding:11px 22px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;">← Back to Learning Journey</a>
+  </div>
+
+</div>
+
+<footer>
+  <strong>Track 3 · Salesforce eServices Tools</strong> — <a href="itsm_hr_learning_journey.html">Agentforce IT Service &amp; HR Service Learning Journey</a><br/>
+  Salesforce ProServ · June 2026
+</footer>
+</body>
+</html>
