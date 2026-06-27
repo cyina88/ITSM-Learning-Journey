@@ -98,6 +98,12 @@
   .rdit{background:#EBF5FB;color:#0B3D8F;border-color:#B3D4EF;}
   .rdhr{background:#E0F2F1;color:#004D40;border-color:#A7D7D5;}
   .res-domain-body{border:1.5px solid var(--grey1);border-radius:0 0 10px 10px;padding:16px;margin-bottom:4px;background:var(--white);}
+  .flag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:28px;}
+  .flag-card{background:var(--white);border:1.5px solid #FE9339;border-radius:10px;padding:16px;position:relative;overflow:hidden;}
+  .flag-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--amber);}
+  .flag-card h3{font-size:13px;font-weight:800;color:#795200;margin-bottom:6px;}
+  .flag-card p{font-size:12px;color:#555;line-height:1.5;}
+  .flag-status{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:#FFF8E1;color:#795200;margin-top:8px;}
 </style>
 </head>
 <body>
@@ -135,6 +141,17 @@
 
   <div class="info-box">
     💡 <strong>Core positioning:</strong> Salesforce Agentforce ITSM is not a replacement mandate — it's an <strong>AI orchestration layer</strong> that integrates natively with ServiceNow, Jira, Freshservice, Workday, and legacy ITSM tools. This is the primary competitive differentiator vs. rip-and-replace alternatives.
+  </div>
+
+  <div class="warn-box">
+    ⚠️ <strong>Current Functional Gaps — verify before scoping any integration engagement.</strong> Known co-existence and platform limitations as of June 2026.
+  </div>
+
+  <div class="flag-grid">
+    <div class="flag-card"><h3>ServiceNow Co-Existence — No OOTB Support</h3><p><strong>Not supported OOTB without custom development.</strong> Positioning Agentforce as the AI layer on top of ServiceNow requires custom MuleSoft or Platform Events integration — no native bi-directional sync. Scope custom build time explicitly.</p><span class="flag-status">Custom Dev Required</span></div>
+    <div class="flag-card"><h3>Jira / Azure DevOps — No OOTB Co-Existence</h3><p><strong>No native co-existence support.</strong> Integrating Agentforce with Jira Service Management or Azure DevOps requires custom API-led connectivity via MuleSoft. Do not promise OOTB sync in scoping.</p><span class="flag-status">Custom Dev Required</span></div>
+    <div class="flag-card"><h3>CMDB Regional Availability</h3><p><strong>US and Germany only through September 2026.</strong> CMDB discovery and CI topology are not yet available in other regions. Flag in any EMEA (outside Germany) or APAC engagement.</p><span class="flag-status">Regional Limitation</span></div>
+    <div class="flag-card"><h3>VPN / Off-Network Device Detection</h3><p><strong>Service Graph Connector cannot discover devices off-VPN.</strong> Endpoint agents require devices to be on the corporate network or VPN for discovery. Off-VPN remote workers represent a CMDB coverage gap.</p><span class="flag-status">Known Gap</span></div>
   </div>
 
   <div class="section-label">Key Integration Patterns</div>
